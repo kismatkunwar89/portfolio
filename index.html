@@ -322,12 +322,18 @@
 
         /* Updated style for profile picture */
         .profile-pic {
-            width: 120px;
-            height: 120px;
+            width: 280px;
+            height: 280px;
             border-radius: 50%;
-            border: 2px solid var(--border);
-            box-shadow: var(--shadow);
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent-2);
             object-fit: cover;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .profile-pic:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--accent), 0 0 60px var(--accent-2);
         }
 
         .profile-pic.glow {
@@ -573,15 +579,15 @@
             <h2>Certifications</h2>
             <div class="grid cols-2">
                 <article class="card project">
-                    <img src="https://images.credly.com/size/340x340/images/c0a58046-8207-4140-bdb3-df9d6bcf4d25/ccna-600x600.png"
-                        alt="CCNA Certification Badge" style="height:120px; object-fit:contain;">
+                    <img src="ccna_600.png"
+                        alt="CCNA Certification Badge" style="height:180px; object-fit:contain;">
                     <h3 style="margin:0 0 6px">Cisco Certified Network Associate (CCNA)</h3>
                     <a class="link"
                         href="https://www.credly.com/badges/c0a58046-8207-4140-bdb3-df9d6bcf4d25/linked_in_profile"
                         target="_blank" rel="noreferrer">View Certification</a>
                 </article>
                 <article class="card project">
-                    <img src="https://images.credly.com/size/340x340/images/e499a39d-c338-e04f-95bf-d731804ac278/microsoft-certified-azure-fundamentals-badge.png"
+                    <img src="microsoft-certified-fundamentals-badge.svg"
                         alt="AZ-900 Certification Badge" style="height:120px; object-fit:contain;">
                     <h3 style="margin:0 0 6px">Microsoft Certified: Azure Fundamentals (AZ-900)</h3>
                     <a class="link"
@@ -589,8 +595,8 @@
                         target="_blank" rel="noreferrer">View Certification</a>
                 </article>
                 <article class="card project">
-                    <img src="https://images.credly.com/size/340x340/images/1dc588c2-1875-4dca-b3b2-0db04ac27849/isc2-certified-in-cybersecurity-cc-logo-2022.png"
-                        alt="ISC2 Certified in Cybersecurity Badge" style="height:120px; object-fit:contain;">
+                    <img src="Certified in Cybersecurity (CC).png"
+                        alt="ISC2 Certified in Cybersecurity Badge" style="height:180px; object-fit:contain;">
                     <h3 style="margin:0 0 6px">ISC2 Certified in Cybersecurity (CC)</h3>
                     <a class="link"
                         href="https://www.credly.com/badges/1dc588c2-1875-4dca-b3b2-0db04ac27849/linked_in_profile"
