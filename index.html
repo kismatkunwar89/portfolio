@@ -320,14 +320,27 @@
             }
         }
 
-        /* Added style for profile picture */
+        /* Updated style for profile picture */
         .profile-pic {
-            width: 120px;
-            height: 120px;
+            width: 200px;
+            /* Increased size */
+            height: 200px;
+            /* Increased size */
             border-radius: 50%;
-            border: 2px solid var(--border);
-            box-shadow: var(--shadow);
+            border: 4px solid var(--accent);
+            /* Futuristic accent border */
+            box-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent-2);
+            /* Futuristic glow effect */
             object-fit: cover;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            /* Smooth animation */
+        }
+
+        .profile-pic:hover {
+            transform: scale(1.1);
+            /* Slight zoom on hover */
+            box-shadow: 0 0 30px var(--accent), 0 0 60px var(--accent-2);
+            /* Enhanced glow on hover */
         }
     </style>
     <script type="application/ld+json">
@@ -377,7 +390,6 @@
                         Email
                     </a>
                     <a class="pill" href="resume.pdf" download>Download Résumé</a>
-                    <a class="pill" href="#contact">Hire Me</a>
                 </div>
             </div>
             <div>
@@ -578,23 +590,21 @@
         </section>
 
         <div class="sep"></div>
-        <section id="contact">
-            <h2>Contact</h2>
-            <div class="card">
-                <p class="muted">You can fill out this form to send a message directly to my inbox.</p>
-                <form action="https://formspree.io/f/mayzkzzp" method="POST">
-                    <div style="display:grid; gap:10px; grid-template-columns:1fr 1fr">
-                        <input name="name" placeholder="Your name" required
-                            style="padding:10px;border-radius:10px;border:1px solid var(--border)">
-                        <input type="email" name="email" placeholder="Your email" required
-                            style="padding:10px;border-radius:10px;border:1px solid var(--border)">
-                    </div>
-                    <textarea name="message" placeholder="Your message" required rows="4"
-                        style="margin-top:10px;width:100%;padding:10px;border-radius:10px;border:1px solid var(--border)"></textarea>
-                    <button class="pill" type="submit">Send</button>
-                </form>
-                <p class="muted" style="margin-top:10px">Or email me directly: <a class="link"
-                        href="mailto:kismatkunwar89@gmail.com?subject=Hello%20Kismat">kismatkunwar89@gmail.com</a></p>
+        <section id="achievements">
+            <h2>Achievements</h2>
+            <div class="grid cols-2">
+                <article class="card">
+                    <h3 style="margin:0 0 6px">Dean's List — University of New Haven</h3>
+                    <p class="muted" style="margin:0 0 8px">Recognized for academic excellence in Cybersecurity Master's program.</p>
+                </article>
+                <article class="card">
+                    <h3 style="margin:0 0 6px">Best Research Paper — Coventry University</h3>
+                    <p class="muted" style="margin:0 0 8px">Awarded for innovative research in Digital Forensics and AI integration.</p>
+                </article>
+                <article class="card">
+                    <h3 style="margin:0 0 6px">Cybersecurity Challenge Winner</h3>
+                    <p class="muted" style="margin:0 0 8px">Won first place in a national-level cybersecurity competition.</p>
+                </article>
             </div>
         </section>
     </main>
@@ -633,12 +643,13 @@
         const navLinks = document.querySelectorAll('nav a');
         const navMap = {}; navLinks.forEach(a => { navMap[a.getAttribute('href').replace('#', '')] = a; });
         const navObs = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
+            entries.forEach e => {
                 const id = e.target.id || e.target.querySelector('h2')?.textContent?.toLowerCase();
                 if (!id) return;
                 if (e.isIntersecting) {
                     navLinks.forEach(a => a.classList.remove('active'));
-                    const link = navMap[id]; if (link) link.classList.add('active');
+                    const link = navMap[id];
+                    if (link) link.classList.add('active');
                 }
             });
         }, { threshold: 0.4 });
