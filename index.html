@@ -11,14 +11,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f7f6f2;
-      --panel: #ffffff;
-      --text: #1f2a3d;
-      --muted: #546174;
-      --accent: #2454ff;
-      --border: #dce2ed;
-      --radius: 12px;
-      --max: 1100px;
+      --bg: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --accent: #2563eb;
+      --border: #e2e8f0;
+      --radius: 10px;
+      --max: 980px;
     }
 
     * {
@@ -30,7 +29,8 @@
       font-family: 'Manrope', system-ui, -apple-system, "Segoe UI", sans-serif;
       color: var(--text);
       background: var(--bg);
-      line-height: 1.6;
+      line-height: 1.65;
+      letter-spacing: 0.01em;
     }
 
     header,
@@ -42,22 +42,20 @@
     }
 
     nav {
-      position: sticky;
-      top: 0;
-      background: rgba(247, 246, 242, 0.9);
-      backdrop-filter: blur(6px);
+      border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
-      z-index: 10;
+      background: #fafafa;
     }
 
     nav .wrap {
       max-width: var(--max);
       margin: 0 auto;
-      padding: 12px 20px;
+      padding: 10px 20px;
       display: flex;
-      gap: 14px;
+      gap: 12px;
       flex-wrap: wrap;
       font-weight: 600;
+      font-size: 14px;
     }
 
     nav a {
@@ -68,33 +66,33 @@
 
     nav a:hover {
       color: var(--text);
+      text-decoration: underline;
     }
 
     .hero {
       display: grid;
-      gap: 24px;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       align-items: center;
     }
 
     .hero img {
       width: 100%;
-      max-width: 320px;
-      border-radius: 16px;
+      max-width: 280px;
+      border-radius: 14px;
       border: 1px solid var(--border);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
       justify-self: center;
     }
 
     h1 {
-      margin: 0 0 12px;
+      margin: 0 0 10px;
       font-size: clamp(28px, 4vw, 36px);
       line-height: 1.2;
     }
 
     h2 {
       margin: 0 0 12px;
-      font-size: 18px;
+      font-size: 16px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--muted);
@@ -106,7 +104,7 @@
     }
 
     .tagline {
-      margin: 0 0 14px;
+      margin: 0 0 12px;
       color: var(--muted);
       font-weight: 600;
     }
@@ -114,7 +112,7 @@
     .btn-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
       margin-top: 10px;
     }
 
@@ -125,61 +123,52 @@
       padding: 10px 14px;
       border-radius: 999px;
       border: 1px solid var(--border);
-      background: var(--panel);
+      background: var(--bg);
       color: var(--text);
       text-decoration: none;
       font-weight: 600;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
     }
 
     .btn.primary {
       background: var(--accent);
       color: #fff;
-      border: 1px solid var(--accent);
+      border-color: var(--accent);
     }
 
     section {
-      margin: 32px 0;
+      margin: 38px 0;
     }
 
     .panel {
-      background: var(--panel);
+      background: var(--bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 18px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     }
 
     .grid {
       display: grid;
-      gap: 16px;
+      gap: 14px;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     }
 
-    .skills .item {
-      margin-bottom: 10px;
-    }
-
-    .skills .meta {
+    .pill-list {
       display: flex;
-      justify-content: space-between;
-      color: var(--muted);
-      font-size: 14px;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
     }
 
-    .bar {
-      margin-top: 6px;
-      height: 10px;
-      background: #eef1f7;
+    .pill {
+      padding: 8px 12px;
       border-radius: 999px;
-      overflow: hidden;
       border: 1px solid var(--border);
-    }
-
-    .fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), #7ba3ff);
-      width: var(--w, 50%);
+      background: #f8fafc;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 14px;
     }
 
     ul {
@@ -188,12 +177,8 @@
       color: var(--muted);
     }
 
-    .cert {
-      text-align: center;
-    }
-
     .cert img {
-      height: 120px;
+      height: 110px;
       object-fit: contain;
       margin-bottom: 6px;
     }
@@ -253,55 +238,20 @@
 
     <section id="skills">
       <h2>Skills</h2>
-      <div class="grid skills">
-        <div class="panel">
-          <div class="item">
-            <div class="meta"><span>CrowdStrike / EDR</span><span>85%</span></div>
-            <div class="bar"><div class="fill" style="--w:85%"></div></div>
-          </div>
-          <div class="item">
-            <div class="meta"><span>Threat Hunting</span><span>80%</span></div>
-            <div class="bar"><div class="fill" style="--w:80%"></div></div>
-          </div>
-          <div class="item">
-            <div class="meta"><span>Windows Server / AD</span><span>82%</span></div>
-            <div class="bar"><div class="fill" style="--w:82%"></div></div>
-          </div>
-          <div class="item">
-            <div class="meta"><span>Azure / Cloud</span><span>50%</span></div>
-            <div class="bar"><div class="fill" style="--w:50%"></div></div>
-          </div>
-          <div class="item">
-            <div class="meta"><span>Artificial Intelligence</span><span>30%</span></div>
-            <div class="bar"><div class="fill" style="--w:30%"></div></div>
-          </div>
-        </div>
-        <div class="panel">
-          <div class="item">
-            <div class="meta"><span>Networking (CCNA)</span><span>78%</span></div>
-            <div class="bar"><div class="fill" style="--w:78%"></div></div>
-          </div>
-          <div class="item">
-            <div class="meta"><span>Digital Forensics</span><span>75%</span></div>
-            <div class="bar"><div class="fill" style="--w:75%"></div></div>
-          </div>
-          <div class="item">
-            <div class="meta"><span>Python / Scripting</span><span>70%</span></div>
-            <div class="bar"><div class="fill" style="--w:70%"></div></div>
-          </div>
-          <div class="item">
-            <div class="meta"><span>Linux / Kali</span><span>72%</span></div>
-            <div class="bar"><div class="fill" style="--w:72%"></div></div>
-          </div>
-          <div class="item">
-            <div class="meta"><span>Prompt Engineering</span><span>80%</span></div>
-            <div class="bar"><div class="fill" style="--w:80%"></div></div>
-          </div>
-          <div class="item">
-            <div class="meta"><span>Retrieval Augmented Generation</span><span>50%</span></div>
-            <div class="bar"><div class="fill" style="--w:50%"></div></div>
-          </div>
-        </div>
+      <div class="panel">
+        <ul class="pill-list">
+          <li class="pill">CrowdStrike / EDR</li>
+          <li class="pill">Threat Hunting</li>
+          <li class="pill">Windows Server / AD</li>
+          <li class="pill">Azure / Cloud</li>
+          <li class="pill">Artificial Intelligence</li>
+          <li class="pill">Networking (CCNA)</li>
+          <li class="pill">Digital Forensics</li>
+          <li class="pill">Python / Scripting</li>
+          <li class="pill">Linux / Kali</li>
+          <li class="pill">Prompt Engineering</li>
+          <li class="pill">Retrieval Augmented Generation</li>
+        </ul>
       </div>
     </section>
 
