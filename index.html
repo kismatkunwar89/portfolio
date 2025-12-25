@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,203 +7,134 @@
   <meta name="description" content="Portfolio of Kismat Kunwar, Cyber Security Graduate Student.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #ffffff;
       --text: #0f172a;
       --muted: #475569;
-      --accent: #2563eb;
+      --accent: #1d4ed8;
       --border: #e2e8f0;
-      --radius: 10px;
-      --max: 980px;
+      --soft: #f8fafc;
+      --radius: 12px;
+      --max: 1100px;
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: 'Manrope', system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", sans-serif;
       color: var(--text);
       background: var(--bg);
-      line-height: 1.65;
+      line-height: 1.7;
       letter-spacing: 0.01em;
     }
-
-    header,
-    main,
-    footer {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 24px 20px;
-    }
-
-    nav {
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      background: #fafafa;
-    }
-
-    nav .wrap {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 10px 20px;
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      font-weight: 600;
-      font-size: 14px;
-    }
-
-    nav a {
-      color: var(--muted);
-      text-decoration: none;
-      padding: 6px 0;
-    }
-
-    nav a:hover {
-      color: var(--text);
-      text-decoration: underline;
-    }
-
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    header, main, footer { max-width: var(--max); margin: 0 auto; padding: 24px 20px; }
     .hero {
       display: grid;
       gap: 20px;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       align-items: center;
     }
-
     .hero img {
       width: 100%;
-      max-width: 280px;
+      max-width: 260px;
       border-radius: 14px;
       border: 1px solid var(--border);
+      background: var(--soft);
       justify-self: center;
     }
-
     h1 {
+      font-family: 'Space Mono', monospace;
       margin: 0 0 10px;
       font-size: clamp(28px, 4vw, 36px);
-      line-height: 1.2;
     }
-
     h2 {
-      margin: 0 0 12px;
-      font-size: 16px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      font-family: 'Space Mono', monospace;
+      margin: 0 0 14px;
+      font-size: 22px;
+    }
+    h3 { margin: 0 0 6px; font-size: 18px; }
+    .eyebrow {
+      font-family: 'Space Mono', monospace;
+      margin: 0 0 8px;
       color: var(--muted);
     }
-
-    h3 {
-      margin: 0 0 6px;
-      font-size: 18px;
-    }
-
-    .tagline {
-      margin: 0 0 12px;
-      color: var(--muted);
-      font-weight: 600;
-    }
-
-    .btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
+    .tagline { margin: 0 0 14px; color: var(--muted); font-weight: 600; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
     .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 600;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 14px; border-radius: 10px;
+      border: 1px solid var(--border); background: var(--soft);
+      color: var(--text); font-weight: 600;
     }
-
-    .btn.primary {
-      background: var(--accent);
-      color: #fff;
-      border-color: var(--accent);
-    }
-
-    section {
-      margin: 38px 0;
-    }
-
-    .panel {
-      background: var(--bg);
+    .btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+    section { margin: 34px 0; }
+    .card {
+      background: var(--soft);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 18px;
+      padding: 16px;
     }
-
-    .grid {
-      display: grid;
-      gap: 14px;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    }
-
-    .pill-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
+    .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .pill-list { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
     .pill {
       padding: 8px 12px;
       border-radius: 999px;
       border: 1px solid var(--border);
-      background: #f8fafc;
+      background: #eef2ff;
       color: var(--text);
       font-weight: 600;
       font-size: 14px;
     }
-
-    ul {
-      padding-left: 18px;
-      margin: 8px 0;
-      color: var(--muted);
+    .meta { color: var(--muted); font-size: 14px; margin: 4px 0 10px; }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #dcfce7;
+      color: #166534;
+      font-weight: 700;
+      font-size: 12px;
+      border: 1px solid #bbf7d0;
     }
-
-    .cert img {
-      height: 110px;
-      object-fit: contain;
-      margin-bottom: 6px;
+    .layout {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: 2fr 1fr;
+      align-items: start;
     }
-
-    footer {
-      color: var(--muted);
-      padding-bottom: 40px;
-      font-size: 14px;
+    .side {
+      position: sticky;
+      top: 24px;
+    }
+    .nav-card { background: var(--soft); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
+    .nav-card h4 { margin: 0 0 10px; font-family: 'Space Mono', monospace; }
+    .nav-links { display: flex; flex-direction: column; gap: 8px; font-weight: 600; }
+    .nav-links a { color: var(--accent); text-decoration: none; }
+    .nav-links a:hover { text-decoration: underline; }
+    footer { color: var(--muted); padding-bottom: 40px; font-size: 14px; }
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .side { position: static; }
     }
   </style>
 </head>
-
 <body>
-  <header id="top">
+  <header id="about">
     <div class="hero">
       <div>
+        <p class="eyebrow">/ About</p>
         <h1>Kismat Kunwar</h1>
-        <p class="tagline">Cyber Security Graduate Student</p>
-        <p>Master's student focused on endpoint security, threat mitigation, vulnerability management, and digital
-          forensics. Building deeper networking and network security skills while exploring practical AI agent
-          applications.</p>
+        <p class="tagline">Cyber Security Graduate Student - West Haven, CT</p>
+        <p>Master's student focused on endpoint security, threat mitigation, vulnerability management, and digital forensics. Building deeper networking and network security skills while exploring practical AI agent applications.</p>
+        <p>Open to security engineering and threat/DFIR opportunities in the US.</p>
         <div class="btn-row">
           <a class="btn primary" href="mailto:kismatkunwar89@gmail.com">Email</a>
-          <a class="btn" href="https://github.com/kismatkunwar89" target="_blank" rel="noreferrer">GitHub</a>
+          <a class="btn" href="resume.pdf" download>View Resume</a>
           <a class="btn" href="https://www.linkedin.com/in/kunwarkismat/" target="_blank" rel="noreferrer">LinkedIn</a>
-          <a class="btn" href="resume.pdf" download>Download Resume</a>
+          <a class="btn" href="https://github.com/kismatkunwar89" target="_blank" rel="noreferrer">GitHub</a>
         </div>
       </div>
       <div>
@@ -213,156 +143,165 @@
     </div>
   </header>
 
-  <nav>
-    <div class="wrap">
-      <a href="#about">About</a>
-      <a href="#skills">Skills</a>
-      <a href="#projects">Projects</a>
-      <a href="#experience">Experience</a>
-      <a href="#education">Education</a>
-      <a href="#certifications">Certifications</a>
-      <a href="#awards">Honors</a>
-      <a href="#contact">Contact</a>
-    </div>
-  </nav>
-
-  <main>
-    <section id="about">
-      <h2>About</h2>
-      <div class="panel">
-        <p>Master's in Cybersecurity at the University of New Haven. Hands-on with endpoint security, threat mitigation,
-          vulnerability management, and digital forensics. Interested in DFIR, EDR, network defense, and practical AI
-          agent use to speed up analysis.</p>
-      </div>
-    </section>
-
-    <section id="skills">
-      <h2>Skills</h2>
-      <div class="panel">
-        <ul class="pill-list">
-          <li class="pill">CrowdStrike / EDR</li>
-          <li class="pill">Threat Hunting</li>
-          <li class="pill">Windows Server / AD</li>
-          <li class="pill">Azure / Cloud</li>
-          <li class="pill">Artificial Intelligence</li>
-          <li class="pill">Networking (CCNA)</li>
-          <li class="pill">Digital Forensics</li>
-          <li class="pill">Python / Scripting</li>
-          <li class="pill">Linux / Kali</li>
-          <li class="pill">Prompt Engineering</li>
-          <li class="pill">Retrieval Augmented Generation</li>
-        </ul>
-      </div>
-    </section>
-
-    <section id="projects">
-      <h2>Projects</h2>
-      <div class="grid">
-        <div class="panel">
-          <h3>Reliable, Scalable Network Design</h3>
-          <p class="muted">Redundant three-tier network for 170 users with OSPF, VLANs, ACLs, VPN, and AAA. 80% emulated in Cisco Packet Tracer.</p>
-          <a href="https://github.com/kismatkunwar89/NetworkProject" target="_blank" rel="noreferrer">View project</a>
+  <main class="layout">
+    <div>
+      <section id="education">
+        <h2>/ Education</h2>
+        <div class="card">
+          <h3>University of New Haven</h3>
+          <p class="meta">Master of Science in Cybersecurity - Aug 2024 - Present - GPA: 3.9</p>
+          <p>Courses: Enterprise Network Design, Network Defense, Threat Hunting, Windows/Linux Administration, AI and Cybersecurity.</p>
         </div>
-        <div class="panel">
-          <h3>Malware Research and Development</h3>
-          <p class="muted">APT evasion research with simulated C2 (Metasploit and Cobalt Strike), achieving high evasion on Windows testbeds.</p>
-          <a href="https://github.com/kismatkunwar89/FinalYearProject-Malware-Development" target="_blank" rel="noreferrer">View project</a>
+        <div class="card" style="margin-top:10px;">
+          <h3>Coventry University</h3>
+          <p class="meta">Bachelor of Science in Cybersecurity - May 2020 - Jun 2023 - First Class Honors (GPA 3.96)</p>
+          <p>Courses: Advanced Networking, Advanced Digital Forensics, Pen Testing, Python, System Security.</p>
         </div>
-        <div class="panel">
-          <h3>Windows Server and Client Lab</h3>
-          <p class="muted">Virtualized lab with Server 2022 and Windows 10. Configured AD DS, DNS, DHCP, GPO, IIS, WSUS, FSRM, and PowerShell automation.</p>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="experience">
-      <h2>Experience</h2>
-      <div class="grid">
-        <div class="panel">
+      <section id="experience">
+        <h2>/ Experience</h2>
+        <div class="card">
           <h3>Provost Research Assistant - University of New Haven</h3>
-          <p class="muted">Sep 2024 - Present | West Haven, CT</p>
-          <ul>
-            <li>Researched anti-forensics and standardized artifacts with CASE/UCO to improve interoperability and investigation accuracy.</li>
-            <li>Engineered prompts for LLMs to automate standardization, cutting manual definition time about 30% with strong semantic accuracy.</li>
+          <p class="meta">Sep 2024 - Present - West Haven, CT</p>
+          <p>Researched anti-forensics and standardized artifacts with CASE/UCO to improve interoperability and investigation accuracy. Engineered prompts for LLMs to automate standardization, cutting manual definition time about 30% with strong semantic accuracy.</p>
+          <ul class="pill-list">
+            <li class="pill">CASE/UCO</li>
+            <li class="pill">LLM Automation</li>
+            <li class="pill">DFIR</li>
           </ul>
         </div>
-        <div class="panel">
+        <div class="card" style="margin-top:10px;">
           <h3>Security Support Intern - Raechal Enterprise Pvt Ltd</h3>
-          <p class="muted">May 2023 - Mar 2024 | Kathmandu, Nepal</p>
-          <ul>
-            <li>Built threat-detection use cases and demos for CrowdStrike EDR, contributing to more client acquisitions and renewals.</li>
-            <li>Configured Falcon EDR for banking clients; supported PCI DSS compliance and endpoint incident response.</li>
-            <li>Resolved weekly EDR and MFA tickets while collaborating with SOC analysts.</li>
+          <p class="meta">May 2023 - Mar 2024 - Kathmandu, Nepal</p>
+          <p>Built threat-detection use cases and demos for CrowdStrike EDR, contributing to more client acquisitions and renewals. Configured Falcon EDR for banking clients and supported PCI DSS compliance and endpoint incident response.</p>
+          <ul class="pill-list">
+            <li class="pill">CrowdStrike</li>
+            <li class="pill">Threat Hunting</li>
+            <li class="pill">EDR</li>
+            <li class="pill">PCI DSS</li>
           </ul>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="education">
-      <h2>Education</h2>
-      <div class="grid">
-        <div class="panel">
-          <h3>Master's in Cybersecurity - University of New Haven</h3>
-          <p class="muted">Aug 2024 - Present</p>
-          <p>GPA 3.9. Courses: Enterprise Network Design, Network Defense, Threat Hunting, Windows/Linux Administration, AI and Cybersecurity.</p>
+      <section id="skills">
+        <h2>/ Skills</h2>
+        <div class="card">
+          <ul class="pill-list">
+            <li class="pill">CrowdStrike / EDR</li>
+            <li class="pill">Threat Hunting</li>
+            <li class="pill">Windows Server / AD</li>
+            <li class="pill">Azure / Cloud</li>
+            <li class="pill">Networking (CCNA)</li>
+            <li class="pill">Digital Forensics</li>
+            <li class="pill">Python / Scripting</li>
+            <li class="pill">Linux / Kali</li>
+            <li class="pill">Prompt Engineering</li>
+            <li class="pill">Retrieval Augmented Generation</li>
+          </ul>
         </div>
-        <div class="panel">
-          <h3>Bachelor's in Cybersecurity - Coventry University</h3>
-          <p class="muted">May 2020 - Jun 2023</p>
-          <p>First Class Honors (GPA 3.96). Courses: Advanced Networking, Advanced Digital Forensics, Pen Testing, Python, System Security.</p>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="certifications">
-      <h2>Certifications</h2>
-      <div class="grid">
-        <div class="panel cert">
-          <img src="ccna_600.png" alt="CCNA badge">
-          <h3>CCNA</h3>
-          <a href="https://www.credly.com/badges/c0a58046-8207-4140-bdb3-df9d6bcf4d25/linked_in_profile" target="_blank" rel="noreferrer">View badge</a>
+      <section id="projects">
+        <h2>/ Projects</h2>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h3 style="margin:0;">Reliable, Scalable Network Design</h3>
+            <span class="badge">Completed</span>
+          </div>
+          <p class="meta">Redundant three-tier network for 170 users with OSPF, VLANs, ACLs, VPN, and AAA. 80% emulated in Cisco Packet Tracer.</p>
+          <ul class="pill-list">
+            <li class="pill">OSPF</li>
+            <li class="pill">VLANs</li>
+            <li class="pill">ACLs</li>
+            <li class="pill">VPN</li>
+            <li class="pill">AAA</li>
+          </ul>
+          <p><a href="https://github.com/kismatkunwar89/NetworkProject" target="_blank" rel="noreferrer">View project</a></p>
         </div>
-        <div class="panel cert">
-          <img src="microsoft-certified-fundamentals-badge.svg" alt="AZ-900 badge">
-          <h3>AZ-900</h3>
-          <a href="https://learn.microsoft.com/en-us/users/kismatkunwar-6406/credentials/e499a39dc338e04f" target="_blank" rel="noreferrer">View badge</a>
+        <div class="card" style="margin-top:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h3 style="margin:0;">Malware Research and Development</h3>
+            <span class="badge">Completed</span>
+          </div>
+          <p class="meta">APT evasion research with simulated C2 (Metasploit and Cobalt Strike), achieving high evasion on Windows testbeds.</p>
+          <ul class="pill-list">
+            <li class="pill">Metasploit</li>
+            <li class="pill">Cobalt Strike</li>
+            <li class="pill">APT Evasion</li>
+          </ul>
+          <p><a href="https://github.com/kismatkunwar89/FinalYearProject-Malware-Development" target="_blank" rel="noreferrer">View project</a></p>
         </div>
-        <div class="panel cert">
-          <img src="Certified in Cybersecurity (CC).png" alt="ISC2 CC badge">
-          <h3>ISC2 Certified in Cybersecurity</h3>
-          <a href="https://www.credly.com/badges/1dc588c2-1875-4dca-b3b2-0db04ac27849/linked_in_profile" target="_blank" rel="noreferrer">View badge</a>
+        <div class="card" style="margin-top:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h3 style="margin:0;">Windows Server and Client Lab</h3>
+            <span class="badge">Completed</span>
+          </div>
+          <p class="meta">Virtualized lab with Server 2022 and Windows 10. Configured AD DS, DNS, DHCP, GPO, IIS, WSUS, FSRM, and PowerShell automation.</p>
+          <ul class="pill-list">
+            <li class="pill">AD DS</li>
+            <li class="pill">DNS</li>
+            <li class="pill">GPO</li>
+            <li class="pill">WSUS</li>
+            <li class="pill">PowerShell</li>
+          </ul>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="awards">
-      <h2>Honors</h2>
-      <div class="panel">
-        <ul>
-          <li>Provost's Assistantship Award 2024-26 - University of New Haven.</li>
-          <li>Outstanding Academic Excellence and Top of Cohort 2023 - Softwarica College.</li>
-        </ul>
-      </div>
-    </section>
+      <section id="certifications">
+        <h2>/ Certifications</h2>
+        <div class="grid">
+          <div class="card cert">
+            <h3>CCNA</h3>
+            <p class="meta"><a href="https://www.credly.com/badges/c0a58046-8207-4140-bdb3-df9d6bcf4d25/linked_in_profile" target="_blank" rel="noreferrer">View badge</a></p>
+          </div>
+          <div class="card cert">
+            <h3>AZ-900</h3>
+            <p class="meta"><a href="https://learn.microsoft.com/en-us/users/kismatkunwar-6406/credentials/e499a39dc338e04f" target="_blank" rel="noreferrer">View badge</a></p>
+          </div>
+          <div class="card cert">
+            <h3>ISC2 Certified in Cybersecurity</h3>
+            <p class="meta"><a href="https://www.credly.com/badges/1dc588c2-1875-4dca-b3b2-0db04ac27849/linked_in_profile" target="_blank" rel="noreferrer">View badge</a></p>
+          </div>
+        </div>
+      </section>
 
-    <section id="contact">
-      <h2>Contact</h2>
-      <div class="panel">
-        <p>Email: <a href="mailto:kismatkunwar89@gmail.com">kismatkunwar89@gmail.com</a></p>
-        <p>LinkedIn: <a href="https://www.linkedin.com/in/kunwarkismat/" target="_blank" rel="noreferrer">linkedin.com/in/kunwarkismat</a></p>
-        <p>GitHub: <a href="https://github.com/kismatkunwar89" target="_blank" rel="noreferrer">github.com/kismatkunwar89</a></p>
-        <p><a href="resume.pdf" download>Download Resume (PDF)</a></p>
+      <section id="contact">
+        <h2>/ Contact</h2>
+        <div class="card">
+          <p>Always open to chat about security engineering, DFIR, or networking projects.</p>
+          <div class="btn-row">
+            <a class="btn" href="mailto:kismatkunwar89@gmail.com">Email</a>
+            <a class="btn" href="https://www.linkedin.com/in/kunwarkismat/" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a class="btn" href="https://github.com/kismatkunwar89" target="_blank" rel="noreferrer">GitHub</a>
+            <a class="btn" href="resume.pdf" download>Resume (PDF)</a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="side">
+      <div class="nav-card">
+        <h4>Navigation</h4>
+        <div class="nav-links">
+          <a href="#about">About</a>
+          <a href="#education">Education</a>
+          <a href="#experience">Experience</a>
+          <a href="#skills">Skills</a>
+          <a href="#projects">Projects</a>
+          <a href="#certifications">Certifications</a>
+          <a href="#contact">Contact</a>
+        </div>
       </div>
-    </section>
+    </aside>
   </main>
 
   <footer>
-    <div>(c) <span id="year"></span> Kismat Kunwar</div>
+    <div>Last updated: <span id="year"></span></div>
   </footer>
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
-
 </html>
