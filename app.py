@@ -14,6 +14,7 @@ resume_path = Path("resume.pdf")
 ccna_path = Path("ccna_600.png")
 cc_path = Path("Certified in Cybersecurity (CC).png")
 az_path = Path("microsoft-certified-fundamentals-badge.svg")
+brutus_writeup_path = Path("writeups/Brutus.md")
 
 # --- Content Data ---
 about_text = (
@@ -117,6 +118,14 @@ achievements = [
     "Outstanding Academic Excellence and Top of Cohort 2023 - Softwarica College.",
 ]
 
+writeups = [
+    {
+        "title": "Brutus",
+        "path": brutus_writeup_path,
+        "summary": "SSH brute-force investigation using auth.log and wtmp.",
+    },
+]
+
 
 def section_title(text: str) -> None:
     st.markdown(f"#### {text}")
@@ -182,6 +191,22 @@ def render_achievements() -> None:
         st.write(f"- {item}")
 
 
+def render_writeups() -> None:
+    section_title("Writeups")
+    for item in writeups:
+        st.markdown(f"**{item['title']}**")
+        st.write(item["summary"])
+        if item["path"].exists():
+            st.markdown(item["path"].read_text(encoding="utf-8"))
+            st.download_button(
+                label="Download writeup",
+                data=item["path"].read_bytes(),
+                file_name=item["path"].name,
+                mime="text/markdown",
+            )
+        else:
+            st.write("Writeup file not found.")
+
 def render_contact(resume_bytes: bytes | None) -> None:
     section_title("Contact")
     st.write("Email: kismatkunwar89@gmail.com")
@@ -245,6 +270,9 @@ def main() -> None:
 
     st.divider()
     render_achievements()
+
+    st.divider()
+    render_writeups()
 
     st.divider()
     resume_bytes = resume_path.read_bytes() if resume_path.exists() else None
