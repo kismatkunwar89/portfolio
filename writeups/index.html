@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Writeups - Kismat Kunwar</title>
+  <meta name="description" content="HTB writeups by Kismat Kunwar.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --accent: #1d4ed8;
+      --border: #e2e8f0;
+      --soft: #f8fafc;
+      --radius: 12px;
+      --max: 900px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+      letter-spacing: 0.01em;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    header, main, footer { max-width: var(--max); margin: 0 auto; padding: 24px 20px; }
+    h1 {
+      font-family: 'Space Mono', monospace;
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 36px);
+    }
+    h2 {
+      font-family: 'Space Mono', monospace;
+      margin: 0 0 14px;
+      font-size: 22px;
+    }
+    .card {
+      background: var(--soft);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .meta { color: var(--muted); font-size: 14px; margin: 4px 0 10px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      font-weight: 600;
+    }
+    footer { color: var(--muted); padding-bottom: 40px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <header>
+    <p class="meta"><a href="../">← Back to portfolio</a></p>
+    <h1>Writeups</h1>
+    <p class="meta">HTB Sherlock and machine writeups. Organized by machine name.</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Brutus</h2>
+      <div class="card">
+        <p class="meta">HTB Sherlock · Unix auth.log and wtmp analysis</p>
+        <p>SSH brute-force investigation with session timeline, persistence, and sudo command tracking.</p>
+        <div>
+          <a class="btn" href="Brutus.md">View writeup</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>Last updated: <span id="year"></span></div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
