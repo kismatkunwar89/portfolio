@@ -35,7 +35,7 @@ utmpdump is verbose and noisy. last gives cleaner output.
 
 ### Step 1: Establish session context in wtmp
 ```
-TZ=utc last -f wtmp
+-> TZ=utc last -f wtmp
 cyberjun pts/1        65.2.161.68      Wed Mar  6 06:37    gone - no logout
 root     pts/1        65.2.161.68      Wed Mar  6 06:32 - 06:37  (00:04)
 root     pts/0        203.101.190.9    Wed Mar  6 06:19    gone - no logout
@@ -56,7 +56,7 @@ wtmp begins Thu Jan 25 11:12:17 2024
 
 ### Step 2: Identify event sources in auth.log
 ```
-awk '{print $5}' auth.log | sed 's/[\[\:].*//g' | sort | uniq -c
+-> awk '{print $5}' auth.log | sed 's/[\[\:].*//g' | sort | uniq -c
       1 chfn
     104 CRON
       3 groupadd
@@ -75,7 +75,7 @@ awk '{print $5}' auth.log | sed 's/[\[\:].*//g' | sort | uniq -c
 
 ### Step 3: Confirm persistence via account creation
 ```
-grep useradd auth.log
+-> grep useradd auth.log
 Mar  6 06:34:18 ip-172-31-35-28 useradd[2592]: new user: name=cyberjunkie, UID=1002, GID=1002, home=/home/cyberjunkie, shell=/bin/bash, from=/dev/pts/1
 ```
 > Purpose: Identify whether a new backdoor user was created.<br>
@@ -85,7 +85,7 @@ Mar  6 06:34:18 ip-172-31-35-28 useradd[2592]: new user: name=cyberjunkie, UID=1
 
 ### Step 4: Get exact interactive login times
 ```
-TZ=utc last -f wtmp -F
+-> TZ=utc last -f wtmp -F
 cyberjun pts/1        65.2.161.68      Wed Mar  6 06:37:35 2024   gone - no logout
 root     pts/1        65.2.161.68      Wed Mar  6 06:32:45 2024 - Wed Mar  6 06:37:24 2024  (00:04)
 root     pts/0        203.101.190.9    Wed Mar  6 06:19:55 2024   gone - no logout
@@ -106,7 +106,7 @@ wtmp begins Thu Jan 25 11:12:17 2024
 
 ### Step 5: Pivot on a critical time window
 ```
-grep 06:37 auth.log
+-> grep 06:37 auth.log
 Mar  6 06:37:24 ip-172-31-35-28 sshd[2491]: Received disconnect from 65.2.161.68 port 53184:11: disconnected by user
 Mar  6 06:37:24 ip-172-31-35-28 sshd[2491]: Disconnected from user root 65.2.161.68 port 53184
 Mar  6 06:37:24 ip-172-31-35-28 sshd[2491]: pam_unix(sshd:session): session closed for user root
@@ -128,7 +128,7 @@ Mar  6 06:37:57 ip-172-31-35-28 sudo: pam_unix(sudo:session): session closed for
 ### Step 6: Identify brute force source IP
 Includes host IP.
 ```
-grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' auth.log | uniq -c | sort
+-> grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' auth.log | uniq -c | sort
       1 172.31.35.28
       1 203.101.190.9
     210 65.2.161.68
@@ -139,7 +139,7 @@ grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' auth.log | uniq -c | s
 > What this proves: One external IP appears far more often than the rest, but host IPs still appear.<br>
 Message IPs only by matching a leading space.
 ```
-grep -oP ' [0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' auth.log | uniq -c | sort
+-> grep -oP ' [0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' auth.log | uniq -c | sort
       1  203.101.190.9
     165  65.2.161.68
 ```
@@ -150,7 +150,7 @@ grep -oP ' [0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' auth.log | uniq -c | 
 
 ### Step 7: Prove brute force behavior
 ```
-grep 65.2.161.68 auth.log | grep "Failed"
+-> grep 65.2.161.68 auth.log | grep "Failed"
 Mar  6 06:31:33 ip-172-31-35-28 sshd[2327]: Failed password for invalid user admin from 65.2.161.68 port 46392 ssh2
 Mar  6 06:31:33 ip-172-31-35-28 sshd[2331]: Failed password for invalid user admin from 65.2.161.68 port 46436 ssh2
 Mar  6 06:31:33 ip-172-31-35-28 sshd[2332]: Failed password for invalid user admin from 65.2.161.68 port 46444 ssh2
@@ -167,7 +167,7 @@ Mar  6 06:31:33 ip-172-31-35-28 sshd[2336]: Failed password for invalid user bac
 
 ### Step 8: Confirm successful compromise
 ```
-grep 65.2.161.68 auth.log | grep -A3 "Accepted"
+-> grep 65.2.161.68 auth.log | grep -A3 "Accepted"
 Mar  6 06:31:40 ip-172-31-35-28 sshd[2411]: Accepted password for root from 65.2.161.68 port 34782 ssh2
 Mar  6 06:31:40 ip-172-31-35-28 sshd[2379]: Received disconnect from 65.2.161.68 port 46698:11: Bye Bye [preauth]
 Mar  6 06:31:40 ip-172-31-35-28 sshd[2379]: Disconnected from invalid user server_adm 65.2.161.68 port 46698 [preauth]
@@ -185,7 +185,7 @@ Mar  6 06:37:34 ip-172-31-35-28 sshd[2667]: Accepted password for cyberjunkie fr
 
 ### Step 9: Correlate authentication to session ID
 ```
-grep systemd-logind auth.log
+-> grep systemd-logind auth.log
 Mar  6 06:19:54 ip-172-31-35-28 systemd-logind[411]: New session 6 of user root.
 Mar  6 06:31:40 ip-172-31-35-28 systemd-logind[411]: New session 34 of user root.
 Mar  6 06:31:40 ip-172-31-35-28 systemd-logind[411]: Session 34 logged out. Waiting for processes to exit.
@@ -202,7 +202,7 @@ Mar  6 06:37:34 ip-172-31-35-28 systemd-logind[411]: New session 49 of user cybe
 
 ### Step 10: Confirm privilege escalation
 ```
-grep usermod auth.log
+-> grep usermod auth.log
 Mar  6 06:35:15 ip-172-31-35-28 usermod[2628]: add 'cyberjunkie' to group 'sudo'
 Mar  6 06:35:15 ip-172-31-35-28 usermod[2628]: add 'cyberjunkie' to shadow group 'sudo'
 ```
@@ -213,7 +213,7 @@ Mar  6 06:35:15 ip-172-31-35-28 usermod[2628]: add 'cyberjunkie' to shadow group
 
 ### Step 11: Identify attacker commands
 ```
-grep sudo auth.log
+-> grep sudo auth.log
 Mar  6 06:35:15 ip-172-31-35-28 usermod[2628]: add 'cyberjunkie' to group 'sudo'
 Mar  6 06:35:15 ip-172-31-35-28 usermod[2628]: add 'cyberjunkie' to shadow group 'sudo'
 Mar  6 06:37:57 ip-172-31-35-28 sudo: cyberjunkie : TTY=pts/1 ; PWD=/home/cyberjunkie ; USER=root ; COMMAND=/usr/bin/cat /etc/shadow
