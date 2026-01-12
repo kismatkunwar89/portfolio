@@ -1,7 +1,7 @@
 # Brutus
 
 ## Credit
-Credit to ipag on YouTube. This investigation follows the same high-level workflow, and this writeup explains why each command is run and how the outputs connect.
+IppSec https://www.youtube.com/watch?v=bv08UcIL1po. This is my first machine, so I needed guidance and used his walkthrough as reference. This writeup follows the approach he teaches, especially command line parsing with regex and the way he analyzes challenges. For other machines I may use a similar approach while I build my own methodology.
 
 ## Scenario
 A Confluence server was brute forced over SSH. Two artifacts are provided.
