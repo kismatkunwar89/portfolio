@@ -274,5 +274,4 @@ Mar  6 06:39:39 ip-172-31-35-28 sudo: pam_unix(sudo:session): session closed for
 | --- | --- |
 | T1136.001 | Create Account for persistence |
 | T1098 | Account Manipulation via sudo group membership |
-| T1003.008 | OS Credential Dumping via /etc/shadow |
 | T1105 | Ingress Tool Transfer via curl |
