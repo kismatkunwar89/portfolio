@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css">
   <style>
     :root {
       --bg: #ffffff;
@@ -42,6 +43,45 @@
     .markdown-body pre {
       border: 1px solid var(--border);
       border-radius: 8px;
+      overflow-x: auto;
+    }
+    .admonition {
+      border-left: 4px solid var(--accent);
+      background: #eef2ff;
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin: 16px 0;
+      color: var(--text);
+    }
+    .terminal {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      margin: 16px 0;
+    }
+    .terminal-header {
+      display: flex;
+      gap: 6px;
+      padding: 8px 10px;
+      background: #f1f5f9;
+      border-bottom: 1px solid var(--border);
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+    .dot.red { background: #ef4444; }
+    .dot.yellow { background: #f59e0b; }
+    .dot.green { background: #22c55e; }
+    .terminal pre {
+      margin: 0;
+      background: #0b1020;
+      color: #e2e8f0;
+    }
+    .terminal code {
+      color: inherit;
     }
   </style>
 </head>
@@ -57,11 +97,34 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script>
+    marked.setOptions({
+      highlight: function(code, lang) {
+        if (lang && hljs.getLanguage(lang)) {
+          return hljs.highlight(code, { language: lang }).value;
+        }
+        return hljs.highlightAuto(code).value;
+      }
+    });
+
     fetch("Brutus.md")
       .then((res) => res.text())
       .then((md) => {
-        document.getElementById("content").innerHTML = marked.parse(md);
+        const html = marked.parse(md);
+        const container = document.getElementById("content");
+        container.innerHTML = html;
+
+        container.querySelectorAll("pre").forEach((pre) => {
+          const wrapper = document.createElement("div");
+          wrapper.className = "terminal";
+          const header = document.createElement("div");
+          header.className = "terminal-header";
+          header.innerHTML = '<span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>';
+          wrapper.appendChild(header);
+          pre.parentNode.insertBefore(wrapper, pre);
+          wrapper.appendChild(pre);
+        });
       })
       .catch(() => {
         document.getElementById("content").textContent = "Failed to load writeup.";
