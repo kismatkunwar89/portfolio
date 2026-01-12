@@ -50,7 +50,7 @@ utmpdump is verbose and noisy. last gives cleaner output.
 ## Investigation
 
 ### Step 1: Establish session context in wtmp
-Task 3. Why this command. Confirm interactive login time and session window in UTC.
+Why it matters: confirm interactive session window and suspicious IPs.
 ```
 TZ=utc last -f wtmp
 cyberjun pts/1        65.2.161.68      Wed Mar  6 06:37    gone - no logout
@@ -67,10 +67,10 @@ reboot   system boot  6.2.0-1017-aws   Thu Jan 25 11:12 - 11:09 (16+23:57)
 wtmp begins Thu Jan 25 11:12:17 2024
 ```
 
-Connection to next step. I see a short root session and a suspicious external IP. auth.log will explain what produced these sessions.
+Next: pivot to auth.log to explain the sessions.
 
 ### Step 2: Identify event sources in auth.log
-Task 0. Why this command. Enumerate programs to choose strong pivots.
+Why it matters: choose the best pivots before filtering.
 ```
 awk '{print $5}' auth.log | sed 's/[\[\:].*//g' | sort | uniq -c
       1 chfn
@@ -85,37 +85,19 @@ awk '{print $5}' auth.log | sed 's/[\[\:].*//g' | sort | uniq -c
       2 usermod
 ```
 
-What this output means.
-
-sshd dominates so access and brute force are central
-
-useradd and usermod exist so persistence and privilege changes occurred
-
-sudo exists so command execution is visible
-
-systemd-logind exists so session IDs can be mapped
-
-Connection to next step. useradd appears so I confirm account creation.
+Next: check for persistence since useradd and usermod exist.
 
 ### Step 3: Confirm persistence via account creation
-Task 5. Why this command. Identify the persistence user.
+Why it matters: identify the backdoor user.
 ```
 grep useradd auth.log
 Mar  6 06:34:18 ip-172-31-35-28 useradd[2592]: new user: name=cyberjunkie, UID=1002, GID=1002, home=/home/cyberjunkie, shell=/bin/bash, from=/dev/pts/1
 ```
 
-What this proves.
-
-Persistence user is cyberjunkie
-
-Creation time is 2024-03-06 06:34:18
-
-Created from an interactive terminal
-
-Connection to next step. I need exact interactive timestamps with year, so I rerun last with full time.
+Next: get exact interactive timestamps with full time.
 
 ### Step 4: Get exact interactive login times
-Task 3. Why this command. Confirm login time with full timestamps.
+Why it matters: confirm the manual login time in UTC.
 ```
 TZ=utc last -f wtmp -F
 cyberjun pts/1        65.2.161.68      Wed Mar  6 06:37:35 2024   gone - no logout
@@ -132,16 +114,12 @@ reboot   system boot  6.2.0-1017-aws   Thu Jan 25 11:12:17 2024 - Sun Feb 11 11:
 wtmp begins Thu Jan 25 11:12:17 2024
 ```
 
-Connection to next step. Root session ends at 06:37:24. I pivot into auth.log around 06:37.
+Next: pivot around 06:37 in auth.log.
 
 ### Step 5: Pivot on a critical time window
-Task 7 and task 8. Why this command. Show session end and follow on activity in auth.log.
+Why it matters: capture session close, new login, and sudo actions.
 ```
 grep 06:37 auth.log
-Mar  6 06:37:01 ip-172-31-35-28 CRON[2654]: pam_unix(cron:session): session opened for user confluence(uid=998) by (uid=0)
-Mar  6 06:37:01 ip-172-31-35-28 CRON[2653]: pam_unix(cron:session): session opened for user confluence(uid=998) by (uid=0)
-Mar  6 06:37:01 ip-172-31-35-28 CRON[2654]: pam_unix(cron:session): session closed for user confluence
-Mar  6 06:37:01 ip-172-31-35-28 CRON[2653]: pam_unix(cron:session): session closed for user confluence
 Mar  6 06:37:24 ip-172-31-35-28 sshd[2491]: Received disconnect from 65.2.161.68 port 53184:11: disconnected by user
 Mar  6 06:37:24 ip-172-31-35-28 sshd[2491]: Disconnected from user root 65.2.161.68 port 53184
 Mar  6 06:37:24 ip-172-31-35-28 sshd[2491]: pam_unix(sshd:session): session closed for user root
@@ -156,20 +134,14 @@ Mar  6 06:37:57 ip-172-31-35-28 sudo: pam_unix(sudo:session): session opened for
 Mar  6 06:37:57 ip-172-31-35-28 sudo: pam_unix(sudo:session): session closed for user roo
 ```
 
-What this reveals.
+Note: the last line is truncated in the capture.
 
-Root disconnect from 65.2.161.68
-
-Session 37 removed
-
-cyberjunkie logs in from the same IP
-
-Immediate sudo activity
-
-Connection to next step. I confirm brute force by extracting and counting IPs.
+Next: identify the brute force source IP.
 
 ### Step 6: Identify brute force source IP
-Task 1. Why this command. Extract IPs from auth.log.
+Why it matters: isolate the attacker and separate host noise.
+
+First attempt, noisy because it includes the host IP.
 ```
 grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' auth.log | uniq -c | sort
       1 172.31.35.28
@@ -178,17 +150,17 @@ grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' auth.log | uniq -c | s
       4 65.2.161.68
 ```
 
-Task 1. Why this command. Remove host IP by matching a leading space.
+Refined, message-only by matching a leading space.
 ```
 grep -oP ' [0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' auth.log | uniq -c | sort
       1  203.101.190.9
     165  65.2.161.68
 ```
 
-Conclusion. 65.2.161.68 appears overwhelmingly often. This is the brute force source.
+Next: confirm brute force behavior.
 
 ### Step 7: Prove brute force behavior
-Task 1. Why this command. Show repeated failures from the attacker IP.
+Why it matters: show repeated failures from the same IP.
 ```
 grep 65.2.161.68 auth.log | grep "Failed"
 Mar  6 06:31:33 ip-172-31-35-28 sshd[2327]: Failed password for invalid user admin from 65.2.161.68 port 46392 ssh2
@@ -202,7 +174,7 @@ Mar  6 06:31:33 ip-172-31-35-28 sshd[2336]: Failed password for invalid user bac
 ```
 
 ### Step 8: Confirm successful compromise
-Task 2. Why this command. Confirm accepted password from the same IP.
+Why it matters: link the brute force to root access.
 ```
 grep 65.2.161.68 auth.log | grep -A3 "Accepted"
 Mar  6 06:31:40 ip-172-31-35-28 sshd[2411]: Accepted password for root from 65.2.161.68 port 34782 ssh2
@@ -216,14 +188,8 @@ Mar  6 06:37:24 ip-172-31-35-28 sshd[2491]: Disconnected from user root 65.2.161
 Mar  6 06:37:34 ip-172-31-35-28 sshd[2667]: Accepted password for cyberjunkie from 65.2.161.68 port 43260 ssh2
 ```
 
-What this confirms.
-
-Compromised account is root
-
-A manual session starts later at 06:32:45 in wtmp
-
 ### Step 9: Correlate authentication to session ID
-Task 4. Why this command. Locate session number in systemd-logind.
+Why it matters: tie the root session to a session number.
 ```
 grep systemd-logind auth.log
 Mar  6 06:19:54 ip-172-31-35-28 systemd-logind[411]: New session 6 of user root.
@@ -236,10 +202,8 @@ Mar  6 06:37:24 ip-172-31-35-28 systemd-logind[411]: Removed session 37.
 Mar  6 06:37:34 ip-172-31-35-28 systemd-logind[411]: New session 49 of user cyberjunkie.
 ```
 
-Answer. Session number is 37.
-
 ### Step 10: Confirm privilege escalation
-Task 5. Why this command. Confirm sudo group membership.
+Why it matters: show how persistence gained admin rights.
 ```
 grep usermod auth.log
 Mar  6 06:35:15 ip-172-31-35-28 usermod[2628]: add 'cyberjunkie' to group 'sudo'
@@ -247,7 +211,7 @@ Mar  6 06:35:15 ip-172-31-35-28 usermod[2628]: add 'cyberjunkie' to shadow group
 ```
 
 ### Step 11: Identify attacker commands
-Task 8. Why this command. Extract sudo commands.
+Why it matters: recover the exact command used for tool transfer.
 ```
 grep sudo auth.log
 Mar  6 06:35:15 ip-172-31-35-28 usermod[2628]: add 'cyberjunkie' to group 'sudo'
@@ -260,12 +224,6 @@ Mar  6 06:39:38 ip-172-31-35-28 sudo: pam_unix(sudo:session): session opened for
 Mar  6 06:39:39 ip-172-31-35-28 sudo: pam_unix(sudo:session): session closed for user root
 ```
 
-What this proves.
-
-The attacker accessed /etc/shadow
-
-The attacker downloaded linper.sh
-
 ## Findings and indicators
 
 | Type | Value | Context |
@@ -274,9 +232,7 @@ The attacker downloaded linper.sh
 | Compromised user | root | Account successfully accessed |
 | Persistence user | cyberjunkie | Rogue account created by attacker, UID 1002 |
 | Malicious file | linper.sh | Enumeration script fetched with curl |
-| Session ID | 37 | Interactive root session in systemd-logind |
 | Initial login | 2024-03-06 06:32:45 UTC | Interactive session start in wtmp |
-| Session end | 2024-03-06 06:37:24 UTC | Root session closed in auth.log |
 
 ## Forensic timeline UTC
 
@@ -293,12 +249,13 @@ The attacker downloaded linper.sh
 
 ## MITRE ATT&CK mapping
 
-| Technique | ID | Evidence | Note |
-| --- | --- | --- | --- |
-| Create Account | T1136.001 | useradd cyberjunkie | Persistence via local account |
-| Account Manipulation | T1098 | usermod adds sudo | Maintains admin access |
-| OS Credential Dumping | T1003.008 | sudo cat /etc/shadow | Hash access with root |
-| Ingress Tool Transfer | T1105 | curl linper.sh | Brings tooling for discovery |
+T1136.001 Create Account. useradd cyberjunkie.
+
+T1098 Account Manipulation. usermod adds sudo.
+
+T1003.008 OS Credential Dumping. sudo cat /etc/shadow.
+
+T1105 Ingress Tool Transfer. curl linper.sh.
 
 ## Key takeaway
 wtmp anchors the session window. The program histogram shows where evidence lives. IP counts isolate the attacker. useradd and usermod show persistence. sudo and systemd-logind reconstruct access to action.
