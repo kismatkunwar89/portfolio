@@ -166,6 +166,7 @@ Mar  6 06:37:24 ip-172-31-35-28 sshd[2491]: Received disconnect from 65.2.161.68
 Mar  6 06:37:24 ip-172-31-35-28 sshd[2491]: Disconnected from user root 65.2.161.68 port 53184
 Mar  6 06:37:34 ip-172-31-35-28 sshd[2667]: Accepted password for cyberjunkie from 65.2.161.68 port 43260 ssh2
 ```
+This success follows a burst of failed attempts and closes in the same second, which fits an automated brute force workflow and not a normal interactive login.
 ### Step 9: Correlate authentication to session ID
 Purpose: tie the root session to a session number.
 ```
