@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
   <style>
     :root {
       --bg: #ffffff;
@@ -17,6 +17,7 @@
       --muted: #475569;
       --accent: #1d4ed8;
       --border: #e2e8f0;
+      --panel: #f8fafc;
     }
     body {
       margin: 0;
@@ -32,9 +33,19 @@
     a { color: var(--accent); text-decoration: none; }
     a:hover { text-decoration: underline; }
     .meta { color: var(--muted); font-size: 14px; }
+    .title-band {
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+    }
+    .title-band h1 {
+      font-family: 'Space Mono', monospace;
+      margin: 0 0 6px;
+    }
     .markdown-body {
       box-sizing: border-box;
       padding: 0;
+      font-size: 16px;
+      line-height: 1.75;
     }
     .markdown-body code,
     .markdown-body pre {
@@ -44,70 +55,61 @@
       border: 1px solid var(--border);
       border-radius: 8px;
       overflow-x: auto;
+      background: #0f172a;
+    }
+    .markdown-body pre code {
+      color: #e2e8f0;
     }
     .admonition {
-      border-left: 4px solid var(--accent);
-      background: #eef2ff;
-      padding: 10px 12px;
+      border-left: 5px solid #2196f3;
+      background: #e7f3fe;
+      padding: 12px 14px;
       border-radius: 8px;
       margin: 16px 0;
       color: var(--text);
     }
-    .terminal {
-      border-radius: 10px;
-      overflow: hidden;
+    .toc {
       border: 1px solid var(--border);
-      margin: 16px 0;
+      border-radius: 10px;
+      padding: 12px 14px;
+      background: var(--panel);
+      margin: 16px 0 24px;
+      font-size: 14px;
     }
-    .terminal-header {
-      display: flex;
-      gap: 6px;
-      padding: 8px 10px;
-      background: #f1f5f9;
-      border-bottom: 1px solid var(--border);
+    .toc a { color: var(--text); }
+    .toc-title {
+      font-weight: 700;
+      margin-bottom: 8px;
     }
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      display: inline-block;
-    }
-    .dot.red { background: #ef4444; }
-    .dot.yellow { background: #f59e0b; }
-    .dot.green { background: #22c55e; }
-    .terminal pre {
-      margin: 0;
-      background: #0b1020;
-      color: #e2e8f0;
-    }
-    .terminal code {
-      color: inherit;
+    .section-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 18px 0;
     }
   </style>
 </head>
 <body>
-  <header>
-    <p class="meta"><a href="./">← Back to writeups</a></p>
-    <h1>Brutus</h1>
-    <p class="meta">HTB Sherlock writeup</p>
+  <header class="title-band">
+    <div>
+      <p class="meta"><a href="./">← Back to writeups</a></p>
+      <h1>Brutus</h1>
+      <p class="meta">HTB Sherlock writeup</p>
+    </div>
   </header>
 
   <main>
+    <div id="toc" class="toc" aria-label="Table of contents">
+      <div class="toc-title">Contents</div>
+      <div id="toc-list"></div>
+    </div>
     <article id="content" class="markdown-body">Loading writeup...</article>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script>
-    marked.setOptions({
-      highlight: function(code, lang) {
-        if (lang && hljs.getLanguage(lang)) {
-          return hljs.highlight(code, { language: lang }).value;
-        }
-        return hljs.highlightAuto(code).value;
-      }
-    });
-
     fetch("Brutus.md")
       .then((res) => res.text())
       .then((md) => {
@@ -115,16 +117,29 @@
         const container = document.getElementById("content");
         container.innerHTML = html;
 
-        container.querySelectorAll("pre").forEach((pre) => {
-          const wrapper = document.createElement("div");
-          wrapper.className = "terminal";
-          const header = document.createElement("div");
-          header.className = "terminal-header";
-          header.innerHTML = '<span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>';
-          wrapper.appendChild(header);
-          pre.parentNode.insertBefore(wrapper, pre);
-          wrapper.appendChild(pre);
+        container.querySelectorAll("pre > code").forEach((code) => {
+          if (!code.className) {
+            code.className = "language-bash";
+          }
+          Prism.highlightElement(code);
         });
+
+        const tocList = document.getElementById("toc-list");
+        const headings = container.querySelectorAll("h2, h3");
+        const items = [];
+        headings.forEach((heading) => {
+          const id = heading.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-");
+          heading.id = heading.id || id;
+          items.push({ id, text: heading.textContent, level: heading.tagName.toLowerCase() });
+        });
+        if (items.length === 0) {
+          document.getElementById("toc").style.display = "none";
+        } else {
+          tocList.innerHTML = items.map((item) => {
+            const indent = item.level === "h3" ? " style=\"margin-left:12px;\"" : "";
+            return `<div${indent}><a href="#${item.id}">${item.text}</a></div>`;
+          }).join("");
+        }
       })
       .catch(() => {
         document.getElementById("content").textContent = "Failed to load writeup.";
