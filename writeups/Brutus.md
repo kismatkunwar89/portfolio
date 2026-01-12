@@ -12,24 +12,8 @@ wtmp
 
 The goal is to confirm brute force, identify the compromised account, trace persistence, and document post-compromise actions.
 
-## Why these artifacts
-auth.log records authentication activity.
-
-failed and successful SSH logins
-
-sudo usage with full commands
-
-user creation and privilege changes
-
-This is the primary source for brute force, persistence, and escalation.
-
-wtmp is the session ledger.
-
-confirms when an interactive shell starts and ends
-
-binary format so it must be read using last
-
-auth.log tells you what was authenticated. wtmp tells you when someone was actually logged in. You need both for a reliable timeline.
+## Artifact Selection and Relevance
+This investigation relies on two primary artifacts to reconstruct the attack timeline. First, /var/log/auth.log serves as the definitive record for authentication events, capturing SSH login attempts (both failed and successful), sudo command execution, and user account manipulation. This is our primary source for identifying the brute force vector and subsequent privilege escalation. Second, /var/log/wtmp provides the binary session ledger, which is critical for verifying when interactive shells were actually opened and closed. While auth.log tells us who authenticated, wtmp confirms when they were active in the system. Correlating these two sources allows us to distinguish between simple automated scripts and actual hands on keyboard persistence.
 
 ## Field notes
 auth.log format is timestamp, host, program PID, message. The program name is the fastest pivot.
