@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Brutus Writeup - Kismat Kunwar</title>
+  <meta name="description" content="Brutus HTB Sherlock writeup by Kismat Kunwar.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --accent: #1d4ed8;
+      --border: #e2e8f0;
+    }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+    header, main {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 24px 20px;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .meta { color: var(--muted); font-size: 14px; }
+    .markdown-body {
+      box-sizing: border-box;
+      padding: 0;
+    }
+    .markdown-body code,
+    .markdown-body pre {
+      font-family: "Consolas", "Monaco", "Courier New", monospace;
+    }
+    .markdown-body pre {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p class="meta"><a href="./">← Back to writeups</a></p>
+    <h1>Brutus</h1>
+    <p class="meta">HTB Sherlock writeup</p>
+  </header>
+
+  <main>
+    <article id="content" class="markdown-body">Loading writeup...</article>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    fetch("Brutus.md")
+      .then((res) => res.text())
+      .then((md) => {
+        document.getElementById("content").innerHTML = marked.parse(md);
+      })
+      .catch(() => {
+        document.getElementById("content").textContent = "Failed to load writeup.";
+      });
+  </script>
+</body>
+</html>
