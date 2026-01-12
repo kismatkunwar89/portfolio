@@ -50,7 +50,7 @@ utmpdump is verbose and noisy. last gives cleaner output.
 ## Investigation
 
 ### Step 1: Establish session context in wtmp
-Goal: confirm interactive session window and suspicious IPs.
+Purpose: confirm interactive session window and suspicious IPs.
 ```
 TZ=utc last -f wtmp
 cyberjun pts/1        65.2.161.68      Wed Mar  6 06:37    gone - no logout
@@ -66,11 +66,8 @@ reboot   system boot  6.2.0-1017-aws   Thu Jan 25 11:12 - 11:09 (16+23:57)
 
 wtmp begins Thu Jan 25 11:12:17 2024
 ```
-
-Next: pivot to auth.log to explain the sessions.
-
 ### Step 2: Identify event sources in auth.log
-Why it matters: choose the best pivots before filtering.
+Purpose: choose the best pivots before filtering.
 ```
 awk '{print $5}' auth.log | sed 's/[\[\:].*//g' | sort | uniq -c
       1 chfn
@@ -84,16 +81,14 @@ awk '{print $5}' auth.log | sed 's/[\[\:].*//g' | sort | uniq -c
       1 useradd
       2 usermod
 ```
-
 ### Step 3: Confirm persistence via account creation
+Purpose: identify the backdoor user.
 ```
 grep useradd auth.log
 Mar  6 06:34:18 ip-172-31-35-28 useradd[2592]: new user: name=cyberjunkie, UID=1002, GID=1002, home=/home/cyberjunkie, shell=/bin/bash, from=/dev/pts/1
 ```
-
-Next: get exact interactive timestamps with full time.
-
 ### Step 4: Get exact interactive login times
+Purpose: confirm the manual login time in UTC.
 ```
 TZ=utc last -f wtmp -F
 cyberjun pts/1        65.2.161.68      Wed Mar  6 06:37:35 2024   gone - no logout
@@ -109,10 +104,8 @@ reboot   system boot  6.2.0-1017-aws   Thu Jan 25 11:12:17 2024 - Sun Feb 11 11:
 
 wtmp begins Thu Jan 25 11:12:17 2024
 ```
-
-Next: pivot around 06:37 in auth.log.
-
 ### Step 5: Pivot on a critical time window
+Purpose: capture session close, new login, and sudo actions.
 ```
 grep 06:37 auth.log
 Mar  6 06:37:24 ip-172-31-35-28 sshd[2491]: Received disconnect from 65.2.161.68 port 53184:11: disconnected by user
@@ -128,11 +121,8 @@ Mar  6 06:37:57 ip-172-31-35-28 sudo: cyberjunkie : TTY=pts/1 ; PWD=/home/cyberj
 Mar  6 06:37:57 ip-172-31-35-28 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by cyberjunkie(uid=1002)
 Mar  6 06:37:57 ip-172-31-35-28 sudo: pam_unix(sudo:session): session closed for user roo
 ```
-
-Next: identify the brute force source IP.
-
 ### Step 6: Identify brute force source IP
-Why it matters: isolate the attacker and separate host noise.
+Purpose: isolate the attacker and separate host noise.
 
 Includes host IP.
 ```
@@ -149,10 +139,8 @@ grep -oP ' [0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' auth.log | uniq -c | 
       1  203.101.190.9
     165  65.2.161.68
 ```
-
-Next: confirm brute force behavior.
-
 ### Step 7: Prove brute force behavior
+Purpose: show repeated failures from the same IP.
 ```
 grep 65.2.161.68 auth.log | grep "Failed"
 Mar  6 06:31:33 ip-172-31-35-28 sshd[2327]: Failed password for invalid user admin from 65.2.161.68 port 46392 ssh2
@@ -164,8 +152,8 @@ Mar  6 06:31:33 ip-172-31-35-28 sshd[2334]: Failed password for invalid user adm
 Mar  6 06:31:33 ip-172-31-35-28 sshd[2338]: Failed password for invalid user backup from 65.2.161.68 port 46512 ssh2
 Mar  6 06:31:33 ip-172-31-35-28 sshd[2336]: Failed password for invalid user backup from 65.2.161.68 port 46468 ssh2
 ```
-
 ### Step 8: Confirm successful compromise
+Purpose: link the brute force to root access.
 ```
 grep 65.2.161.68 auth.log | grep -A3 "Accepted"
 Mar  6 06:31:40 ip-172-31-35-28 sshd[2411]: Accepted password for root from 65.2.161.68 port 34782 ssh2
@@ -178,8 +166,8 @@ Mar  6 06:37:24 ip-172-31-35-28 sshd[2491]: Received disconnect from 65.2.161.68
 Mar  6 06:37:24 ip-172-31-35-28 sshd[2491]: Disconnected from user root 65.2.161.68 port 53184
 Mar  6 06:37:34 ip-172-31-35-28 sshd[2667]: Accepted password for cyberjunkie from 65.2.161.68 port 43260 ssh2
 ```
-
 ### Step 9: Correlate authentication to session ID
+Purpose: tie the root session to a session number.
 ```
 grep systemd-logind auth.log
 Mar  6 06:19:54 ip-172-31-35-28 systemd-logind[411]: New session 6 of user root.
@@ -191,15 +179,15 @@ Mar  6 06:37:24 ip-172-31-35-28 systemd-logind[411]: Session 37 logged out. Wait
 Mar  6 06:37:24 ip-172-31-35-28 systemd-logind[411]: Removed session 37.
 Mar  6 06:37:34 ip-172-31-35-28 systemd-logind[411]: New session 49 of user cyberjunkie.
 ```
-
 ### Step 10: Confirm privilege escalation
+Purpose: show how persistence gained admin rights.
 ```
 grep usermod auth.log
 Mar  6 06:35:15 ip-172-31-35-28 usermod[2628]: add 'cyberjunkie' to group 'sudo'
 Mar  6 06:35:15 ip-172-31-35-28 usermod[2628]: add 'cyberjunkie' to shadow group 'sudo'
 ```
-
 ### Step 11: Identify attacker commands
+Purpose: recover the exact command used for tool transfer.
 ```
 grep sudo auth.log
 Mar  6 06:35:15 ip-172-31-35-28 usermod[2628]: add 'cyberjunkie' to group 'sudo'
