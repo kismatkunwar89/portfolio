@@ -32,18 +32,27 @@ wtmp fields as shown by last
 - Logout time
 - Duration
 
-## Skills and tags
-Skills learned
-- Unix log analysis
-- wtmp analysis
-- Brute force activity analysis
-- Timeline creation
-- Contextual analysis
-- Post exploitation analysis
+## Artifact fields and caveats
+auth.log fields
+- Date and time
+- Hostname
+- Program name and PID
+- User
+- Status and message
+- Source IP or hostname
 
-Tags
-- Linux Forensics
-- DFIR
+wtmp fields as shown by last
+- Username
+- Terminal
+- Source IP or hostname
+- Login time
+- Logout time
+- Duration
+
+## Skills learned and tags
+Skills learned: Unix log analysis, wtmp analysis, brute force activity analysis, timeline creation, contextual analysis, post exploitation analysis.
+
+Tags: #LinuxForensics #DFIR
 
 ## Field notes
 auth.log format is timestamp, host, program PID, message. The program name is the fastest pivot.
