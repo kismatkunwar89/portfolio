@@ -25,11 +25,12 @@
       font-family: 'Inter', system-ui, -apple-system, "Segoe UI", sans-serif;
       color: var(--text);
       background: #f1f5f9;
+      font-size: 15px;
     }
     header, main {
       max-width: 980px;
       margin: 0 auto;
-      padding: 24px 20px;
+      padding: 20px 18px;
     }
     a { color: var(--accent); text-decoration: none; }
     a:hover { text-decoration: underline; }
@@ -41,12 +42,13 @@
     .title-band h1 {
       font-family: 'Space Mono', monospace;
       margin: 0 0 6px;
+      font-size: 2.2rem;
     }
     .markdown-body {
       box-sizing: border-box;
       padding: 0;
-      font-size: 16px;
-      line-height: 1.75;
+      font-size: 15px;
+      line-height: 1.7;
     }
     .markdown-body code,
     .markdown-body pre {
@@ -75,13 +77,13 @@
     }
     .toc {
       margin: 16px 0 24px;
-      font-size: 14px;
+      font-size: 13px;
     }
   </style>
 </head>
 <body>
   <header class="title-band">
-    <div class="ui container" style="padding: 24px 20px;">
+    <div class="ui container" style="padding: 16px 18px;">
       <p class="meta"><a href="./">← Back to writeups</a></p>
       <h1 class="ui header">Brutus</h1>
       <p class="meta">HTB Sherlock writeup</p>
@@ -89,11 +91,11 @@
   </header>
 
   <main>
-    <div id="toc" class="ui segment" aria-label="Table of contents">
+    <div id="toc" class="ui segment" aria-label="Table of contents" style="padding: 12px 14px;">
       <div class="ui header">Contents</div>
       <div id="toc-list" class="ui list"></div>
     </div>
-    <div class="ui segment">
+    <div class="ui segment" style="padding: 16px 18px;">
       <article id="content" class="markdown-body">Loading writeup...</article>
     </div>
   </main>
