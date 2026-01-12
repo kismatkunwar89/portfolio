@@ -6,12 +6,23 @@ Credit: ipag on YouTube. Workflow follows same approach.
 ## Scenario
 Confluence server brute forced over SSH. Review auth.log and wtmp.
 
+## Approach
+I use two passes. Pass one answers the questions with shell commands on auth.log and wtmp. Pass two parses auth.log into JSON with grok so the same data works in Elastic or Splunk.
+
+## Why these artifacts
+auth.log shows failed logins, accepted logins, sudo activity, and account changes. It is the best source for brute force, persistence, and command use with sudo.
+wtmp is the session ledger. It confirms interactive login start and end times, not only the accepted password time.
+
+## Field notes
+auth.log includes a timestamp, host, program name, PID, and the message. The program name and message are the fastest way to filter by sshd, sudo, useradd, and systemd-logind.
+wtmp is binary. last reads it into a human view. utmpdump is verbose and noisy, so last is the cleaner choice.
+
 ## Context and why these logs matter
 auth.log records authentication events. It shows failed logins, successful logins, sudo use, and account changes. You use it to confirm brute force, access, persistence, and command execution with sudo.
 wtmp records login and logout sessions. It is binary, so you read it with last. You use it to confirm interactive session start and end times.
 
 ## Timezone note
-wtmp output uses your system timezone. You set TZ=utc so session times match auth.log and answer format.
+<div class="admonition"><strong>Forensic note:</strong> wtmp output uses your system timezone. Set TZ=utc so session times match auth.log and answer format.</div>
 
 ## Environment
 Set TZ=utc for wtmp output.
