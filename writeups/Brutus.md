@@ -15,6 +15,36 @@ The goal is to confirm brute force, identify the compromised account, trace pers
 ## Artifact Selection and Relevance
 This investigation relies on two primary artifacts to reconstruct the attack timeline. First, /var/log/auth.log serves as the definitive record for authentication events, capturing SSH login attempts (both failed and successful), sudo command execution, and user account manipulation. This is our primary source for identifying the brute force vector and subsequent privilege escalation. Second, /var/log/wtmp provides the binary session ledger, which is critical for verifying when interactive shells were actually opened and closed. While auth.log tells us who authenticated, wtmp confirms when they were active in the system. Correlating these two sources allows us to distinguish between simple automated scripts and actual hands on keyboard persistence.
 
+## Artifact fields
+auth.log fields
+- Date and time
+- Hostname
+- Program name and PID
+- User
+- Status and message
+- Source IP or hostname
+
+wtmp fields as shown by last
+- Username
+- Terminal
+- Source IP or hostname
+- Login time
+- Logout time
+- Duration
+
+## Skills and tags
+Skills learned
+- Unix log analysis
+- wtmp analysis
+- Brute force activity analysis
+- Timeline creation
+- Contextual analysis
+- Post exploitation analysis
+
+Tags
+- Linux Forensics
+- DFIR
+
 ## Field notes
 auth.log format is timestamp, host, program PID, message. The program name is the fastest pivot.
 
