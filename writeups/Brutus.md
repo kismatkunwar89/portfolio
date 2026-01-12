@@ -28,7 +28,7 @@ wtmp records login and logout sessions. It is binary, so you read it with last. 
 Set TZ=utc for wtmp output.
 
 ## Commands and outputs
-Command
+Task 3, why this command. Confirm the interactive login time from wtmp in UTC.
 ```
 TZ=utc last -f wtmp
 cyberjun pts/1        65.2.161.68      Wed Mar  6 06:37    gone - no logout
@@ -45,7 +45,7 @@ reboot   system boot  6.2.0-1017-aws   Thu Jan 25 11:12 - 11:09 (16+23:57)
 wtmp begins Thu Jan 25 11:12:17 2024
 ```
 
-Command
+Task 0, why this command. Enumerate programs in auth.log to know what actions are present.
 ```
 awk '{print $5}' auth.log | sed 's/[\[\:].*//g' | sort | uniq -c
       1 chfn
@@ -66,13 +66,13 @@ sed trims after [ or : .
 sort groups same strings.
 uniq -c counts.
 
-Command
+Task 5, why this command. Identify account creation for persistence.
 ```
 grep useradd auth.log
 Mar  6 06:34:18 ip-172-31-35-28 useradd[2592]: new user: name=cyberjunkie, UID=1002, GID=1002, home=/home/cyberjunkie, shell=/bin/bash, from=/dev/pts/1
 ```
 
-Command
+Task 3, why this command. Confirm login time with full timestamps.
 ```
 TZ=utc last -f wtmp -F
 cyberjun pts/1        65.2.161.68      Wed Mar  6 06:37:35 2024   gone - no logout
@@ -89,8 +89,7 @@ reboot   system boot  6.2.0-1017-aws   Thu Jan 25 11:12:17 2024 - Sun Feb 11 11:
 wtmp begins Thu Jan 25 11:12:17 2024
 ```
 
-Below is a snippet of auth.log around the session end and follow-on activity.
-Command
+Task 7 and task 8, why this command. Show session end and follow on activity in auth.log.
 ```
 grep 06:37 auth.log
 Mar  6 06:37:01 ip-172-31-35-28 CRON[2654]: pam_unix(cron:session): session opened for user confluence(uid=998) by (uid=0)
@@ -111,8 +110,7 @@ Mar  6 06:37:57 ip-172-31-35-28 sudo: pam_unix(sudo:session): session opened for
 Mar  6 06:37:57 ip-172-31-35-28 sudo: pam_unix(sudo:session): session closed for user roo
 ```
 
-Brute force evidence
-Command
+Task 1, why this command. Extract attacker IPs from auth.log.
 ```
 grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' auth.log | uniq -c | sort
       1 172.31.35.28
@@ -121,14 +119,14 @@ grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' auth.log | uniq -c | s
       4 65.2.161.68
 ```
 
-Command
+Task 1, why this command. Remove the log source IP by matching a leading space.
 ```
 grep -oP ' [0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' auth.log | uniq -c | sort
       1  203.101.190.9
     165  65.2.161.68
 ```
 
-Command
+Task 1, why this command. Confirm brute force failures from the attacker IP.
 ```
 grep 65.2.161.68 auth.log | grep "Failed"
 Mar  6 06:31:33 ip-172-31-35-28 sshd[2327]: Failed password for invalid user admin from 65.2.161.68 port 46392 ssh2
@@ -141,7 +139,7 @@ Mar  6 06:31:33 ip-172-31-35-28 sshd[2338]: Failed password for invalid user bac
 Mar  6 06:31:33 ip-172-31-35-28 sshd[2336]: Failed password for invalid user backup from 65.2.161.68 port 46468 ssh2
 ```
 
-Command
+Task 2, why this command. Confirm successful authentication from the attacker IP.
 ```
 grep 65.2.161.68 auth.log | grep -A3 "Accepted"
 Mar  6 06:31:40 ip-172-31-35-28 sshd[2411]: Accepted password for root from 65.2.161.68 port 34782 ssh2
@@ -155,7 +153,7 @@ Mar  6 06:37:24 ip-172-31-35-28 sshd[2491]: Disconnected from user root 65.2.161
 Mar  6 06:37:34 ip-172-31-35-28 sshd[2667]: Accepted password for cyberjunkie from 65.2.161.68 port 43260 ssh2
 ```
 
-Command
+Task 4, why this command. Locate the session number in systemd-logind.
 ```
 grep systemd-logind auth.log
 Mar  6 06:19:54 ip-172-31-35-28 systemd-logind[411]: New session 6 of user root.
@@ -168,14 +166,14 @@ Mar  6 06:37:24 ip-172-31-35-28 systemd-logind[411]: Removed session 37.
 Mar  6 06:37:34 ip-172-31-35-28 systemd-logind[411]: New session 49 of user cyberjunkie.
 ```
 
-Command
+Task 5, why this command. Confirm privilege escalation via sudo group membership.
 ```
 grep usermod auth.log
 Mar  6 06:35:15 ip-172-31-35-28 usermod[2628]: add 'cyberjunkie' to group 'sudo'
 Mar  6 06:35:15 ip-172-31-35-28 usermod[2628]: add 'cyberjunkie' to shadow group 'sudo'
 ```
 
-Command
+Task 8, why this command. Identify the sudo command used to fetch the script.
 ```
 grep sudo auth.log
 Mar  6 06:35:15 ip-172-31-35-28 usermod[2628]: add 'cyberjunkie' to group 'sudo'

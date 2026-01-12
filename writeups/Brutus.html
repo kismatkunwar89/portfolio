@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
   <style>
     :root {
@@ -40,13 +41,6 @@
     .title-band h1 {
       font-family: 'Space Mono', monospace;
       margin: 0 0 6px;
-    }
-    .content-card {
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 22px;
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
     }
     .markdown-body {
       box-sizing: border-box;
@@ -80,42 +74,26 @@
       color: var(--text);
     }
     .toc {
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 14px;
-      background: var(--panel);
       margin: 16px 0 24px;
       font-size: 14px;
-    }
-    .toc a { color: var(--text); }
-    .toc-title {
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    .section-card {
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-      margin: 18px 0;
     }
   </style>
 </head>
 <body>
   <header class="title-band">
-    <div>
+    <div class="ui container" style="padding: 24px 20px;">
       <p class="meta"><a href="./">← Back to writeups</a></p>
-      <h1>Brutus</h1>
+      <h1 class="ui header">Brutus</h1>
       <p class="meta">HTB Sherlock writeup</p>
     </div>
   </header>
 
   <main>
-    <div id="toc" class="toc" aria-label="Table of contents">
-      <div class="toc-title">Contents</div>
-      <div id="toc-list"></div>
+    <div id="toc" class="ui segment" aria-label="Table of contents">
+      <div class="ui header">Contents</div>
+      <div id="toc-list" class="ui list"></div>
     </div>
-    <div class="content-card">
+    <div class="ui segment">
       <article id="content" class="markdown-body">Loading writeup...</article>
     </div>
   </main>
@@ -137,6 +115,10 @@
           Prism.highlightElement(code);
         });
 
+        container.querySelectorAll("table").forEach((table) => {
+          table.classList.add("ui", "celled", "table");
+        });
+
         const tocList = document.getElementById("toc-list");
         const headings = container.querySelectorAll("h2, h3");
         const items = [];
@@ -149,7 +131,7 @@
           document.getElementById("toc").style.display = "none";
         } else {
           tocList.innerHTML = items.map((item) => {
-            const indent = item.level === "h3" ? " style=\"margin-left:12px;\"" : "";
+            const indent = item.level === "h3" ? " class=\"item\" style=\"margin-left:12px;\"" : " class=\"item\"";
             return `<div${indent}><a href="#${item.id}">${item.text}</a></div>`;
           }).join("");
         }
