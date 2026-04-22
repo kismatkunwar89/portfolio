@@ -1,0 +1,90 @@
+\documentclass{resume2}
+
+\usepackage[left=0.45in,top=0.3in,right=0.45in,bottom=0.3in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\linespread{0.93}
+
+\name{Kismat Kunwar}
+\contact{
+  West Haven, CT \quad|\quad
+  \href{mailto:kismatkunwar89@gmail.com}{kismatkunwar89@gmail.com} \quad|\quad
+  \href{https://linkedin.com/in/kunwarkismat}{linkedin.com/in/kunwarkismat} \quad|\quad
+  \href{https://kismatkunwar89.github.io/portfolio/}{Portfolio}
+}
+
+\begin{document}
+\makeheader
+
+%                -
+% SUMMARY
+%                -
+\section{Summary}
+Cybersecurity graduate student with hands-on incident response experience investigating phishing and ransomware precursor incidents using CrowdStrike EDR. Published researcher at ICDF2C on applying LLMs to structured representation and mapping of forensic artifacts into CASE/UCO knowledge graphs. Proficient in Python/Bash, Active Directory, and cloud security (Azure/AWS); strong communicator with experience presenting findings to technical and non-technical audiences.
+
+%                -
+% EDUCATION
+%                -
+\section{Education}
+
+\textbf{Master's in Cyber Security} (GPA: 3.9) \hfill Aug 2024 -- Present\\
+University of New Haven, West Haven, CT
+
+\medskip
+\textbf{Bachelor's in Cyber Security, First Class Honors} (GPA: 3.96) \hfill May 2020 -- Jun 2023\\
+Coventry University, UK
+
+%                -
+% SKILLS
+%                -
+\section{Skills}
+
+\textbf{Proficient with:} CrowdStrike Falcon EDR, SIEM (ELK), alert triage, threat intelligence (MITRE ATT\&CK, STIX/TAXII, IOC analysis), network defense (Wireshark, tcpdump, Suricata, Snort), DFIR (Autopsy, EZ Tools, CASE/UCO), Python, Bash, Active Directory, NIST CSF
+
+\smallskip
+\textbf{Familiar with:} Splunk, Sentinel, Azure (Entra ID, Defender), AWS, penetration testing (Kali Linux, Metasploit, Burp Suite), OSINT (Maltego, VirusTotal, OTX), AI coding tools (Claude Code, Codex), Docker, Ansible, Terraform, Windows Server, Linux
+
+\smallskip
+\textbf{Certifications:} (ISC)\textsuperscript{2} CC \textbullet{} Cisco CCNA \textbullet{} Microsoft Azure Fundamentals (AZ-900) \quad \textbf{CTF:} NCAE CyberGames (forensics, web exploitation, network analysis)
+
+%                -
+% EXPERIENCE
+%                -
+\section{Experience}
+
+\textbf{Provost Research Assistant} \hfill Sep 2024 -- Present\\
+\textit{Tagliatela College of Engineering, University of New Haven, West Haven, CT}
+\begin{itemize}[leftmargin=1.2em,itemsep=-2pt,topsep=2pt]
+  \item Engineered LLM pipelines (GPT-4/DeepSeek/Gemini) to parse unstructured forensic evidence and produce CASE/UCO-compliant knowledge-graph-ready output, cutting manual processing $\sim$30\%.
+  \item Built the Indicator of Inconsistency (IoI) Framework, an ontology-driven SPARQL rule library detecting cross-artifact contradictions across MFT, USN journal, event logs, LNK files, and Office metadata; validated against 87M+ RDF triples across 5 antiforensic test cases.
+  \item Presented first-author research at ICDF2C on LLM-driven DFIR artifact mapping; delivered findings to academic and practitioner audiences.
+\end{itemize}
+
+\medskip
+\textbf{Security Support Analyst} \hfill May 2023 -- Mar 2024\\
+\textit{Raechal Enterprise Pvt Ltd, Kathmandu, Nepal}
+\begin{itemize}[leftmargin=1.2em,itemsep=-2pt,topsep=2pt]
+  \item Investigated a credential-harvesting phishing campaign flagged across 3 endpoints; correlated spoofed sender domains, macro-enabled attachment hashes, and O365 login anomalies to confirm compromise; delivered full incident report to senior engineers within 4 hours.
+  \item Triaged a ransomware precursor alert by identifying lateral SMB enumeration and abnormal PowerShell execution on a finance workstation; escalated with IOCs, attack timeline, and containment recommendation before encryption stage was reached.
+  \item Managed $\sim$15 weekly EDR/MFA tickets; tuned Falcon EDR detection policies to reduce false positives, verified endpoint patch compliance, and coordinated change control requests with engineering teams.
+\end{itemize}
+
+%                -
+% PROJECTS
+%                -
+\section{Projects}
+
+\textbf{Flamingo Neck Networks Internal Pentest} \hfill Course Lab\\
+Conducted full-scope internal assessment (10.248.1.0/24): exploited default PostgreSQL credentials for RCE, leveraged guest-to-admin misconfiguration to execute Pass-the-Hash, achieving full AD domain compromise. Documented 9 findings (2 Critical) with CVSS scores, attack chain narrative, and prioritized remediation guidance.
+
+\medskip
+\textbf{Threat Intelligence Platform} \hfill In Progress\\
+Flask app aggregating AbuseIPDB, OTX, VirusTotal, and GreyNoise feeds with automated risk scoring, MITRE ATT\&CK mapping, and export to PDF/CSV/JSON for analyst reporting workflows.
+
+\medskip
+\textbf{Malware Research and Development.} APT evasion research using C2 frameworks; studied obfuscation, detection bypass, and persistence techniques to inform defensive detection engineering.
+
+\medskip
+\textbf{VectorProbe} (In Progress). Python tool chaining Nmap, Searchsploit, and enum4linux-ng for automated service discovery, vulnerability correlation, and Markdown reporting.
+
+\end{document}
