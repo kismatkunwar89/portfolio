@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,7 +8,8 @@
   <meta name="description" content="Portfolio of Kismat Kunwar, Cyber Security Graduate Student.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Mono:wght@700&display=swap"
+    rel="stylesheet">
   <style>
     :root {
       --bg: #ffffff;
@@ -19,7 +21,11 @@
       --radius: 12px;
       --max: 1100px;
     }
-    * { box-sizing: border-box; }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: 'Inter', system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -28,15 +34,31 @@
       line-height: 1.7;
       letter-spacing: 0.01em;
     }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    header, main, footer { max-width: var(--max); margin: 0 auto; padding: 24px 20px; }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    header,
+    main,
+    footer {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 24px 20px;
+    }
+
     .hero {
       display: grid;
       gap: 20px;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       align-items: center;
     }
+
     .hero img {
       width: 100%;
       max-width: 260px;
@@ -45,40 +67,87 @@
       background: var(--soft);
       justify-self: center;
     }
+
     h1 {
       font-family: 'Space Mono', monospace;
       margin: 0 0 10px;
       font-size: clamp(28px, 4vw, 36px);
     }
+
     h2 {
       font-family: 'Space Mono', monospace;
       margin: 0 0 14px;
       font-size: 22px;
     }
-    h3 { margin: 0 0 6px; font-size: 18px; }
+
+    h3 {
+      margin: 0 0 6px;
+      font-size: 18px;
+    }
+
     .eyebrow {
       font-family: 'Space Mono', monospace;
       margin: 0 0 8px;
       color: var(--muted);
     }
-    .tagline { margin: 0 0 14px; color: var(--muted); font-weight: 600; }
-    .btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 10px 14px; border-radius: 10px;
-      border: 1px solid var(--border); background: var(--soft);
-      color: var(--text); font-weight: 600;
+
+    .tagline {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-weight: 600;
     }
-    .btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
-    section { margin: 34px 0; }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--soft);
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    section {
+      margin: 34px 0;
+    }
+
     .card {
       background: var(--soft);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 16px;
     }
-    .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-    .pill-list { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
     .pill {
       padding: 8px 12px;
       border-radius: 999px;
@@ -88,7 +157,13 @@
       font-weight: 600;
       font-size: 14px;
     }
-    .meta { color: var(--muted); font-size: 14px; margin: 4px 0 10px; }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 4px 0 10px;
+    }
+
     .badge {
       display: inline-block;
       padding: 4px 10px;
@@ -99,28 +174,65 @@
       font-size: 12px;
       border: 1px solid #bbf7d0;
     }
+
     .layout {
       display: grid;
       gap: 20px;
       grid-template-columns: 2fr 1fr;
       align-items: start;
     }
+
     .side {
       position: sticky;
       top: 24px;
     }
-    .nav-card { background: var(--soft); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
-    .nav-card h4 { margin: 0 0 10px; font-family: 'Space Mono', monospace; }
-    .nav-links { display: flex; flex-direction: column; gap: 8px; font-weight: 600; }
-    .nav-links a { color: var(--accent); text-decoration: none; }
-    .nav-links a:hover { text-decoration: underline; }
-    footer { color: var(--muted); padding-bottom: 40px; font-size: 14px; }
+
+    .nav-card {
+      background: var(--soft);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+
+    .nav-card h4 {
+      margin: 0 0 10px;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-weight: 600;
+    }
+
+    .nav-links a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      color: var(--muted);
+      padding-bottom: 40px;
+      font-size: 14px;
+    }
+
     @media (max-width: 900px) {
-      .layout { grid-template-columns: 1fr; }
-      .side { position: static; }
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .side {
+        position: static;
+      }
     }
   </style>
 </head>
+
 <body>
   <header id="about">
     <div class="hero">
@@ -128,7 +240,9 @@
         <p class="eyebrow">/ About</p>
         <h1>Kismat Kunwar</h1>
         <p class="tagline">Incident Response &amp; DFIR Analyst - West Haven, CT</p>
-        <p>Master's student with hands-on incident response experience investigating phishing and ransomware precursor incidents using CrowdStrike EDR. Published researcher at ICDF2C on applying LLMs to structured representation and mapping of forensic artifacts into CASE/UCO knowledge graphs.</p>
+        <p>Master's student with hands-on incident response experience investigating phishing and ransomware precursor
+          incidents using CrowdStrike EDR. Published researcher at ICDF2C on applying LLMs to structured representation
+          and mapping of forensic artifacts into CASE/UCO knowledge graphs.</p>
         <p>Open to SOC analyst, incident response, and DFIR opportunities in the US.</p>
         <div class="btn-row">
           <a class="btn primary" href="mailto:kismatkunwar89@gmail.com">Email</a>
@@ -150,7 +264,8 @@
         <div class="card">
           <h3>University of New Haven</h3>
           <p class="meta">Master of Science in Cybersecurity - Aug 2024 - Present - GPA: 3.9</p>
-          <p>Courses: Enterprise Network Design, Network Defense, Threat Hunting, Windows/Linux Administration, AI and Cybersecurity.</p>
+          <p>Courses: Enterprise Network Design, Network Defense, Threat Hunting, Windows/Linux Administration, AI and
+            Cybersecurity.</p>
         </div>
         <div class="card" style="margin-top:10px;">
           <h3>Coventry University</h3>
@@ -164,7 +279,13 @@
         <div class="card">
           <h3>Provost Research Assistant - University of New Haven</h3>
           <p class="meta">Sep 2024 - Present - West Haven, CT</p>
-          <p>First-author researcher at ICDF2C on applying LLMs to structured representation and mapping of forensic artifacts into CASE/UCO knowledge graphs. Built the Indicator of Inconsistency (IoI) Framework, an ontology-driven SPARQL rule library detecting cross-artifact contradictions across MFT, USN journal, event logs, LNK files, and Office metadata; validated against 87M+ RDF triples across 5 antiforensic test cases.</p>
+          <p>First-author researcher at ICDF2C focused on antiforensics techniques, applying LLMs to structured
+            representation and mapping of forensic artifacts into CASE/UCO knowledge graphs. Built the Indicator of
+            Inconsistency (IoI) Framework, an ontology-driven SPARQL rule library for detecting cross-artifact
+            contradictions across MFT, USN journal, event logs, LNK files, and Office metadata; validated against 87M+
+            RDF triples across 5 curated antiforensic scenarios.</p>
+          <p class="meta"><a href="https://ioi-framework.github.io/" target="_blank" rel="noreferrer">IoI Framework
+              details</a></p>
           <ul class="pill-list">
             <li class="pill">CASE/UCO</li>
             <li class="pill">DFIR</li>
@@ -176,7 +297,11 @@
         <div class="card" style="margin-top:10px;">
           <h3>Security Support Analyst - Raechal Enterprise Pvt Ltd</h3>
           <p class="meta">May 2023 - Mar 2024 - Kathmandu, Nepal</p>
-          <p>Investigated a credential-harvesting phishing campaign across 3 endpoints, correlating spoofed domains, macro-enabled attachment hashes, and O365 login anomalies to confirm compromise within 4 hours. Triaged a ransomware precursor alert by identifying lateral SMB enumeration and abnormal PowerShell execution on a finance workstation; escalated with IOCs and containment recommendation before encryption stage. Managed ~15 weekly EDR/MFA tickets and tuned Falcon detection policies to reduce false positives.</p>
+          <p>Investigated a credential-harvesting phishing campaign across 3 endpoints, correlating spoofed domains,
+            macro-enabled attachment hashes, and O365 login anomalies to confirm compromise within 4 hours. Triaged a
+            ransomware precursor alert by identifying lateral SMB enumeration and abnormal PowerShell execution on a
+            finance workstation; escalated with IOCs and containment recommendation before encryption stage. Managed ~15
+            weekly EDR/MFA tickets and tuned Falcon detection policies to reduce false positives.</p>
           <ul class="pill-list">
             <li class="pill">CrowdStrike Falcon EDR</li>
             <li class="pill">Incident Response</li>
@@ -278,10 +403,32 @@
         <h2>/ Projects</h2>
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h3 style="margin:0;">Enterprise DFIR Case Investigation (Final Project)</h3>
+            <span class="badge">Completed</span>
+          </div>
+          <p class="meta">Comprehensive digital forensics investigation correlating suspect workstation, victim server,
+            memory/pagefile artifacts, and two packet captures to reconstruct intrusion sequence, shell activity, staged
+            payload execution, and database dump transfer timeline with hash verification.</p>
+          <ul class="pill-list">
+            <li class="pill">Autopsy</li>
+            <li class="pill">Volatility</li>
+            <li class="pill">Wireshark / tshark</li>
+            <li class="pill">MFT / USN Journal</li>
+            <li class="pill">Windows EVTX</li>
+            <li class="pill">SRUM</li>
+            <li class="pill">PowerShell Forensics</li>
+            <li class="pill">SHA-256 Integrity</li>
+            <li class="pill">Timeline Correlation</li>
+          </ul>
+        </div>
+        <div class="card" style="margin-top:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
             <h3 style="margin:0;">Flamingo Neck Networks Internal Pentest (Course Lab)</h3>
             <span class="badge">Completed</span>
           </div>
-          <p class="meta">Simulated internal pentest of 10.248.1.0/24 (ICS excluded). Chained default Postgres creds on storage host into RCE, then guest-as-admin misconfig to Pass-the-Hash for full AD compromise (NTDS.dit/krbtgt). Delivered 9 findings (2 Critical, 1 High) with remediation and topology.</p>
+          <p class="meta">Simulated internal pentest of 10.248.1.0/24 (ICS excluded). Chained default Postgres creds on
+            storage host into RCE, then guest-as-admin misconfig to Pass-the-Hash for full AD compromise
+            (NTDS.dit/krbtgt). Delivered 9 findings (2 Critical, 1 High) with remediation and topology.</p>
           <ul class="pill-list">
             <li class="pill">Nmap</li>
             <li class="pill">Nessus</li>
@@ -293,14 +440,16 @@
             <li class="pill">AD / Pass-the-Hash</li>
             <li class="pill">Reporting</li>
           </ul>
-          <p class="meta"><a href="flamingo-report/lab5final.pdf" target="_blank" rel="noreferrer">View report (PDF)</a></p>
+          <p class="meta"><a href="flamingo-report/lab5final.pdf" target="_blank" rel="noreferrer">View report (PDF)</a>
+          </p>
         </div>
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;">
             <h3 style="margin:0;">VectorProbe</h3>
             <span class="badge">In Progress</span>
           </div>
-          <p class="meta">Network enumeration tool that automates Nmap, Searchsploit, and enum4linux-ng for deep service discovery, exploit correlation, and AD-aware recon with Markdown reports.</p>
+          <p class="meta">Network enumeration tool that automates Nmap, Searchsploit, and enum4linux-ng for deep service
+            discovery, exploit correlation, and AD-aware recon with Markdown reports.</p>
           <ul class="pill-list">
             <li class="pill">Nmap</li>
             <li class="pill">Searchsploit</li>
@@ -308,14 +457,16 @@
             <li class="pill">AD Enum</li>
             <li class="pill">Python</li>
           </ul>
-          <p><a href="https://github.com/kismatkunwar89/VectorProbe" target="_blank" rel="noreferrer">View project</a></p>
+          <p><a href="https://github.com/kismatkunwar89/VectorProbe" target="_blank" rel="noreferrer">View project</a>
+          </p>
         </div>
         <div class="card" style="margin-top:10px;">
           <div style="display:flex;justify-content:space-between;align-items:center;">
             <h3 style="margin:0;">Threat Intelligence Platform</h3>
             <span class="badge">In Progress</span>
           </div>
-          <p class="meta">Flask app that aggregates AbuseIPDB, OTX, VirusTotal, and GreyNoise with risk scoring, MITRE ATT&CK and kill chain mapping, caching, and PDF/CSV/JSON exports.</p>
+          <p class="meta">Flask app that aggregates AbuseIPDB, OTX, VirusTotal, and GreyNoise with risk scoring, MITRE
+            ATT&CK and kill chain mapping, caching, and PDF/CSV/JSON exports.</p>
           <ul class="pill-list">
             <li class="pill">Flask</li>
             <li class="pill">Threat Intel</li>
@@ -323,14 +474,35 @@
             <li class="pill">APIs</li>
             <li class="pill">PDF/CSV/JSON</li>
           </ul>
-          <p><a href="https://github.com/kismatkunwar89/threat-intelligence-platform" target="_blank" rel="noreferrer">View project</a></p>
+          <p><a href="https://github.com/kismatkunwar89/threat-intelligence-platform" target="_blank"
+              rel="noreferrer">View project</a></p>
+        </div>
+        <div class="card" style="margin-top:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h3 style="margin:0;">UNC5537 Snowflake Threat Campaign Case Study</h3>
+            <span class="badge">Completed</span>
+          </div>
+          <p class="meta">Threat intelligence and incident response case study analyzing UNC5537's credential-based
+            attacks against Snowflake customer instances. Mapped attacker behavior to MITRE ATT&amp;CK, documented IoCs
+            (client IDs, SQL patterns, suspicious infrastructure), and built mitigation guidance with CIS Controls v8
+            and a course-of-action matrix.</p>
+          <ul class="pill-list">
+            <li class="pill">Threat Intelligence</li>
+            <li class="pill">MITRE ATT&amp;CK</li>
+            <li class="pill">CIS Controls v8</li>
+            <li class="pill">Cloud Security</li>
+            <li class="pill">IoC Development</li>
+            <li class="pill">Snowflake</li>
+          </ul>
+          <p class="meta"><a href="project1.html" target="_blank" rel="noreferrer">View case study</a></p>
         </div>
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;">
             <h3 style="margin:0;">Reliable, Scalable Network Design</h3>
             <span class="badge">Completed</span>
           </div>
-          <p class="meta">Redundant three-tier network for 170 users with OSPF, VLANs, ACLs, VPN, and AAA. 80% emulated in Cisco Packet Tracer.</p>
+          <p class="meta">Redundant three-tier network for 170 users with OSPF, VLANs, ACLs, VPN, and AAA. 80% emulated
+            in Cisco Packet Tracer.</p>
           <ul class="pill-list">
             <li class="pill">OSPF</li>
             <li class="pill">VLANs</li>
@@ -338,27 +510,31 @@
             <li class="pill">VPN</li>
             <li class="pill">AAA</li>
           </ul>
-          <p><a href="https://github.com/kismatkunwar89/NetworkProject" target="_blank" rel="noreferrer">View project</a></p>
+          <p><a href="https://github.com/kismatkunwar89/NetworkProject" target="_blank" rel="noreferrer">View
+              project</a></p>
         </div>
         <div class="card" style="margin-top:10px;">
           <div style="display:flex;justify-content:space-between;align-items:center;">
             <h3 style="margin:0;">Malware Research and Development</h3>
             <span class="badge">Completed</span>
           </div>
-          <p class="meta">APT evasion research with simulated C2 (Metasploit and Cobalt Strike), achieving high evasion on Windows testbeds.</p>
+          <p class="meta">APT evasion research with simulated C2 (Metasploit and Cobalt Strike), achieving high evasion
+            on Windows testbeds.</p>
           <ul class="pill-list">
             <li class="pill">Metasploit</li>
             <li class="pill">Cobalt Strike</li>
             <li class="pill">APT Evasion</li>
           </ul>
-          <p><a href="https://github.com/kismatkunwar89/FinalYearProject-Malware-Development" target="_blank" rel="noreferrer">View project</a></p>
+          <p><a href="https://github.com/kismatkunwar89/FinalYearProject-Malware-Development" target="_blank"
+              rel="noreferrer">View project</a></p>
         </div>
         <div class="card" style="margin-top:10px;">
           <div style="display:flex;justify-content:space-between;align-items:center;">
             <h3 style="margin:0;">Windows Server and Client Lab</h3>
             <span class="badge">Completed</span>
           </div>
-          <p class="meta">Virtualized lab with Server 2022 and Windows 10. Configured AD DS, DNS, DHCP, GPO, IIS, WSUS, FSRM, and PowerShell automation.</p>
+          <p class="meta">Virtualized lab with Server 2022 and Windows 10. Configured AD DS, DNS, DHCP, GPO, IIS, WSUS,
+            FSRM, and PowerShell automation.</p>
           <ul class="pill-list">
             <li class="pill">AD DS</li>
             <li class="pill">DNS</li>
@@ -374,15 +550,21 @@
         <div class="grid">
           <div class="card cert">
             <h3>CCNA</h3>
-            <p class="meta"><a href="https://www.credly.com/badges/c0a58046-8207-4140-bdb3-df9d6bcf4d25/linked_in_profile" target="_blank" rel="noreferrer">View badge</a></p>
+            <p class="meta"><a
+                href="https://www.credly.com/badges/c0a58046-8207-4140-bdb3-df9d6bcf4d25/linked_in_profile"
+                target="_blank" rel="noreferrer">View badge</a></p>
           </div>
           <div class="card cert">
             <h3>AZ-900</h3>
-            <p class="meta"><a href="https://learn.microsoft.com/en-us/users/kismatkunwar-6406/credentials/e499a39dc338e04f" target="_blank" rel="noreferrer">View badge</a></p>
+            <p class="meta"><a
+                href="https://learn.microsoft.com/en-us/users/kismatkunwar-6406/credentials/e499a39dc338e04f"
+                target="_blank" rel="noreferrer">View badge</a></p>
           </div>
           <div class="card cert">
             <h3>ISC2 Certified in Cybersecurity</h3>
-            <p class="meta"><a href="https://www.credly.com/badges/1dc588c2-1875-4dca-b3b2-0db04ac27849/linked_in_profile" target="_blank" rel="noreferrer">View badge</a></p>
+            <p class="meta"><a
+                href="https://www.credly.com/badges/1dc588c2-1875-4dca-b3b2-0db04ac27849/linked_in_profile"
+                target="_blank" rel="noreferrer">View badge</a></p>
           </div>
         </div>
       </section>
@@ -393,7 +575,8 @@
           <p>Always open to chat about security engineering, DFIR, or networking projects.</p>
           <div class="btn-row">
             <a class="btn" href="mailto:kismatkunwar89@gmail.com">Email</a>
-            <a class="btn" href="https://www.linkedin.com/in/kunwarkismat/" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a class="btn" href="https://www.linkedin.com/in/kunwarkismat/" target="_blank"
+              rel="noreferrer">LinkedIn</a>
             <a class="btn" href="https://github.com/kismatkunwar89" target="_blank" rel="noreferrer">GitHub</a>
             <a class="btn" href="resume.pdf" download>Resume (PDF)</a>
           </div>
@@ -426,4 +609,5 @@
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
+
 </html>

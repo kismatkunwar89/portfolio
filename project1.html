@@ -1,0 +1,829 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UNC5537 Snowflake Case Study — Kismat Kunwar</title>
+    <meta name="description"
+        content="Case study on UNC5537 credential-based threat campaign targeting Snowflake customer instances. MITRE ATT&CK mapping, IoCs, and CIS Controls v8 mitigations.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #0f172a;
+            --muted: #475569;
+            --accent: #1d4ed8;
+            --border: #e2e8f0;
+            --soft: #f8fafc;
+            --radius: 12px;
+            --max: 860px;
+            --code-bg: #f1f5f9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.75;
+            font-size: 16px;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* ── HEADER ── */
+        .site-header {
+            border-bottom: 1px solid var(--border);
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--soft);
+        }
+
+        .site-header .logo {
+            font-family: 'Space Mono', monospace;
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .site-header nav a {
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 600;
+            margin-left: 20px;
+        }
+
+        .site-header nav a:hover {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        /* ── HERO BAND ── */
+        .hero-band {
+            background: var(--soft);
+            border-bottom: 1px solid var(--border);
+            padding: 42px 24px 36px;
+            text-align: center;
+        }
+
+        .hero-band .eyebrow {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .hero-band h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(20px, 3vw, 28px);
+            line-height: 1.3;
+            margin-bottom: 14px;
+        }
+
+        .meta-pills {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .meta-pill {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: #fff;
+            color: var(--muted);
+        }
+
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tag {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 999px;
+            background: #eef2ff;
+            color: var(--accent);
+            border: 1px solid #c7d2fe;
+        }
+
+        /* ── LAYOUT ── */
+        .page {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+            align-items: start;
+        }
+
+        @media (max-width: 760px) {
+            .page {
+                grid-template-columns: 1fr;
+            }
+
+            .toc-nav {
+                display: none;
+            }
+        }
+
+        /* ── TOC SIDEBAR ── */
+        .toc-nav {
+            position: sticky;
+            top: 24px;
+            background: var(--soft);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+        }
+
+        .toc-nav h4 {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .toc-nav ol {
+            list-style: decimal;
+            padding-left: 16px;
+        }
+
+        .toc-nav li {
+            margin-bottom: 6px;
+        }
+
+        .toc-nav a {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--muted);
+        }
+
+        .toc-nav a:hover {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* ── CONTENT ── */
+        .content h2 {
+            font-family: 'Space Mono', monospace;
+            font-size: 18px;
+            margin: 36px 0 12px;
+            padding-top: 8px;
+            border-top: 2px solid var(--border);
+            color: var(--text);
+        }
+
+        .content h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin: 24px 0 8px;
+            color: var(--text);
+        }
+
+        .content h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--muted);
+            margin: 18px 0 6px;
+        }
+
+        .content p {
+            margin-bottom: 14px;
+        }
+
+        .content ul,
+        .content ol {
+            padding-left: 22px;
+            margin-bottom: 14px;
+        }
+
+        .content li {
+            margin-bottom: 5px;
+        }
+
+        .content strong {
+            font-weight: 700;
+        }
+
+        .content em {
+            font-style: italic;
+        }
+
+        .content hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 28px 0;
+        }
+
+        /* ── CALLOUT BOXES ── */
+        .callout {
+            background: #fefce8;
+            border-left: 4px solid #eab308;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+        }
+
+        .callout.info {
+            background: #eff6ff;
+            border-color: var(--accent);
+        }
+
+        .callout.danger {
+            background: #fef2f2;
+            border-color: #ef4444;
+        }
+
+        /* ── CODE ── */
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            margin-bottom: 16px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        code {
+            font-family: 'Space Mono', 'Courier New', monospace;
+            font-size: 13px;
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: inherit;
+        }
+
+        /* ── TABLES ── */
+        .table-wrap {
+            overflow-x: auto;
+            margin-bottom: 20px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        thead {
+            background: var(--soft);
+        }
+
+        th {
+            text-align: left;
+            padding: 10px 14px;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--muted);
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: var(--soft);
+        }
+
+        /* ── IP GRID ── */
+        .ip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .ip-chip {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        /* ── IOC BADGES ── */
+        .ioc-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .ioc-chip {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            padding: 5px 12px;
+            border-radius: 6px;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+        }
+
+        /* ── REFERENCES ── */
+        .ref-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .ref-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .ref-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <span class="logo">Kismat Kunwar</span>
+        <nav>
+            <a href="../">← Portfolio</a>
+        </nav>
+    </header>
+
+    <div class="hero-band">
+        <p class="eyebrow">Cyber Threat Intelligence &amp; Incident Response</p>
+        <h1>UNC5537 Threat Campaign Targeting<br>Snowflake Customer Instances</h1>
+        <div class="meta-pills">
+            <span class="meta-pill">Kismat Kunwar &amp; Yash Chetanbhai Barot</span>
+            <span class="meta-pill">CSYS 6684 — Tagliatela College of Engineering</span>
+            <span class="meta-pill">March 23, 2026</span>
+        </div>
+        <div class="tag-row">
+            <span class="tag">Threat Intelligence</span>
+            <span class="tag">MITRE ATT&amp;CK</span>
+            <span class="tag">CIS Controls v8</span>
+            <span class="tag">Cloud Security</span>
+            <span class="tag">IoC Development</span>
+            <span class="tag">Snowflake</span>
+        </div>
+    </div>
+
+    <div class="page">
+
+        <!-- TOC SIDEBAR -->
+        <nav class="toc-nav">
+            <h4>Contents</h4>
+            <ol>
+                <li><a href="#exec-summary">Executive Summary</a></li>
+                <li><a href="#threat-intel-plan">Threat Intel Plan</a></li>
+                <li><a href="#incident-analysis">Incident Analysis</a></li>
+                <li><a href="#mitre">MITRE ATT&amp;CK Mapping</a></li>
+                <li><a href="#iocs">Indicators of Compromise</a></li>
+                <li><a href="#mitigations">Mitigations</a></li>
+                <li><a href="#conclusion">Conclusion</a></li>
+                <li><a href="#references">References</a></li>
+            </ol>
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <article class="content">
+
+            <!-- EXECUTIVE SUMMARY -->
+            <h2 id="exec-summary">Executive Summary</h2>
+
+            <h3>Case Overview</h3>
+            <p>A financially motivated threat actor known as <strong>UNC5537</strong> executed a systematic
+                credential-based campaign against approximately <strong>165 Snowflake customer instances</strong> in
+                mid-April 2024. The attack did not exploit any weakness in Snowflake's core infrastructure. Instead,
+                UNC5537 used legitimate credentials stolen by infostealer malware — including <strong>Vidar, RisePro,
+                    RedLine, Raccoon Stealer, Lumma, and Metastealer</strong> — many harvested as far back as 2020 and
+                still valid due to inadequate credential hygiene. High-profile victims included <strong>AT&amp;T,
+                    Ticketmaster, and Santander Bank</strong>; stolen data was sold in cybercrime forums and used to
+                extort the affected organizations.</p>
+
+            <h3>Most Important Findings</h3>
+            <p>Three compounding failures enabled the breach:</p>
+            <ul>
+                <li><strong>No mandatory MFA</strong> — attackers authenticated with stolen passwords alone.</li>
+                <li><strong>Stale credentials</strong> — many credentials dated to 2020 and had never been rotated.</li>
+                <li><strong>No network allow-lists</strong> — access was not restricted to trusted IP addresses.</li>
+            </ul>
+            <p>Attackers deployed custom reconnaissance tooling (<strong>FROSTBITE</strong>) alongside legitimate
+                database utilities. Critically, many stolen credentials originated from unmanaged contractor devices
+                with no corporate EDR coverage, leaving organizations with no visibility into the initial compromise.
+            </p>
+
+            <h3>Recommended Mitigation Strategies</h3>
+            <ul>
+                <li>Enforce mandatory MFA on all cloud platform accounts, including third-party contractors.</li>
+                <li>Implement credential rotation policies and monitor dark web markets for exposed credentials.</li>
+                <li>Apply strict network allow-lists to restrict cloud database access to trusted IP ranges.</li>
+                <li>Enforce device posture and EDR requirements for all contractor and remote endpoints.</li>
+                <li>Deploy audit log monitoring with behavioral alerts for suspicious SQL query patterns.</li>
+            </ul>
+
+            <hr>
+
+            <!-- THREAT INTELLIGENCE PLAN -->
+            <h2 id="threat-intel-plan">Threat Intelligence Plan</h2>
+            <p>The threat intelligence plan was structured across strategic, operational, and tactical levels in
+                response to the UNC5537 campaign.</p>
+
+            <h3>Intelligence Questions</h3>
+
+            <h4>Strategic</h4>
+            <ol>
+                <li>What is the organization's true exposure to third-party and contractor risk?</li>
+                <li>Does the organization understand its liability under the cloud shared responsibility model?</li>
+                <li>What is the potential financial and reputational impact of a large-scale breach and extortion
+                    attempt?</li>
+                <li>What are the legal and compliance implications?</li>
+            </ol>
+
+            <h4>Operational</h4>
+            <ol>
+                <li>Is MFA strictly and universally enforced across all cloud accounts?</li>
+                <li>What is the process for credential lifecycle management and rotation?</li>
+                <li>Have network allow-lists been implemented to restrict database access to trusted locations?</li>
+                <li>Is the organization actively monitoring exposed credentials on dark web forums and markets?</li>
+                <li>Do existing security systems detect unauthorized access using compromised credentials?</li>
+                <li>How often are access controls and permissions reviewed and updated?</li>
+            </ol>
+
+            <h4>Tactical</h4>
+            <ol>
+                <li>Are audit logs monitored for rare IP addresses, anomalous login times, or impossible travel?</li>
+                <li>Can connections from unauthorized or unrecognized client applications be flagged?</li>
+                <li>Are spikes in reconnaissance and exfiltration commands being monitored in query logs?</li>
+                <li>Are anomalous privilege errors indicating unauthorized enumeration attempts being detected?</li>
+                <li>Are authentication attempts from known commercial VPN providers being flagged?</li>
+                <li>Are authentication attempts targeting locked, terminated, or dormant accounts being flagged?</li>
+            </ol>
+
+            <hr>
+
+            <!-- INCIDENT ANALYSIS -->
+            <h2 id="incident-analysis">Incident Analysis</h2>
+
+            <p>UNC5537 targeted Snowflake customer environments using a consistent, repeatable methodology. Rather than
+                exploiting platform vulnerabilities, attackers authenticated directly using credentials harvested from
+                historical infostealer infections on contractor devices.</p>
+
+            <h3>Initial Access</h3>
+            <p>Credentials stolen via Vidar, RisePro, RedLine, Raccoon Stealer, Lumma, and Metastealer — some dating to
+                2020 — remained valid due to absent MFA and no network allow-lists. Infected contractor devices bridged
+                personal and professional use, exposing credentials across organizations.</p>
+
+            <h3>Reconnaissance</h3>
+            <p>Attackers authenticated via the native Snowflake web interface (<strong>SnowSight</strong>) and
+                <strong>SnowSQL</strong> CLI. They deployed <strong>FROSTBITE</strong> (client application ID:
+                <code>rapeflake</code>, available in .NET and Java) and <strong>DBeaver Ultimate</strong> to enumerate
+                users, roles, databases, and tables.</p>
+
+            <h3>Data Staging &amp; Exfiltration</h3>
+            <p>Standard SQL commands were used to identify, isolate, compress, and exfiltrate data:</p>
+            <pre><code>SHOW TABLES                          -- enumerate databases/tables
+SELECT * FROM &lt;table&gt;                -- extract targeted data
+CREATE TEMP STAGE                    -- create staging area
+COPY INTO @stage COMPRESSION=GZIP   -- compress and stage data
+GET @stage                           -- download to attacker infrastructure</code></pre>
+
+            <h3>Infrastructure</h3>
+            <p>Traffic was anonymized through <strong>Mullvad</strong> and <strong>Private Internet Access
+                    (PIA)</strong> VPNs. Exfiltrated data was transferred to a Moldovan VPS (<strong>ALEXHOST
+                    SRL</strong>) and cloud storage (<strong>MEGA</strong>).</p>
+
+            <hr>
+
+            <!-- MITRE ATT&CK -->
+            <h2 id="mitre">MITRE ATT&amp;CK Mapping</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tactic</th>
+                            <th>Technique</th>
+                            <th>MITRE ID</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Reconnaissance</td>
+                            <td>Gather Victim Identity Information</td>
+                            <td><code>T1589.001</code></td>
+                            <td>Credentials from infostealer campaigns (Vidar, RisePro, RedLine, Raccoon Stealer, Lumma,
+                                Metastealer), some dating to 2020</td>
+                        </tr>
+                        <tr>
+                            <td>Initial Access</td>
+                            <td>Valid Accounts</td>
+                            <td><code>T1078.003</code></td>
+                            <td>No MFA; direct login via SnowSight and SnowSQL with no network allow-lists</td>
+                        </tr>
+                        <tr>
+                            <td>Discovery</td>
+                            <td>Cloud Infrastructure Discovery</td>
+                            <td><code>T1580</code></td>
+                            <td>SHOW TABLES; FROSTBITE (rapeflake) for user/role/IP enumeration</td>
+                        </tr>
+                        <tr>
+                            <td>Collection</td>
+                            <td>Data from Cloud Storage</td>
+                            <td><code>T1530</code></td>
+                            <td>SELECT * FROM to isolate targeted data</td>
+                        </tr>
+                        <tr>
+                            <td>Collection</td>
+                            <td>Archive Collected Data</td>
+                            <td><code>T1560.001</code></td>
+                            <td>COPY INTO with COMPRESSION=GZIP</td>
+                        </tr>
+                        <tr>
+                            <td>Exfiltration</td>
+                            <td>Exfiltration Over Alternative Protocol</td>
+                            <td><code>T1048</code></td>
+                            <td>GET command to attacker-controlled VPS via ALEXHOST and MEGA</td>
+                        </tr>
+                        <tr>
+                            <td>Impact</td>
+                            <td>Extortion</td>
+                            <td><code>T1657</code></td>
+                            <td>Victims extorted; data advertised for sale on cybercrime forums</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr>
+
+            <!-- IOCS -->
+            <h2 id="iocs">Indicators of Compromise</h2>
+
+            <h3>Client Application IDs</h3>
+            <p>Connections from these client applications should be scrutinized and blocked if unauthorized:</p>
+            <ul class="ioc-list">
+                <li class="ioc-chip">rapeflake (.NET)</li>
+                <li class="ioc-chip">rapeflake (Java)</li>
+                <li class="ioc-chip">DBeaver_DBeaverUltimate</li>
+                <li class="ioc-chip">Go 1.1.5</li>
+                <li class="ioc-chip">JDBC 3.13.30</li>
+                <li class="ioc-chip">JDBC 3.15.0</li>
+                <li class="ioc-chip">PythonConnector 2.7.6</li>
+                <li class="ioc-chip">SnowSQL 1.2.32</li>
+                <li class="ioc-chip">Snowsight AI</li>
+                <li class="ioc-chip">Snowsight Al</li>
+                <li class="ioc-chip">Snowflake UI</li>
+            </ul>
+
+            <h3>Behavioral IoCs — Query Log Observables</h3>
+            <p>Monitor <code>ACCOUNT_USAGE.QUERY_HISTORY</code> and <code>READER_ACCOUNT_USAGE.QUERY_HISTORY</code> for
+                the following commands executed sequentially by a single user account:</p>
+            <ul class="ioc-list">
+                <li class="ioc-chip">SHOW TABLES</li>
+                <li class="ioc-chip">SELECT * FROM</li>
+                <li class="ioc-chip">LIST / LS</li>
+                <li class="ioc-chip">CREATE TEMP STAGE</li>
+                <li class="ioc-chip">COPY INTO</li>
+                <li class="ioc-chip">GET</li>
+            </ul>
+
+            <h3>Suspect IP Addresses</h3>
+            <p>The threat actor routed attacks through the following identified IPv4 addresses:</p>
+            <div class="ip-grid">
+                <span class="ip-chip">5.47.87.202</span>
+                <span class="ip-chip">19.44.136.56</span>
+                <span class="ip-chip">37.19.210.21</span>
+                <span class="ip-chip">45.27.26.205</span>
+                <span class="ip-chip">45.86.221.146</span>
+                <span class="ip-chip">45.134.142.200</span>
+                <span class="ip-chip">45.155.91.99</span>
+                <span class="ip-chip">66.115.18.247</span>
+                <span class="ip-chip">79.127.217.44</span>
+                <span class="ip-chip">87.249.134.11</span>
+                <span class="ip-chip">93.115.0.49</span>
+                <span class="ip-chip">96.44.191.140</span>
+                <span class="ip-chip">102.165.16.161</span>
+                <span class="ip-chip">104.129.24.124</span>
+                <span class="ip-chip">146.70.117.56</span>
+                <span class="ip-chip">146.70.117.210</span>
+                <span class="ip-chip">146.70.119.24</span>
+                <span class="ip-chip">146.70.165.227</span>
+                <span class="ip-chip">146.70.166.176</span>
+                <span class="ip-chip">154.47.30.150</span>
+                <span class="ip-chip">169.150.201.25</span>
+                <span class="ip-chip">176.123.6.193</span>
+                <span class="ip-chip">176.220.186.152</span>
+                <span class="ip-chip">184.147.100.29</span>
+                <span class="ip-chip">185.213.155.241</span>
+                <span class="ip-chip">185.248.85.59</span>
+                <span class="ip-chip">194.230.144.50</span>
+                <span class="ip-chip">194.230.144.126</span>
+                <span class="ip-chip">194.230.145.76</span>
+                <span class="ip-chip">194.230.148.99</span>
+                <span class="ip-chip">194.230.158.107</span>
+                <span class="ip-chip">194.230.158.178</span>
+                <span class="ip-chip">194.230.160.5</span>
+                <span class="ip-chip">194.230.160.237</span>
+                <span class="ip-chip">198.44.129.82</span>
+                <span class="ip-chip">198.44.136.82</span>
+                <span class="ip-chip">198.54.131.152</span>
+                <span class="ip-chip">206.217.205.49</span>
+            </div>
+
+            <h3>Associated Malware Families</h3>
+            <ul>
+                <li>Vidar</li>
+                <li>RisePro</li>
+                <li>RedLine</li>
+                <li>Raccoon Stealer</li>
+                <li>Lumma</li>
+                <li>Metastealer</li>
+            </ul>
+
+            <hr>
+
+            <!-- MITIGATIONS -->
+            <h2 id="mitigations">Mitigations</h2>
+            <p>Mitigations are mapped to <strong>CIS Controls Version 8</strong> (Center for Internet Security, 2021).
+                Key controls: 5, 6, 8, 10, 12, 13, and 15.</p>
+
+            <h3>CIS Control 6 — Access Control Management</h3>
+            <p>The absence of MFA was the most critical failure, enabling authentication with stolen passwords alone.
+            </p>
+            <ul>
+                <li><strong>Safeguard 6.3:</strong> Require MFA for all externally facing applications.</li>
+                <li><strong>Safeguard 6.4:</strong> Require MFA for all remote network access.</li>
+                <li><strong>Safeguard 6.5:</strong> Require MFA for all administrative accounts, including
+                    third-party-hosted ones.</li>
+            </ul>
+
+            <h3>CIS Control 5 — Account Management</h3>
+            <p>Attackers used credentials valid since 2020 due to absent rotation policies.</p>
+            <ul>
+                <li><strong>Safeguard 5.1:</strong> Maintain a validated inventory of all accounts, reviewed quarterly.
+                </li>
+                <li><strong>Safeguard 5.3:</strong> Disable accounts inactive for more than 45 days.</li>
+            </ul>
+
+            <h3>CIS Controls 12 &amp; 13 — Network Defense</h3>
+            <p>Breached environments lacked allow-lists, exposing them to untrusted IPs and commercial VPN endpoints.
+            </p>
+            <ul>
+                <li><strong>Safeguard 12.2:</strong> Implement segmented, secure network architecture.</li>
+                <li><strong>Safeguard 13.5:</strong> Enforce access controls for all remote assets accessing enterprise
+                    resources.</li>
+            </ul>
+
+            <h3>CIS Control 8 — Audit Log Management</h3>
+            <p>UNC5537 used standard SQL commands detectable via query logs.</p>
+            <ul>
+                <li><strong>Safeguard 8.11:</strong> Review audit logs weekly for anomalies.</li>
+                <li><strong>Safeguard 8.12:</strong> Collect logs directly from cloud service providers such as
+                    Snowflake.</li>
+            </ul>
+
+            <h3>CIS Control 10 — Malware Defenses</h3>
+            <p>Initial credential theft occurred via infostealer infections on unmanaged contractor devices.</p>
+            <ul>
+                <li><strong>Safeguards 10.1 &amp; 10.2:</strong> Deploy and maintain centrally managed anti-malware
+                    software with automatic signature updates across all enterprise assets.</li>
+            </ul>
+
+            <h3>CIS Control 15 — Service Provider Management</h3>
+            <p>Unmonitored contractor devices provided the initial access vector.</p>
+            <ul>
+                <li><strong>Safeguard 15.2:</strong> Maintain a policy for managing service providers.</li>
+                <li><strong>Safeguard 15.4:</strong> Embed minimum security requirements into all third-party contracts.
+                </li>
+            </ul>
+
+            <hr>
+
+            <!-- CONCLUSION -->
+            <h2 id="conclusion">Conclusion</h2>
+            <p>The UNC5537 campaign demonstrates that sophisticated, large-scale data theft does not require software
+                vulnerabilities — valid credentials and absent controls are sufficient. Three compounding failures
+                enabled the breach: no mandatory MFA, weak credential lifecycle management allowing stolen passwords to
+                remain valid for years, and no network allow-lists restricting access to trusted destinations.</p>
+            <p>The use of unmanaged contractor devices as the initial access vector highlights a critical gap in
+                third-party risk management. By mapping the campaign to MITRE ATT&amp;CK and applying CIS Controls v8
+                across each stage of the Cyber Kill Chain, the controls needed to detect, prevent, and disrupt this
+                attack were shown to be both available and accessible.</p>
+            <div class="callout info">
+                <strong>Key Takeaway:</strong> Identity is the primary perimeter in cloud environments. Organizations
+                that do not manage it as strictly as their network boundaries will remain vulnerable to organized,
+                financially motivated threat actors like UNC5537.
+            </div>
+
+            <hr>
+
+            <!-- REFERENCES -->
+            <h2 id="references">References</h2>
+            <ul class="ref-list">
+                <li>AlienVault. (n.d.). <em>UNC5537 targets Snowflake customer instances for data theft and
+                        extortion.</em> LevelBlue Open Threat Exchange. <a
+                        href="https://otx.alienvault.com/pulse/6665c8b01fbe7e6e8e9b4c3a" target="_blank"
+                        rel="noreferrer">otx.alienvault.com</a></li>
+                <li>Anvilogic. (2024, June 10). <em>Credential compromise at core of Snowflake's incident.</em> <a
+                        href="https://www.anvilogic.com/threat-reports/credential-compromise" target="_blank"
+                        rel="noreferrer">anvilogic.com</a></li>
+                <li>Center for Internet Security. (2021). <em>CIS critical security controls v8.</em> <a
+                        href="https://www.cisecurity.org/controls/v8" target="_blank"
+                        rel="noreferrer">cisecurity.org</a></li>
+                <li>DeepRoot Technologies. (n.d.). <em>UNC5537: Snowflake database threat campaign.</em> <a
+                        href="https://deeproottech.io/unc5537-snowflake-database-threat-campaign/" target="_blank"
+                        rel="noreferrer">deeproottech.io</a></li>
+                <li>Google Threat Intelligence Group. (2024, June 10). <em>UNC5537 targets Snowflake customer instances
+                        for data theft and extortion.</em> Google Cloud Blog. <a
+                        href="https://cloud.google.com/blog/topics/threat-intelligence/unc5537-snowflake-data-theft-extortion"
+                        target="_blank" rel="noreferrer">cloud.google.com</a></li>
+                <li>Lyons, J. (2024, June 11). <em>Snowflake customers not using MFA are not unique — over 165 of them
+                        have been compromised.</em> The Register. <a
+                        href="https://www.theregister.com/2024/06/11/crims_targeting_snowflake_customers/"
+                        target="_blank" rel="noreferrer">theregister.com</a></li>
+                <li>Montini, H. (2024, July 19). <em>Snowflake data breach.</em> Proven Data. <a
+                        href="https://www.provendata.com/blog/snowflake-data-breach" target="_blank"
+                        rel="noreferrer">provendata.com</a></li>
+                <li>Mphasis. (2024, June 17). <em>UNC5537</em> [PDF]. <a
+                        href="https://www.mphasis.com/content/dam/mphasis-com/global/en/home/services/cybersecurity/june-17-19-unc5537.pdf"
+                        target="_blank" rel="noreferrer">mphasis.com</a></li>
+                <li>Pernet, C. (2024, June 12). <em>Mandiant report: Snowflake users targeted for data theft and
+                        extortion.</em> TechRepublic. <a
+                        href="https://www.techrepublic.com/article/mandiant-snowflake-data-theft/" target="_blank"
+                        rel="noreferrer">techrepublic.com</a></li>
+            </ul>
+
+        </article>
+    </div>
+
+    <footer>
+        &copy; <span id="yr"></span> Kismat Kunwar &nbsp;·&nbsp; <a href="../">Back to Portfolio</a>
+    </footer>
+    <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+</body>
+
+</html>
