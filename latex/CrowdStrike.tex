@@ -1,0 +1,91 @@
+\documentclass{resume2}
+
+\usepackage[left=0.45in,top=0.25in,right=0.45in,bottom=0.2in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\linespread{0.89}
+
+\name{Kismat Kunwar}
+\contact{
+  West Haven, CT \quad\textbullet\quad
+  \href{mailto:kismatkunwar89@gmail.com}{kismatkunwar89@gmail.com} \quad\textbullet\quad
+  \href{https://linkedin.com/in/kunwarkismat}{linkedin.com/in/kunwarkismat} \quad\textbullet\quad
+  \href{https://kismatkunwar89.github.io/portfolio/}{Portfolio}
+}
+
+\begin{document}
+\makeheader
+
+%                -
+% SUMMARY
+%                -
+\section{Summary}
+Cybersecurity graduate with hands-on experience deploying and operationalizing CrowdStrike Falcon EDR across enterprise endpoints, configuring policies, and supporting IT teams through implementation, troubleshooting, and remediation. Experienced scripting in Python, Bash, and PowerShell to automate security workflows and build API-driven integrations. Strong communicator with practice presenting technical findings to both engineering and non-technical stakeholders.
+
+%                -
+% EDUCATION
+%                -
+\section{Education}
+
+\textbf{Master's in Cyber Security} (GPA: 3.9) \hfill Aug 2024 -- Present\\
+University of New Haven, West Haven, CT
+
+\medskip
+\textbf{Bachelor's in Cyber Security, First Class Honors} (GPA: 3.96) \hfill May 2020 -- Jun 2023\\
+Coventry University, UK
+
+%                -
+% SKILLS
+%                -
+\section{Skills}
+
+\textbf{Proficient with:} CrowdStrike Falcon EDR (deployment, sensor configuration, policy tuning, alert triage), endpoint security (Windows, Linux, Mac), software deployment (PDQ Deploy, SCCM, Group Policy, PsExec), Python, Bash, PowerShell, Active Directory, MFA, vulnerability management, MITRE ATT\&CK, NIST CSF
+
+\smallskip
+\textbf{Familiar with:} Falcon APIs, Falcon Exposure Management, SIEM (ELK, Splunk, Sentinel, LogScale), Azure (Entra ID/AD, Defender, SSO), AWS, CIS Benchmarks, network defense (Wireshark, tcpdump, Suricata, Snort), penetration testing (Kali Linux, Metasploit, Burp Suite), Docker, DFIR (Autopsy, EZ Tools), AI coding tools (Claude Code, Codex)
+
+\smallskip
+\textbf{Certifications:} (ISC)\textsuperscript{2} CC \textbullet{} Cisco CCNA \textbullet{} Microsoft Azure Fundamentals (AZ-900) \quad \textbf{CTF:} NCAE CyberGames (forensics, web exploitation, network analysis)
+
+%                -
+% EXPERIENCE
+%                -
+\section{Experience}
+
+\textbf{Provost Research Assistant} \hfill Sep 2024 -- Present\\
+\textit{Tagliatela College of Engineering, University of New Haven, West Haven, CT}
+\begin{itemize}[leftmargin=1.2em,itemsep=-3pt,topsep=1pt]
+  \item Engineered Python pipelines (GPT-4/DeepSeek/Gemini) to extract and structure forensic artifacts from MFT, EVTX, LNK, and Office metadata; designed reproducible test harnesses, documented benchmarks, and produced structured findings reports for academic and practitioner audiences.
+  \item Built the Indicator of Inconsistency (IoI) SPARQL framework detecting cross-artifact contradictions across 87M+ RDF triples and 5 antiforensic test scenarios; authored and iterated on technical collateral summarizing methodology and results.
+\end{itemize}
+
+\smallskip
+\textbf{Security Support Analyst} \hfill May 2023 -- Mar 2024\\
+\textit{Raechal Enterprise Pvt Ltd, Kathmandu, Nepal}
+\begin{itemize}[leftmargin=1.2em,itemsep=-3pt,topsep=1pt]
+  \item Deployed CrowdStrike Falcon EPP and EDR across 9+ client environments totaling 1,000+ endpoints using PDQ Deploy and Group Policy; configured Host Groups and Prevention Policies, assisted with SIEM integration, and provided on-site configuration and troubleshooting support.
+  \item Deployed ManageEngine MFA across client environments and assisted with small-scale SIEM configuration; delivered technical presentations on Falcon capabilities to prospective clients and collaborated with the sales team on client acquisition.
+  \item Investigated phishing and ransomware precursor incidents using Falcon telemetry; correlated IOCs, escalated containment guidance, and delivered structured incident reports to technical and management stakeholders within SLA.
+\end{itemize}
+
+%                -
+% PROJECTS
+%                -
+\section{Projects}
+
+\textbf{Threat Intelligence Platform} \hfill In Progress \textbar\ \href{https://github.com/kismatkunwar89/threat-intelligence-platform}{Link}\\
+Python/Flask app integrating AbuseIPDB, OTX, VirusTotal, and GreyNoise APIs with automated risk scoring, MITRE ATT\&CK mapping, and PDF/CSV/JSON export; built to demonstrate Falcon API-style scripting and multi-source integration patterns.
+
+\smallskip
+\textbf{VectorProbe} \hfill In Progress \textbar\ \href{https://github.com/kismatkunwar89/VectorProbe}{Link}\\
+Python tool chaining Nmap, Searchsploit, and enum4linux-ng for automated service discovery, vulnerability correlation, and Markdown report generation; designed for extensibility across additional data sources.
+
+\smallskip
+\textbf{Flamingo Neck Networks Internal Pentest} \hfill Course Lab \textbar\ \href{https://kismatkunwar89.github.io/portfolio/flamingo-report/lab5final.pdf}{Link}\\
+Executed internal assessment (10.248.1.0/24); chained exploitable CVEs from initial access through full AD domain compromise; delivered 9 findings (2 Critical) with CVSS scoring, remediation priorities, and stakeholder-ready executive summary.
+
+\smallskip
+\textbf{Enterprise DFIR Case Investigation} \hfill Graduate Final Project \textbar\ \href{https://kismatkunwar89.github.io/portfolio/dfir-final.html}{Link}\\
+Led end-to-end investigation of enterprise web-server compromise: correlated MFT/USN, EVTX, Volatility, and PCAP evidence; translated findings into remediation actions and security-posture recommendations.
+
+\end{document}
