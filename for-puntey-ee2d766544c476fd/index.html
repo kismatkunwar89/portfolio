@@ -83,13 +83,13 @@
       <div style="position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-bottom: 88px; animation: riseIn 0.7s ease both;">
         <div style="position: absolute; left: 50%; top: 10px; width: 12px; height: 12px; border-radius: 50%; background: #b5784f; transform: translateX(-50%); box-shadow: 0 0 0 5px #f3ede4; z-index: 2;"></div>
 
-        <div style="padding: 0 36px 0 0; grid-column: {{ m.mediaCol }}; grid-row: 1;">
+        <div style="padding: {{ m.mediaPad }}; grid-column: {{ m.mediaCol }}; grid-row: 1;">
           <div style="aspect-ratio: 4 / 5; border-radius: 4px; overflow: hidden; background: #e7ddcd; box-shadow: 0 12px 34px -16px rgba(80,50,30,0.4);">
             <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ m.img }}" alt="{{ m.title }}" class="gimg" style="width: 100%; height: 100%; object-fit: cover; display: block;">
           </div>
         </div>
 
-        <div style="padding: 6px 0 0 36px; grid-column: {{ m.textCol }}; grid-row: 1; text-align: {{ m.align }};">
+        <div style="padding: {{ m.textPad }}; grid-column: {{ m.textCol }}; grid-row: 1; text-align: {{ m.align }}; min-width: 0; overflow-wrap: break-word;">
           <div style="font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #b5784f; margin-bottom: 10px;">{{ m.date }}</div>
           <h3 style="font-family: 'Fraunces', serif; font-weight: 400; font-size: 26px; line-height: 1.12; margin: 0 0 12px; letter-spacing: -0.01em;">{{ m.title }}</h3>
           <p style="font-size: 16.5px; line-height: 1.6; color: #6b5f54; margin: 0;">{{ m.caption }}</p>
@@ -281,6 +281,10 @@ class Component extends DCLogic {
         mediaCol: left ? 1 : 2,
         textCol: left ? 2 : 1,
         align: left ? "left" : "right",
+        // Padding sits on the inner (centre) side of each column so content
+        // never runs off the page edge on either side.
+        mediaPad: left ? "0 36px 0 0" : "0 0 0 36px",
+        textPad: left ? "6px 0 0 36px" : "6px 36px 0 0",
       };
     });
 
