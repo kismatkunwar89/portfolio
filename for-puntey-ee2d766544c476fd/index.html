@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>For my puntey</title>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Newsreader:ital,opsz@0,6..72;1,6..72&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; }
+  @keyframes riseIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .gimg { transition: transform .5s ease, filter .5s ease; filter: saturate(0.96); }
+  .gimg:hover { transform: scale(1.02); filter: saturate(1.08); }
+  .vcard:hover .vplay { transform: scale(1.08); background: #b5784f; color: #fff; }
+</style>
+</helmet>
+
+<div style="background: #f3ede4; color: #2b2622; font-family: 'Newsreader', Georgia, serif; min-height: 100vh; width: 100%; overflow-x: hidden;">
+
+  <!-- BLESSING -->
+  <div style="text-align: center; padding: 28px 32px 0; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.18em; color: #a89a8b;">🙏 may lord bhairav and hanuman ji always protect us 🙏</div>
+
+  <!-- TAP TO BEGIN OVERLAY -->
+  <sc-if value="{{ overlayVisible }}" hint-placeholder-val="{{ true }}">
+    <div onClick="{{ dismissOverlay }}" style="position: fixed; inset: 0; z-index: 9999; background: #2b2622; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;">
+      <div style="font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(14px, 3vw, 18px); letter-spacing: 0.25em; text-transform: uppercase; color: #d79b6e; margin-bottom: 24px;">for my puntey</div>
+      <div style="font-family: 'Fraunces', serif; font-style: italic; font-weight: 400; font-size: clamp(36px, 8vw, 72px); color: #f3ede4; line-height: 1; margin-bottom: 32px;">Happy Birthday 🎂</div>
+      <div style="width: 72px; height: 72px; border-radius: 50%; border: 1.5px solid #b5784f; display: flex; align-items: center; justify-content: center; margin-bottom: 28px;">
+        <span style="font-size: 28px; margin-left: 5px;">▶</span>
+      </div>
+      <div style="font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: #a89a8b;">tap anywhere to begin</div>
+    </div>
+  </sc-if>
+
+  <!-- MUSIC PLAYER -->
+  <div style="position: fixed; bottom: 24px; right: 24px; z-index: 999; display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
+    <sc-if value="{{ musicOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 12px 40px -10px rgba(0,0,0,0.5); width: 280px; height: 158px; background: #000;">
+        <iframe width="280" height="158" src="{{ musicSrc }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="display: block;"></iframe>
+      </div>
+      <a href="https://www.youtube.com/watch?v=6FEsFvZ-hqY" target="_blank" rel="noopener" style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: #8a7660; text-decoration: none;">↗ open song in youtube</a>
+    </sc-if>
+    <button onClick="{{ toggleMusic }}" style="width: 52px; height: 52px; border-radius: 50%; background: #b5784f; color: #fff; font-size: 22px; border: none; cursor: pointer; box-shadow: 0 6px 20px -6px rgba(80,50,30,0.6); display: flex; align-items: center; justify-content: center;">{{ musicBtnLabel }}</button>
+  </div>
+
+  <!-- HERO -->
+  <div style="max-width: 1080px; margin: 0 auto; padding: 72px 32px 64px; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center;">
+    <div>
+      <div style="font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: #b5784f; margin-bottom: 26px;">{{ heroKicker }}</div>
+      <h1 style="font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(46px, 6vw, 84px); line-height: 0.96; margin: 0 0 26px; letter-spacing: -0.025em;">{{ heroTitle }}</h1>
+      <p style="font-family: 'Newsreader', serif; font-size: clamp(18px, 2vw, 22px); line-height: 1.55; color: #6b5f54; max-width: 440px; margin: 0;">{{ heroSubtitle }}</p>
+      <div style="margin-top: 40px; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.18em; color: #a89a8b;">↓ scroll through us</div>
+    </div>
+    <div style="aspect-ratio: 4 / 5; border-radius: 4px; overflow: hidden; box-shadow: 0 18px 50px -18px rgba(80,50,30,0.45); background: #e7ddcd; animation: fadeIn 1s ease both;">
+      <img src="https://lh3.googleusercontent.com/d/1agob8QWX53YMX6Z4nhXJJEMxLwqidAEZ=w1400" alt="us" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div style="max-width: 780px; margin: 0 auto; padding: 60px 32px 100px; position: relative;">
+    <div style="text-align: center; margin-bottom: 80px;">
+      <div style="font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase; color: #b5784f; margin-bottom: 12px;">the long way round</div>
+      <h2 style="font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(30px, 4vw, 46px); margin: 0; letter-spacing: -0.02em;">A timeline of us</h2>
+    </div>
+
+    <div style="position: absolute; left: 50%; top: 200px; bottom: 100px; width: 1px; background: linear-gradient(#d8cbb8, #d8cbb8 80%, transparent); transform: translateX(-0.5px);"></div>
+
+    <sc-for list="{{ moments }}" as="m" hint-placeholder-count="8">
+      <div style="position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-bottom: 88px; animation: riseIn 0.7s ease both;">
+        <div style="position: absolute; left: 50%; top: 10px; width: 12px; height: 12px; border-radius: 50%; background: #b5784f; transform: translateX(-50%); box-shadow: 0 0 0 5px #f3ede4; z-index: 2;"></div>
+
+        <div style="padding: 0 36px 0 0; grid-column: {{ m.mediaCol }}; grid-row: 1;">
+          <div style="aspect-ratio: 4 / 5; border-radius: 4px; overflow: hidden; background: #e7ddcd; box-shadow: 0 12px 34px -16px rgba(80,50,30,0.4);">
+            <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ m.img }}" alt="{{ m.title }}" class="gimg" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+          </div>
+        </div>
+
+        <div style="padding: 6px 0 0 36px; grid-column: {{ m.textCol }}; grid-row: 1; text-align: {{ m.align }};">
+          <div style="font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #b5784f; margin-bottom: 10px;">{{ m.date }}</div>
+          <h3 style="font-family: 'Fraunces', serif; font-weight: 400; font-size: 26px; line-height: 1.12; margin: 0 0 12px; letter-spacing: -0.01em;">{{ m.title }}</h3>
+          <p style="font-size: 16.5px; line-height: 1.6; color: #6b5f54; margin: 0;">{{ m.caption }}</p>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- GALLERY -->
+  <div style="background: #ece3d6; padding: 88px 32px;">
+    <div style="max-width: 1180px; margin: 0 auto;">
+      <div style="text-align: center; margin-bottom: 54px;">
+        <div style="font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase; color: #b5784f; margin-bottom: 12px;">every saved moment</div>
+        <h2 style="font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(30px, 4vw, 46px); margin: 0; letter-spacing: -0.02em;">The whole collection</h2>
+      </div>
+      <div style="column-width: 220px; column-gap: 16px;">
+        <sc-for list="{{ gallery }}" as="g" hint-placeholder-count="24">
+          <div style="break-inside: avoid; margin: 0 0 16px; background: #fffdf9; padding: 10px 10px 0; border-radius: 3px; box-shadow: 0 6px 20px -10px rgba(80,50,30,0.35);">
+            <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ g.img }}" alt="{{ g.cap }}" class="gimg" loading="lazy" style="width: 100%; display: block; border-radius: 2px;">
+            <div style="font-family: 'Newsreader', serif; font-style: italic; font-size: 14px; color: #6b5f54; text-align: center; padding: 10px 6px 12px; line-height: 1.35;">{{ g.cap }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIDEOS -->
+  <div style="padding: 88px 32px;">
+    <div style="max-width: 1180px; margin: 0 auto;">
+      <div style="text-align: center; margin-bottom: 54px;">
+        <div style="font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase; color: #b5784f; margin-bottom: 12px;">moving pictures</div>
+        <h2 style="font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(30px, 4vw, 46px); margin: 0; letter-spacing: -0.02em;">Our little films</h2>
+        <p style="font-size: 16px; color: #6b5f54; margin: 14px 0 0;">Tap any clip to play.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px;">
+        <sc-for list="{{ videos }}" as="v" hint-placeholder-count="12">
+          <div class="vcard" onClick="{{ v.play }}" style="position: relative; aspect-ratio: 3 / 4; border-radius: 4px; overflow: hidden; background: #ddd0bd; box-shadow: 0 10px 28px -14px rgba(80,50,30,0.4); cursor: pointer;">
+            <sc-if value="{{ v.isPlaying }}" hint-placeholder-val="{{ false }}">
+              <iframe src="{{ v.src }}" allow="autoplay" style="width: 100%; height: 100%; border: 0; display: block;"></iframe>
+            </sc-if>
+            <sc-if value="{{ v.notPlaying }}" hint-placeholder-val="{{ true }}">
+              <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; background: linear-gradient(160deg, #e7ddcd, #d8c8b2);">
+                <div class="vplay" style="width: 58px; height: 58px; border-radius: 50%; background: #fff; color: #b5784f; display: flex; align-items: center; justify-content: center; transition: all .35s ease; box-shadow: 0 6px 18px -6px rgba(80,50,30,0.5);">
+                  <span style="font-size: 22px; margin-left: 4px;">▶</span>
+                </div>
+                <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #8a7660;">clip {{ v.label }}</div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOSING -->
+  <div style="background: #2b2622; color: #f3ede4; padding: 110px 32px;">
+    <div style="max-width: 620px; margin: 0 auto; text-align: center;">
+      <div style="width: 180px; height: 180px; margin: 0 auto 36px; border-radius: 50%; overflow: hidden; box-shadow: 0 16px 44px -16px rgba(0,0,0,0.6); border: 3px solid rgba(215,155,110,0.4);">
+        <img src="https://lh3.googleusercontent.com/d/1zFygZtnIzbHu3x-TmZliJvgwSHh0ZUS_=w700" alt="birthday" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+      </div>
+      <div style="font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: #d79b6e; margin-bottom: 26px;">happy birthday meri maya 🎂</div>
+      <h2 style="font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(32px, 4.5vw, 56px); line-height: 1.04; margin: 0 0 36px; letter-spacing: -0.02em;">Happiest birthday meri maya</h2>
+
+      <p style="font-size: 18px; line-height: 1.75; color: #cabfb1; margin: 0 0 22px; text-align: left;">i am grateful for you, your presence and your existence and all the love towards me. I am thankful you came to my life being my partner who is there for me always, i feel luckiest to have you in my life.</p>
+
+      <p style="font-size: 18px; line-height: 1.75; color: #cabfb1; margin: 0 0 22px; text-align: left;">You are an amazing woman mayaaaa such a goodd loving humannnnn to exisistt on earthhh timi jasto kamnai chan maya sansar ma. baki maya garni afno manche harulai kei chaina naramro sochne kasaiko, sabaii ko ramro sochhau maya garchauuuu. I love this thing about you, timro kindness timro naturee. blessed to have learnt kindness and love from youuu.</p>
+
+      <p style="font-size: 18px; line-height: 1.75; color: #cabfb1; margin: 0 0 22px; text-align: left;">I am lucky to have recieved the love i never experienced before from you so much of lovee so much of emotions. i am thankful for each and everything you have done to me and my lifeee. i want you for lifeeeee. jatinai ups and down bhayeni lets go through it, lets go through each and every birthday, lets grow together, lets achieve good things, lets make our parents proud, lets meeeet sooonn mayaaaa. letss fulfill our dreams together.</p>
+
+      <p style="font-size: 18px; line-height: 1.75; color: #cabfb1; margin: 0 0 22px; text-align: left;">i tryy babe tryy to make you happyyyy every dayyy. sorry i might not be the bestestttttt some days but I reallly really really love youu the mosttt. you are the best thing that has ever happened to meeee. you areeeee the love i craved for you are everything to me, myyy care my warmth, everything i ever wished for and imagined.</p>
+
+      <p style="font-size: 18px; line-height: 1.75; color: #cabfb1; margin: 0 0 22px; text-align: left;">I know how much you want us to be togetherrrr. i know too mayaaa. i control my emotions with aru kura haru going on but its not that i dont want it i want you more than anythingggg. i reallyy try keeping up to you, making you feel happy, making you feel loved and not alone. i am trying my bestt mayaa. pleaseee forgive me if i havent been the best and sorry for the days i have made you cried.</p>
+
+      <p style="font-size: 18px; line-height: 1.75; color: #cabfb1; margin: 0 0 22px; text-align: left;">I hope we see soon, hug soon, kiss soon. i really wanna see you and i crave for you every single day. i want to cherish the bestest moments of my life again with you maya.</p>
+
+      <p style="font-size: 18px; line-height: 1.75; color: #d4b896; margin: 0 0 22px; text-align: left;">Happiesttt birthday to my punteyyyy, meri mayaaa laiiii dherai dheraiii. I am always there timro baby always thereeeee. i hope to see your growthh, i am proud of what you are and have become so far ❤</p>
+
+      <p style="font-size: 18px; line-height: 1.75; color: #d79b6e; margin: 0 0 8px; text-align: left; font-style: italic;">manifesting a life with you soon 🤍</p>
+      <div style="margin-top: 32px; font-family: 'Fraunces', serif; font-style: italic; font-size: 24px; color: #f3ede4;">I love youuuuuuuuuuuuuuuuuuuuuu maxx</div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1100, &quot;height&quot;: 900}, &quot;heroKicker&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;two cities · one story&quot;, &quot;tsType&quot;: &quot;string&quot;}, &quot;heroTitle&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;Happy birthday, my love.&quot;, &quot;tsType&quot;: &quot;string&quot;}, &quot;heroSubtitle&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;Two and a half years, a proposal, and a whole lot of miles in between. Here's every moment that got us here.&quot;, &quot;tsType&quot;: &quot;string&quot;}, &quot;closingKicker&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;and many more to come&quot;, &quot;tsType&quot;: &quot;string&quot;}, &quot;closingTitle&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;Here's to closing the distance.&quot;, &quot;tsType&quot;: &quot;string&quot;}, &quot;closingText&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;Every mile between us is just somewhere we haven't been together yet. Thank you for choosing this and me. Happy birthday.&quot;, &quot;tsType&quot;: &quot;string&quot;}, &quot;signature&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;always yours&quot;, &quot;tsType&quot;: &quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { playing: {}, overlayVisible: true, musicOpen: false };
+
+  componentDidMount() { this.swapImages(); }
+  componentDidUpdate() { this.swapImages(); }
+  swapImages() {
+    document.querySelectorAll('img[data-src]').forEach(im => {
+      const s = im.getAttribute('data-src');
+      if (s && s.indexOf('{{') === -1 && im.getAttribute('src') !== s) im.setAttribute('src', s);
+    });
+  }
+
+  play(i) {
+    this.setState(s => ({ playing: { ...s.playing, [i]: true } }));
+  }
+  dismissOverlay() {
+    this.setState({ overlayVisible: false, musicOpen: true });
+  }
+  toggleMusic() {
+    this.setState(s => ({ musicOpen: !s.musicOpen }));
+  }
+
+  img(id, w) { return "https://lh3.googleusercontent.com/d/" + id + "=w" + w; }
+
+  renderVals() {
+
+    const rawMoments = [
+      { date: "The very beginning", img: "199wuGSSouj56AAA7GILe6lnG0nZyYNQB",
+        title: "Where it all started",
+        caption: "Tass khelda khedai love parisakya thyo dharan pachi confirm bhayo hainata ?" },
+      { date: "Ghumgham", img: "13BedNahMAyUZ_JuTcs1nQAxI9svZzDYP",
+        title: "So much fun, everywhere",
+        caption: "ghumekoo so much fun moments" },
+      { date: "Before you left for the field", img: "1AD8NxBP5irm0Q83UR_2L-n-lhqDTFzMt",
+        title: "More than attraction",
+        caption: "timi field janu bhanda agadi feltt i loved her its more than just attraction." },
+      { date: "Our first date", img: "1geAPsJSxtJ-gJZxXqDP_AC-hwuHKBrb3",
+        title: "Our first night out",
+        caption: "cutee date moment i loved this dayyy our first night out dayy 🌙" },
+      { date: "Our first kiss", img: "12GcSlRVdY0gGhUQugEnJna-JwGQRDhWF",
+        title: "Our first chuppa",
+        caption: "our first kiss 😶 i was so nervous haha still think about itttt" },
+      { date: "January 21, 2024", img: "1vwhr8H4zFPepiCO7FoAPma8xAGXYHGVM",
+        title: "The proposal 💍",
+        caption: "when i proposed my puntey in aunty ko cafe the best yes of my life." },
+      { date: "February 2024", img: "1-Vj0iHH5QOnobKvJ41hGRevWEbzdh-ha",
+        title: "So much fun going out",
+        caption: "ghumgham so much, every outing with u was the besttt" },
+      { date: "July 2024", img: "1SG-ZCyfu6pCmUDa9XRfEeg7mktBCbrqR",
+        title: "Manjil house days",
+        caption: "manjil house dayss the best times we had together thereee" },
+      { date: "August 2024", img: "1Nrgeq3d_Gew3IR6dvFMw5aydJjnUyj5P",
+        title: "Before I left my puntey",
+        caption: "the day i left my puntey, this one still hurts to look at every time" },
+      { date: "2025", img: "1lGQAwQsx70kU3X5QzPgX1wrRO4VA6ycb",
+        title: "A year of long distance",
+        caption: "long distance is hard but u make it worth it every single dayy" },
+      { date: "May 2026", img: "1iQUQD_cdciqpSKa9Kd7KtKK9Ug-QZMrm",
+        title: "Puntey & puntey",
+        caption: "still us, still going strong, puntey & puntey forever 🤍" },
+    ];
+
+    const moments = rawMoments.map((m, i) => {
+      const left = i % 2 === 0;
+      return {
+        date: m.date, title: m.title, caption: m.caption,
+        img: this.img(m.img, 1000),
+        mediaCol: left ? 1 : 2,
+        textCol: left ? 2 : 1,
+        align: left ? "left" : "right",
+      };
+    });
+
+    const galleryItems = [
+      ["16iO5ZqcbxJyFLXme0JV9sXwIlahqpMiv","Our first cute date"],
+      ["1geAPsJSxtJ-gJZxXqDP_AC-hwuHKBrb3","Our first date 🌹"],
+      ["199wuGSSouj56AAA7GILe6lnG0nZyYNQB","Shy firsts our Dharan outing"],
+      ["15kGQNTy4fTq7h_cOD_mqfSFAzFjFM4Qv","First kiss, so deep"],
+      ["13BedNahMAyUZ_JuTcs1nQAxI9svZzDYP","Swayambhu, at night"],
+      ["1ydar3awBN7Pp2Lg97O9guCRy8i4WZo2R","Cheek to cheek"],
+      ["1hD-Zifzk6t80u4K2Jt4JDTwf8CafgUzX","Winter nights"],
+      ["1ylJO0ZvF5uMAwXCbFjBfskCpdxXaUw0C","Just us"],
+      ["1AD8NxBP5irm0Q83UR_2L-n-lhqDTFzMt","Late December"],
+      ["1agob8QWX53YMX6Z4nhXJJEMxLwqidAEZ","Golden hour"],
+      ["1qeyId97xQvOdijvN731D4ccXfOCytiRQ","happy us"],
+      ["1LgVRFD0-vvTd4AUOtxvz1eveSQ-87EWs","My favorite face"],
+      ["1wGEPPa8L4aK-n-RPTKuUUMUcHTpxNSn5","Head on my shoulder"],
+      ["1KiVkT3duDVqACnJzRpHAUFkdCA5ItXQS","So in love"],
+      ["1WkQBpvyDHcYdkWpkkd5T60q9KteLy21K","Matching smiles"],
+      ["1zcuTjU7P8TPuRwZXPPjgZPWAM_Gn8KbJ","Shades on"],
+      ["1eiVP3DKTmVtrUkUpJFUZdasROjy-NriB","Christmas 2023"],
+      ["1vwhr8H4zFPepiCO7FoAPma8xAGXYHGVM","The proposal you said yes"],
+      ["1bNdK0dUsR8sQXMpOAmg5YoDS3IN6BhHd","The proposal day"],
+      ["1XB8n26Ua1-RhLJqwLKNnHUjoBOMEX00P","Just engaged 💍"],
+      ["1AB40UUb9fiTAxwtYN-dLiJHJPb_hREct","On one knee"],
+      ["1Ye1d9ujXH6nEAO8sT3e4cKUx1BIvOJQd","Meri Laxmi"],
+      ["1WA1ObB-YfdzNDdp37bXjAxtOUmDcdUsz","Our first Valentine's"],
+      ["1-Vj0iHH5QOnobKvJ41hGRevWEbzdh-ha","So much fun going out"],
+      ["1i8IKLKZrLocxrp3bVSer9IitMIBvUz5t","I miss you"],
+      ["1WACQfIruMSTmjQsAHtOWxL6RCRzKfHFF","I miss that laughter"],
+      ["1LA5daD0U8qCXKlYohGYEru3loT1qrhhW","A cute moment"],
+      ["1nYcnkNcfEmkxc0FD3zC6qMj3siWLaLk1","I miss those forehead kisses"],
+      ["1qfM0b9SDD6OTLP6c3DsS09cw9zOwafoI","Out & about"],
+      ["1N45SaHOreuzbtWKW_5hDNp6-dn_23tAb","By the water"],
+      ["1-qAPJ1qiSRnMcqyNgtIbMkN2Y3iXC_o2","Cutee"],
+      ["18fwYWJeE8mIPkoh7A_ovgpOCRVXWJX2R","Going out, eating together"],
+      ["1SG-ZCyfu6pCmUDa9XRfEeg7mktBCbrqR","Bestest days in Manjil house"],
+      ["1XBxpHvOc8p4bmPXiaAV56YFZNDKJwrvw","Before my puntey left for the field"],
+      ["1Nrgeq3d_Gew3IR6dvFMw5aydJjnUyj5P","The saddest photo I still cry"],
+      ["1lGQAwQsx70kU3X5QzPgX1wrRO4VA6ycb","Long distance"],
+      ["1daWXl_gkiZinzTR2LRVd5qFYYmwKaf0m","Meri ramri maya"],
+      ["16ag9OTSkuAjvWTTsYoy2dPsMPF_x4Ngt","Long distance kisses"],
+      ["1IobWfdxCdRARWiylP6Kjw40dQDawZOfg","My sleepy baby"],
+      ["1evqDMoSZioJNtt1EDMr1hitTtiXwiiSA","The bestest I miss you"],
+      ["1jJHdYetnsVLZn-H-aGdrhI4nl6CL3YJT","My lovely has one mood"],
+      ["1a4sJWwioNsGF8jYBIyn4fx5PFltOMqQG","My baby mood two"],
+      ["18DW7WXt6A71m8QdNG1aJFr5MZO1BzHKs","My baby mood three"],
+      ["1XuJfaj0UKeybV0cW5hxyJQ1qjoQfDLbf","My crying cutie pie"],
+      ["16mw3ylhvFcX9nrv1A4wpwOzBilDgNbgS","My angry cutie"],
+      ["19pXkXUNzPyV2HZKi9lzVzMWhwhW8yevm","Long distance"],
+      ["1QIP2cJC7JGexDcbaAnJxtnbZV-xLGFuR","Miles apart"],
+      ["1NHwSLtUj9jKEck4DbDaGJgF2RgX8F3-G","Sleepy on call"],
+      ["1XxtpdRwoWBMunhGG04Py4Nes6CTy1LxT","Your hand in mine"],
+      ["1KBJGLrU61hiGiCpwUlCaLIkAGaPWVwUU","A stolen kiss"],
+      ["1-_LJ7u0xqKMsHWoZgJp7CEna6h35IfcX","Us"],
+      ["1HSS5z1OzL4s5Of09EJQT2FrMHFFefndp","Closer"],
+      ["1Yck5zkMEnKNDZCSu5xujE7Y0UnIPEUii","Cafe day"],
+      ["1iQUQD_cdciqpSKa9Kd7KtKK9Ug-QZMrm","Puntey & puntey, posing"],
+      ["1mE6kV-HpoKgRtvtltxXr7ihcLUwLtOMe","Puntey on fire 🔥"],
+      ["1KE1R116NqirCQP-QB6fu3EdFit0MIXpz","Your birthday, together how I miss it"],
+      ["1MKqNagW7v2Jl7EoJ_c7W2NwGsDjY_kHC","Hot pics 😎"],
+    ];
+    const gallery = galleryItems.map(([id, cap]) => ({ img: this.img(id, 500), cap }));
+
+    const videoIds = [
+      "1xaJZ4yWQ5FNREr1PEt-Ex_rc_fPTyjcl","1G8f9zGkZFBuEGGZNBlbCaa4qbJB6o51A","1fmTM95Y25CbYIQEEYHG6-eZWeAGJHpbv",
+      "1v6LOnxqLKjjeMm9OZxq9MxJSShDQnJzm","1MQ9vreY1btJCtITkAjYB-yKzC0bVbj-h","1qnYf5vakUo8lbRo-sB7ds8BDMli4Wre7",
+      "1xsacuiCeci2KdZbt7Mv90Odd9GsxjNUj","1G8EOsh54kLfVcKHjyc3OVpOHq2mwVwRO","1lUfYMVXvzPuG-cvEHUV_vIM2jRyLXuIj",
+      "12q8jJPmRqu1d_UZUVtu8D0k9J-9iEk_S","17VkFi7kA1rf3CfVjaos7jQdgrNcvz7Sb","1wUNxsfgJd5bXw5A-Isw0-UWS92TB5Plu",
+      "1yD1szsMEQoltnna83bxnT_Vkl56aNWIa","16Fn5fgijVjjlIr1sLRjocWmbSKmnylcO","12OHOMkOi5LdmQUrfyzz0T1WSUUj0ZTmZ",
+      "1KcPIMOWhm4eS-uCV7QRVkk0uSJsbI5Q0","1ThOd7DZA2LNsvjVihl2ER41dqv-JtB2E","1GBNXN5XwXgGfurG7aMCcb7hhh18qpekW",
+      "1kx94F2o3qsPVemUeYFIDzmhw22q__IFy","1RnxIlq6A4OyvzmnQc-JCDw0N4lHeQZo8","1VnPbHdgQu3aeOHRO1e_kjE4A6xZk2_Ep",
+      "1l3b5YO1oB1cdFp0zusf_dUNJsTr3UXLW","1rixXRiPFHdLvjwsotswcWljdFzp5QBnm","17qu2K5vHKg0HNzvlASDjiZ_umABBeBv1"
+    ];
+    const videos = videoIds.map((id, i) => ({
+      src: "https://drive.google.com/file/d/" + id + "/preview",
+      isPlaying: !!this.state.playing[i],
+      notPlaying: !this.state.playing[i],
+      label: String(i + 1).padStart(2, "0"),
+      play: () => this.play(i),
+    }));
+
+    return {
+      heroKicker: this.props.heroKicker ?? "two and a half years in",
+      heroTitle: this.props.heroTitle ?? "Happy birthday, my love.",
+      heroSubtitle: this.props.heroSubtitle ?? "a lot happened. a lot went through. here are some snippets of it all.",
+      moments,
+      gallery,
+      videos,
+      overlayVisible: this.state.overlayVisible,
+      overlayHidden: !this.state.overlayVisible,
+      musicOpen: this.state.musicOpen,
+      musicClosed: !this.state.musicOpen,
+      dismissOverlay: () => this.dismissOverlay(),
+      toggleMusic: () => this.toggleMusic(),
+      musicSrc: this.state.musicOpen ? "https://www.youtube.com/embed/6FEsFvZ-hqY?autoplay=1&loop=1&playlist=6FEsFvZ-hqY&rel=0&playsinline=1" : "",
+      musicBtnLabel: this.state.musicOpen ? "✕" : "♪",
+      closingKicker: this.props.closingKicker ?? "and many more to come",
+      closingTitle: this.props.closingTitle ?? "Here's to closing the distance.",
+      closingText: this.props.closingText ?? "miss u so much my puntey, happy birthdayyyy. i love u more than u know 🤍",
+      signature: this.props.signature ?? "always yours",
+    };
+  }
+}
+</script>
+</body>
+</html>
