@@ -313,6 +313,8 @@
             <li class="pill">Alert Triage &amp; Incident Investigation</li>
             <li class="pill">IOC Analysis</li>
             <li class="pill">Endpoint Detection &amp; Response</li>
+            <li class="pill">Detection Engineering (Sigma, YARA, Splunk SPL)</li>
+            <li class="pill">Threat Hunting (Hayabusa)</li>
             <li class="pill">Splunk</li>
             <li class="pill">Microsoft Sentinel</li>
             <li class="pill">LogScale</li>
@@ -352,56 +354,41 @@
             <li class="pill">Suricata</li>
             <li class="pill">Snort</li>
             <li class="pill">Nmap</li>
-            <li class="pill">Firewall / ACL Hardening</li>
-            <li class="pill">TCP/IP Networking</li>
-            <li class="pill">CCNA (Certified)</li>
           </ul>
 
-          <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Penetration Testing</h3>
+          <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Adversary Emulation</h3>
           <ul class="pill-list" style="margin-bottom:14px;">
             <li class="pill">Kali Linux</li>
             <li class="pill">Metasploit</li>
-            <li class="pill">Burp Suite</li>
-            <li class="pill">CrackMapExec</li>
-            <li class="pill">Impacket</li>
+            <li class="pill">Impacket / CrackMapExec</li>
             <li class="pill">Pass-the-Hash / AD Attacks</li>
-            <li class="pill">Searchsploit</li>
+            <li class="pill">AzureHound / Pacu</li>
           </ul>
 
-          <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Scripting &amp; Development</h3>
+          <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Scripting &amp; Automation</h3>
           <ul class="pill-list" style="margin-bottom:14px;">
             <li class="pill">Python</li>
-            <li class="pill">Bash</li>
             <li class="pill">PowerShell</li>
-            <li class="pill">Batch</li>
-            <li class="pill">Flask</li>
-            <li class="pill">AI Coding Tools (Claude Code, Codex)</li>
+            <li class="pill">Bash</li>
+            <li class="pill">AI Automation (Claude Code, MCP)</li>
             <li class="pill">Git / GitHub</li>
           </ul>
 
-          <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Deployment &amp; Endpoint Management</h3>
+          <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Windows &amp; Endpoint</h3>
           <ul class="pill-list" style="margin-bottom:14px;">
-            <li class="pill">PDQ Deploy</li>
-            <li class="pill">SCCM</li>
-            <li class="pill">Group Policy (GPO)</li>
-            <li class="pill">PsExec</li>
-            <li class="pill">ManageEngine MFA</li>
-            <li class="pill">Host-Based Firewall</li>
-            <li class="pill">CIS Benchmarks</li>
             <li class="pill">Active Directory</li>
-            <li class="pill">Windows Server</li>
-            <li class="pill">Mac OS</li>
+            <li class="pill">Group Policy (GPO)</li>
+            <li class="pill">PDQ Deploy</li>
+            <li class="pill">ManageEngine MFA</li>
+            <li class="pill">CIS Benchmarks</li>
           </ul>
 
-          <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Cloud &amp; Infrastructure</h3>
+          <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Cloud</h3>
           <ul class="pill-list">
             <li class="pill">Azure (Entra ID, Defender)</li>
-            <li class="pill">AWS</li>
-            <li class="pill">IAM / SSO</li>
+            <li class="pill">AWS (IAM, CloudTrail, S3)</li>
+            <li class="pill">Kubernetes</li>
             <li class="pill">Linux</li>
-            <li class="pill">Docker</li>
-            <li class="pill">Ansible</li>
-            <li class="pill">Terraform</li>
           </ul>
         </div>
       </section>
@@ -409,6 +396,29 @@
       <section id="projects">
         <h2>/ Projects</h2>
         <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h3 style="margin:0;">Threat Detection &amp; Purple-Team Lab</h3>
+            <span class="badge">Active</span>
+          </div>
+          <p class="meta">Self-built hybrid lab where I simulate and detect 39 distinct attack scenarios end to end,
+            validating the SIEM detection and telemetry for each technique. Windows/AD (LSASS dumping, Kerberoasting,
+            DCSync, Pass-the-Ticket, ADCS abuse); Azure and AWS (Entra ID password spray, MFA bypass, AzureHound
+            mapping, IAM enumeration via CloudTrail, Pacu brute force, S3 exfiltration); Kubernetes and Linux (container
+            breakout, exposed-service tunneling, C2 endpoint analysis); plus purple-team detection workflows and
+            automated endpoint-artifact triage with Hayabusa and LangChain.</p>
+          <ul class="pill-list">
+            <li class="pill">Detection Engineering</li>
+            <li class="pill">Sigma / YARA / Splunk SPL</li>
+            <li class="pill">MITRE ATT&amp;CK</li>
+            <li class="pill">Windows / Active Directory</li>
+            <li class="pill">Azure / Entra ID</li>
+            <li class="pill">AWS (IAM, CloudTrail, S3)</li>
+            <li class="pill">Kubernetes</li>
+            <li class="pill">Hayabusa</li>
+            <li class="pill">Purple Team</li>
+          </ul>
+        </div>
+        <div class="card" style="margin-top:10px;">
           <div style="display:flex;justify-content:space-between;align-items:center;">
             <h3 style="margin:0;">SavvyDFIR-MCP: AI-Driven Forensics Framework</h3>
             <span class="badge">Active</span>
