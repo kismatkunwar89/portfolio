@@ -5,7 +5,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Kismat Kunwar - Portfolio</title>
-  <meta name="description" content="Portfolio of Kismat Kunwar, Cyber Security Graduate Student.">
+  <meta name="description"
+    content="Portfolio of Kismat Kunwar, a cybersecurity and digital forensics practitioner focused on security operations, endpoint security, threat hunting, and DFIR.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Mono:wght@700&display=swap"
@@ -164,6 +165,15 @@
       margin: 4px 0 10px;
     }
 
+    .detail-list {
+      margin: 10px 0 14px;
+      padding-left: 22px;
+    }
+
+    .detail-list li + li {
+      margin-top: 8px;
+    }
+
     .badge {
       display: inline-block;
       padding: 4px 10px;
@@ -239,14 +249,26 @@
       <div>
         <p class="eyebrow">/ About</p>
         <h1>Kismat Kunwar</h1>
-        <p class="tagline">Incident Response &amp; DFIR Analyst</p>
-        <p>Cybersecurity master's graduate in incident response, DFIR, and detection engineering. Ran CrowdStrike Falcon EDR across 1,000+ endpoints and handled phishing and ransomware incidents end to end. I build and validate detections across Windows/AD, Azure, AWS, and Kubernetes, and apply AI to security work, including an MCP-based framework for autonomous DFIR. First-author researcher on LLM-driven forensic analysis (accepted at Forensic Science International: Digital Investigation, Elsevier).</p>
-        <p>Open to SOC analyst, incident response, DFIR, and detection engineering roles in the US.</p>
+        <p class="tagline">Security Operations &amp; DFIR</p>
+        <p>I have a background in cybersecurity and digital forensics, including hands-on experience supporting client
+          security operations in an MSSP environment. As a Security Support Analyst in Nepal, I helped deploy and
+          support CrowdStrike Falcon EPP/EDR across 9+ client environments totaling more than 1,000 endpoints. My work
+          included endpoint security configuration, MFA and SIEM integration, detection triage, investigating phishing
+          and ransomware-precursor activity, and communicating findings and recommended actions to client IT and
+          management teams.</p>
+        <p>My academic research focused on interoperable digital evidence and anti-forensic detection, resulting in a
+          first-author ICDF2C conference paper and a co-authored journal article in <em>Forensic Science International:
+            Digital Investigation</em>. I am currently focused on threat hunting and DFIR, preparing for the Hack The
+          Box Certified Defensive Security Analyst certification, and expanding SavvyDFIR-MCP.</p>
+        <p>I am open to cybersecurity opportunities in security operations, endpoint security, threat hunting, and
+          DFIR, and I am willing to relocate.</p>
         <div class="btn-row">
           <a class="btn primary" href="mailto:kismatkunwar89@gmail.com">Email</a>
           <a class="btn" href="resume.pdf" download>View Resume</a>
           <a class="btn" href="https://www.linkedin.com/in/kunwarkismat/" target="_blank" rel="noreferrer">LinkedIn</a>
           <a class="btn" href="https://github.com/kismatkunwar89" target="_blank" rel="noreferrer">GitHub</a>
+          <a class="btn" href="https://scholar.google.com/citations?user=AFvK6NsAAAAJ&amp;hl=en" target="_blank"
+            rel="noreferrer">Google Scholar</a>
         </div>
       </div>
       <div>
@@ -277,7 +299,17 @@
         <div class="card">
           <h3>Provost Research Assistant - University of New Haven</h3>
           <p class="meta">Sep 2024 - May 2026 - West Haven, CT</p>
-          <p>Published first-author research at ICDF2C on applying LLMs to structured representation and analysis of forensic artifacts. Built the Indicator of Inconsistency (IoI) Framework, an ontology-driven SPARQL rule library detecting cross-artifact contradictions across MFT, USN journal, event logs, LNK files, and Office metadata; validated against 87M+ RDF triples across 5 antiforensic test scenarios. IoI Framework paper accepted at Forensic Science International: Digital Investigation (Elsevier).</p>
+          <p>Conducted part-time applied DFIR research on interoperable evidence representation and automated
+            anti-forensic detection.</p>
+          <ul class="detail-list">
+            <li>First-authored and presented an ICDF2C study developing an LLM- and SHACL-based validation workflow for
+              generating JSON-LD representations compliant with the Cyber-investigation Analysis Standard Expression
+              (CASE) and Unified Cyber Ontology (UCO).</li>
+            <li>Co-developed the Indicator of Inconsistency Framework, implementing reusable SPARQL rules to detect
+              temporal, structural, and semantic contradictions across forensic artifacts. Built Python-based
+              processing and validation workflows in containerized environments and evaluated five anti-forensic
+              scenarios and independent forensic images.</li>
+          </ul>
           <p class="meta"><a href="https://ioi-framework.github.io/" target="_blank" rel="noreferrer">IoI Framework
               details</a></p>
           <ul class="pill-list">
@@ -291,22 +323,61 @@
         <div class="card" style="margin-top:10px;">
           <h3>Security Support Analyst - Raechal Enterprise Pvt Ltd</h3>
           <p class="meta">May 2023 - Mar 2024 - Kathmandu, Nepal</p>
-          <p>Deployed CrowdStrike Falcon EPP/EDR to 9+ client environments totaling 1,000+ endpoints using PDQ Deploy and Group Policy; configured Host Groups, Prevention Policies, and sensor update rings. Deployed ManageEngine MFA across client environments and assisted with small-scale SIEM configuration and integration. Delivered technical presentations on Falcon platform capabilities to prospective clients and collaborated with the sales team on client acquisition. Conducted regular on-site client visits for configuration support, technical reviews, and stakeholder reporting. Investigated phishing and ransomware precursor incidents using Falcon telemetry; escalated containment guidance and delivered structured incident reports within SLA.</p>
+          <p>Worked within a Nepal-based MSSP team delivering endpoint security, MFA, SIEM integration, and
+            incident-support services across multiple customer environments.</p>
+          <ul class="detail-list">
+            <li>Deployed CrowdStrike Falcon EPP/EDR across 9+ client environments totaling 1,000+ endpoints using PDQ
+              Deploy and Group Policy.</li>
+            <li>Tailored host groups, prevention policies, and sensor-update schedules to agreed client security
+              requirements, operational constraints, and change windows, including regulated banking environments.</li>
+            <li>Integrated Falcon with existing SIEM environments, deployed ManageEngine MFA, and provided on-site
+              configuration, troubleshooting, technical reviews, and post-deployment support.</li>
+            <li>Investigated phishing and ransomware-precursor activity using Falcon telemetry, correlated indicators
+              of compromise, documented findings, and escalated containment recommendations within SLA.</li>
+            <li>Supported technical demonstrations, deployment planning, customer onboarding, and operational handoff
+              with client IT teams.</li>
+          </ul>
           <ul class="pill-list">
             <li class="pill">CrowdStrike Falcon EPP/EDR</li>
-            <li class="pill">PDQ Deploy / SCCM / GPO</li>
+            <li class="pill">PDQ Deploy / Group Policy</li>
             <li class="pill">ManageEngine MFA</li>
             <li class="pill">SIEM (ELK)</li>
-            <li class="pill">Incident Response</li>
+            <li class="pill">Detection Triage &amp; Escalation</li>
             <li class="pill">Client-Facing Technical Support</li>
           </ul>
+        </div>
+      </section>
+
+      <section id="publications">
+        <h2>/ Publications</h2>
+        <div class="card">
+          <h3>An LLM-Driven Iterative Workflow for Ontological Mapping of Digital Forensic Artifacts</h3>
+          <p class="meta">First author and presenter - ICDF2C 2025 - Springer - Published Jul 17, 2026</p>
+          <p>Evaluated an LLM- and SHACL-based validation workflow for generating JSON-LD representations compliant
+            with the Cyber-investigation Analysis Standard Expression (CASE) and Unified Cyber Ontology (UCO). The
+            study covered Windows Prefetch, LNK, and Event Log artifacts and reached semantic compliance within one or
+            two validation iterations when supplied with explicit ontology constraints.</p>
+          <p class="meta"><a href="https://doi.org/10.1007/978-3-032-22542-9_23" target="_blank"
+              rel="noreferrer">View publication</a></p>
+        </div>
+        <div class="card" style="margin-top:10px;">
+          <h3>An Indicator of Inconsistency Framework for Detecting Contradictory Digital Artifacts</h3>
+          <p class="meta">Co-author - <em>Forensic Science International: Digital Investigation</em>, Volume 58 -
+            Elsevier - Sep 2026</p>
+          <p>Introduced the Indicator of Inconsistency (IoI) Framework, which uses reusable SPARQL rules over knowledge
+            graphs based on the Cyber-investigation Analysis Standard Expression (CASE) and Unified Cyber Ontology
+            (UCO). The framework detects temporal, structural, and semantic contradictions across related forensic
+            artifacts and was evaluated using five anti-forensic scenarios and independent forensic images. My
+            contributions included software development, data curation, validation, visualization, and writing.</p>
+          <p class="meta"><a href="https://doi.org/10.1016/j.fsidi.2026.302148" target="_blank"
+              rel="noreferrer">View publication</a></p>
         </div>
       </section>
 
       <section id="skills">
         <h2>/ Skills</h2>
         <div class="card">
-          <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Incident Response &amp; SOC</h3>
+          <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Security Operations &amp; Endpoint</h3>
           <ul class="pill-list" style="margin-bottom:14px;">
             <li class="pill">CrowdStrike Falcon EDR</li>
             <li class="pill">SIEM (ELK / Elastic Stack)</li>
@@ -336,14 +407,14 @@
           <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Digital Forensics (DFIR)</h3>
           <ul class="pill-list" style="margin-bottom:14px;">
             <li class="pill">Autopsy</li>
-            <li class="pill">Eric Zimmermann Tools (EZ Tools)</li>
+            <li class="pill">Eric Zimmerman Tools (EZ Tools)</li>
             <li class="pill">KAPE</li>
             <li class="pill">Velociraptor</li>
             <li class="pill">CASE / UCO Ontology</li>
             <li class="pill">MFT &amp; USN Journal Analysis</li>
             <li class="pill">Windows Event Log Analysis</li>
             <li class="pill">LNK &amp; Prefetch Forensics</li>
-            <li class="pill">Antiforensic Detection</li>
+            <li class="pill">Anti-forensic Detection</li>
             <li class="pill">SPARQL / RDF Knowledge Graphs</li>
           </ul>
 
@@ -397,7 +468,7 @@
         <h2>/ Projects</h2>
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;">
-            <h3 style="margin:0;">Threat Detection &amp; Purple-Team Lab</h3>
+            <h3 style="margin:0;">Threat Detection &amp; Purple-Team Home Lab</h3>
             <span class="badge">Active</span>
           </div>
           <p class="meta">Self-built hybrid lab where I simulate and detect 39 distinct attack scenarios end to end,
@@ -420,15 +491,13 @@
         </div>
         <div class="card" style="margin-top:10px;">
           <div style="display:flex;justify-content:space-between;align-items:center;">
-            <h3 style="margin:0;">SavvyDFIR-MCP: AI-Driven Forensics Framework</h3>
+            <h3 style="margin:0;">SavvyDFIR-MCP: AI-Assisted DFIR Workflows</h3>
             <span class="badge">Active</span>
           </div>
-          <p class="meta">MCP server that turns Claude Code into an autonomous DFIR analyst on the SANS SIFT
-            Workstation. Correlates disk and memory evidence across a seven-phase investigation workflow, enforces a
-            deterministic evidence-provenance gate (findings reach CONFIRMED only with resolvable provenance,
-            corroboration from two or more independent sources, and a ruled-out benign alternative), and produces
-            auditable, hash-chained investigation reports. Validated on five blind test cases (2004-2020 Windows)
-            at 60-92.7% recall with zero hallucinated artifacts.</p>
+          <p class="meta">Experimental MCP-based project, originally built for a SANS hackathon, exploring how Claude
+            Code can support repeatable forensic triage and investigation workflows on the SANS SIFT Workstation. It
+            integrates disk and memory tooling, artifact correlation, evidence-provenance checks, and structured
+            reporting. The project is under active development and evaluation.</p>
           <ul class="pill-list">
             <li class="pill">MCP / FastMCP</li>
             <li class="pill">Claude Code</li>
@@ -486,40 +555,6 @@
           <p class="meta"><a href="flamingo-report/lab5final.pdf" target="_blank" rel="noreferrer">View report (PDF)</a>
           </p>
         </div>
-        <div class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <h3 style="margin:0;">VectorProbe</h3>
-            <span class="badge">In Progress</span>
-          </div>
-          <p class="meta">Network enumeration tool that automates Nmap, Searchsploit, and enum4linux-ng for deep service
-            discovery, exploit correlation, and AD-aware recon with Markdown reports.</p>
-          <ul class="pill-list">
-            <li class="pill">Nmap</li>
-            <li class="pill">Searchsploit</li>
-            <li class="pill">enum4linux-ng</li>
-            <li class="pill">AD Enum</li>
-            <li class="pill">Python</li>
-          </ul>
-          <p><a href="https://github.com/kismatkunwar89/VectorProbe" target="_blank" rel="noreferrer">View project</a>
-          </p>
-        </div>
-        <div class="card" style="margin-top:10px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <h3 style="margin:0;">Threat Intelligence Platform</h3>
-            <span class="badge">In Progress</span>
-          </div>
-          <p class="meta">Flask app that aggregates AbuseIPDB, OTX, VirusTotal, and GreyNoise with risk scoring, MITRE
-            ATT&CK and kill chain mapping, caching, and PDF/CSV/JSON exports.</p>
-          <ul class="pill-list">
-            <li class="pill">Flask</li>
-            <li class="pill">Threat Intel</li>
-            <li class="pill">MITRE ATT&CK</li>
-            <li class="pill">APIs</li>
-            <li class="pill">PDF/CSV/JSON</li>
-          </ul>
-          <p><a href="https://github.com/kismatkunwar89/threat-intelligence-platform" target="_blank"
-              rel="noreferrer">View project</a></p>
-        </div>
         <div class="card" style="margin-top:10px;">
           <div style="display:flex;justify-content:space-between;align-items:center;">
             <h3 style="margin:0;">UNC5537 Snowflake Threat Campaign Case Study</h3>
@@ -539,7 +574,7 @@
           </ul>
           <p class="meta"><a href="project1.html" target="_blank" rel="noreferrer">View case study</a></p>
         </div>
-        <div class="card">
+        <div class="card" style="margin-top:10px;">
           <div style="display:flex;justify-content:space-between;align-items:center;">
             <h3 style="margin:0;">Reliable, Scalable Network Design</h3>
             <span class="badge">Completed</span>
@@ -556,55 +591,25 @@
           <p><a href="https://github.com/kismatkunwar89/NetworkProject" target="_blank" rel="noreferrer">View
               project</a></p>
         </div>
-        <div class="card" style="margin-top:10px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <h3 style="margin:0;">Malware Research and Development</h3>
-            <span class="badge">Completed</span>
-          </div>
-          <p class="meta">APT evasion research with simulated C2 (Metasploit and Cobalt Strike), achieving high evasion
-            on Windows testbeds.</p>
-          <ul class="pill-list">
-            <li class="pill">Metasploit</li>
-            <li class="pill">Cobalt Strike</li>
-            <li class="pill">APT Evasion</li>
-          </ul>
-          <p><a href="https://github.com/kismatkunwar89/FinalYearProject-Malware-Development" target="_blank"
-              rel="noreferrer">View project</a></p>
-        </div>
-        <div class="card" style="margin-top:10px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <h3 style="margin:0;">Windows Server and Client Lab</h3>
-            <span class="badge">Completed</span>
-          </div>
-          <p class="meta">Virtualized lab with Server 2022 and Windows 10. Configured AD DS, DNS, DHCP, GPO, IIS, WSUS,
-            FSRM, and PowerShell automation.</p>
-          <ul class="pill-list">
-            <li class="pill">AD DS</li>
-            <li class="pill">DNS</li>
-            <li class="pill">GPO</li>
-            <li class="pill">WSUS</li>
-            <li class="pill">PowerShell</li>
-          </ul>
-        </div>
       </section>
 
       <section id="certifications">
         <h2>/ Certifications</h2>
         <div class="grid">
           <div class="card cert">
-            <h3>CCNA</h3>
+            <h3>Cisco Certified Network Associate (CCNA)</h3>
             <p class="meta"><a
                 href="https://www.credly.com/badges/c0a58046-8207-4140-bdb3-df9d6bcf4d25/linked_in_profile"
                 target="_blank" rel="noreferrer">View badge</a></p>
           </div>
           <div class="card cert">
-            <h3>AZ-900</h3>
+            <h3>Microsoft Certified: Azure Fundamentals (AZ-900)</h3>
             <p class="meta"><a
                 href="https://learn.microsoft.com/en-us/users/kismatkunwar-6406/credentials/e499a39dc338e04f"
                 target="_blank" rel="noreferrer">View badge</a></p>
           </div>
           <div class="card cert">
-            <h3>ISC2 Certified in Cybersecurity</h3>
+            <h3>ISC2 Certified in Cybersecurity (CC)</h3>
             <p class="meta"><a
                 href="https://www.credly.com/badges/1dc588c2-1875-4dca-b3b2-0db04ac27849/linked_in_profile"
                 target="_blank" rel="noreferrer">View badge</a></p>
@@ -615,7 +620,8 @@
       <section id="contact">
         <h2>/ Contact</h2>
         <div class="card">
-          <p>Always open to chat about security engineering, DFIR, or networking projects.</p>
+          <p>I am open to cybersecurity opportunities in security operations, endpoint security, threat hunting, and
+            DFIR, and I am willing to relocate.</p>
           <div class="btn-row">
             <a class="btn" href="mailto:kismatkunwar89@gmail.com">Email</a>
             <a class="btn" href="https://www.linkedin.com/in/kunwarkismat/" target="_blank"
@@ -634,6 +640,7 @@
           <a href="#about">About</a>
           <a href="#education">Education</a>
           <a href="#experience">Experience</a>
+          <a href="#publications">Publications</a>
           <a href="#skills">Skills</a>
           <a href="#projects">Projects</a>
           <a href="#certifications">Certifications</a>
