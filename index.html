@@ -55,18 +55,33 @@
 
     .hero {
       display: grid;
-      gap: 20px;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      align-items: center;
+      gap: 48px;
+      grid-template-columns: minmax(0, 1fr) 280px;
+      align-items: start;
+    }
+
+    .hero-heading {
+      margin-bottom: 14px;
+    }
+
+    .hero-copy > p:first-child {
+      margin-top: 0;
+    }
+
+    .hero-portrait {
+      justify-self: end;
+      padding-top: 4px;
     }
 
     .hero img {
+      display: block;
       width: 100%;
-      max-width: 260px;
+      max-width: 280px;
+      aspect-ratio: 807 / 1024;
+      object-fit: cover;
       border-radius: 14px;
       border: 1px solid var(--border);
       background: var(--soft);
-      justify-self: center;
     }
 
     h1 {
@@ -232,6 +247,21 @@
     }
 
     @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .hero-portrait {
+        order: -1;
+        justify-self: center;
+        padding-top: 0;
+      }
+
+      .hero img {
+        max-width: 220px;
+      }
+
       .layout {
         grid-template-columns: 1fr;
       }
@@ -245,11 +275,13 @@
 
 <body>
   <header id="about">
+    <div class="hero-heading">
+      <p class="eyebrow">/ About</p>
+      <h1>Kismat Kunwar</h1>
+      <p class="tagline">Security Operations &amp; DFIR</p>
+    </div>
     <div class="hero">
-      <div>
-        <p class="eyebrow">/ About</p>
-        <h1>Kismat Kunwar</h1>
-        <p class="tagline">Security Operations &amp; DFIR</p>
+      <div class="hero-copy">
         <p>I have a background in cybersecurity and digital forensics, including hands-on experience supporting client
           security operations in an MSSP environment. As a Security Support Analyst in Nepal, I helped deploy and
           support CrowdStrike Falcon EPP/EDR across 9+ client environments totaling more than 1,000 endpoints. My work
@@ -273,7 +305,7 @@
             rel="noreferrer">Google Scholar</a>
         </div>
       </div>
-      <div>
+      <div class="hero-portrait">
         <img src="profile.jpg" alt="Kismat Kunwar portrait">
       </div>
     </div>
@@ -383,83 +415,68 @@
         <div class="card">
           <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Security Operations &amp; Endpoint</h3>
           <ul class="pill-list" style="margin-bottom:14px;">
-            <li class="pill">CrowdStrike Falcon EDR</li>
-            <li class="pill">SIEM (ELK / Elastic Stack)</li>
-            <li class="pill">Alert Triage &amp; Incident Investigation</li>
-            <li class="pill">IOC Analysis</li>
+            <li class="pill">CrowdStrike Falcon EPP/EDR</li>
             <li class="pill">Endpoint Detection &amp; Response</li>
-            <li class="pill">Detection Engineering (Sigma, YARA, Splunk SPL)</li>
-            <li class="pill">Threat Hunting (Hayabusa)</li>
-            <li class="pill">Splunk</li>
-            <li class="pill">Microsoft Sentinel</li>
-            <li class="pill">LogScale</li>
-            <li class="pill">NIST SP 800-61</li>
-            <li class="pill">NIST CSF</li>
+            <li class="pill">Alert Triage &amp; Incident Investigation</li>
+            <li class="pill">IOC Correlation</li>
+            <li class="pill">SIEM (Splunk / Elastic Stack)</li>
+            <li class="pill">Endpoint Policy &amp; Sensor Management</li>
+            <li class="pill">Technical Escalation &amp; Reporting</li>
           </ul>
 
-          <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Threat Intelligence</h3>
+          <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Threat Hunting &amp; Detection</h3>
           <ul class="pill-list" style="margin-bottom:14px;">
+            <li class="pill">Threat Hunting</li>
+            <li class="pill">Detection Engineering</li>
             <li class="pill">MITRE ATT&amp;CK</li>
-            <li class="pill">MITRE D3FEND</li>
-            <li class="pill">STIX / TAXII</li>
-            <li class="pill">Cyber Kill Chain</li>
-            <li class="pill">MISP</li>
-            <li class="pill">Courses of Action Matrix</li>
-            <li class="pill">OSINT (Maltego, VirusTotal, OTX, AlienVault)</li>
+            <li class="pill">Sigma</li>
+            <li class="pill">YARA</li>
+            <li class="pill">Splunk SPL</li>
+            <li class="pill">Hayabusa</li>
+            <li class="pill">Chainsaw</li>
+            <li class="pill">Windows Event Log Analysis</li>
+            <li class="pill">Threat Intelligence &amp; IOC Enrichment</li>
           </ul>
 
           <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Digital Forensics (DFIR)</h3>
           <ul class="pill-list" style="margin-bottom:14px;">
             <li class="pill">Autopsy</li>
-            <li class="pill">Eric Zimmerman Tools (EZ Tools)</li>
+            <li class="pill">Volatility 3</li>
             <li class="pill">KAPE</li>
             <li class="pill">Velociraptor</li>
-            <li class="pill">CASE / UCO Ontology</li>
+            <li class="pill">Eric Zimmerman Tools</li>
+            <li class="pill">Plaso</li>
+            <li class="pill">Disk &amp; Memory Forensics</li>
             <li class="pill">MFT &amp; USN Journal Analysis</li>
-            <li class="pill">Windows Event Log Analysis</li>
             <li class="pill">LNK &amp; Prefetch Forensics</li>
+            <li class="pill">PowerShell Forensics</li>
+            <li class="pill">Timeline Correlation</li>
             <li class="pill">Anti-forensic Detection</li>
-            <li class="pill">SPARQL / RDF Knowledge Graphs</li>
           </ul>
 
-          <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Network Defense</h3>
-          <ul class="pill-list" style="margin-bottom:14px;">
-            <li class="pill">Wireshark</li>
-            <li class="pill">tcpdump</li>
-            <li class="pill">Suricata</li>
-            <li class="pill">Snort</li>
-            <li class="pill">Nmap</li>
-          </ul>
-
-          <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Adversary Emulation</h3>
-          <ul class="pill-list" style="margin-bottom:14px;">
-            <li class="pill">Kali Linux</li>
-            <li class="pill">Metasploit</li>
-            <li class="pill">Impacket / CrackMapExec</li>
-            <li class="pill">Pass-the-Hash / AD Attacks</li>
-            <li class="pill">AzureHound / Pacu</li>
-          </ul>
-
-          <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Scripting &amp; Automation</h3>
+          <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Research &amp; Automation</h3>
           <ul class="pill-list" style="margin-bottom:14px;">
             <li class="pill">Python</li>
             <li class="pill">PowerShell</li>
             <li class="pill">Bash</li>
-            <li class="pill">AI Automation (Claude Code, MCP)</li>
+            <li class="pill">CASE / UCO</li>
+            <li class="pill">SPARQL / RDF</li>
+            <li class="pill">SHACL Validation</li>
+            <li class="pill">JSON-LD</li>
+            <li class="pill">Knowledge Graphs</li>
+            <li class="pill">LLM-Assisted DFIR Workflows</li>
+            <li class="pill">Containerized Testing</li>
             <li class="pill">Git / GitHub</li>
           </ul>
 
-          <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Windows &amp; Endpoint</h3>
-          <ul class="pill-list" style="margin-bottom:14px;">
+          <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Infrastructure &amp; Hands-On Labs</h3>
+          <ul class="pill-list">
             <li class="pill">Active Directory</li>
             <li class="pill">Group Policy (GPO)</li>
             <li class="pill">PDQ Deploy</li>
             <li class="pill">ManageEngine MFA</li>
-            <li class="pill">CIS Benchmarks</li>
-          </ul>
-
-          <h3 style="margin-bottom:8px;font-size:15px;color:var(--muted);">Cloud</h3>
-          <ul class="pill-list">
+            <li class="pill">Wireshark / tcpdump</li>
+            <li class="pill">Suricata / Snort</li>
             <li class="pill">Azure (Entra ID, Defender)</li>
             <li class="pill">AWS (IAM, CloudTrail, S3)</li>
             <li class="pill">Kubernetes</li>
