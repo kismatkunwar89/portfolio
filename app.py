@@ -209,7 +209,7 @@ def render_writeups() -> None:
 
 def render_contact(resume_bytes: bytes | None) -> None:
     section_title("Contact")
-    st.write("Email: kismatkunwar89@gmail.com")
+    st.write("Email: kismatkunwar888@gmail.com")
     st.write("LinkedIn: https://www.linkedin.com/in/kunwarkismat/")
     st.write("GitHub: https://github.com/kismatkunwar89")
     if resume_bytes:
@@ -243,7 +243,7 @@ def main() -> None:
         st.markdown(
             "[GitHub](https://github.com/kismatkunwar89) | "
             "[LinkedIn](https://www.linkedin.com/in/kunwarkismat/) | "
-            "[Email](mailto:kismatkunwar89@gmail.com)"
+            "[Email](mailto:kismatkunwar888@gmail.com)"
         )
     with top_cols[1]:
         if profile_path.exists():
