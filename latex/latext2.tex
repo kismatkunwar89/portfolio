@@ -1,86 +1,100 @@
 \documentclass{resume2}
 
-\usepackage[left=0.55in,top=0.50in,right=0.55in,bottom=0.50in]{geometry}
+\usepackage[left=0.50in,top=0.35in,right=0.50in,bottom=0.45in]{geometry}
+\usepackage{newtxtext}
 \usepackage[hidelinks]{hyperref}
 \usepackage{enumitem}
 \usepackage{titlesec}
-\linespread{0.97}
+\linespread{1.00}
 \hyphenpenalty=10000
 \exhyphenpenalty=10000
 \emergencystretch=1em
-\titlespacing{\section}{0pt}{3pt}{2pt}
-\setlist[itemize]{leftmargin=1.15em,itemsep=0pt,topsep=0.5pt,parsep=0pt,partopsep=0pt}
-\setlength{\parskip}{1pt}
+\titleformat{\section}
+  {\fontsize{11.3pt}{13.5pt}\selectfont\bfseries\uppercase}
+  {}{0em}{}
+  [\titlerule]
+\titlespacing{\section}{0pt}{7.5pt}{3.5pt}
+\setlist[itemize]{leftmargin=1.2em,itemsep=1.8pt,topsep=2pt,parsep=0pt,partopsep=0pt}
+\setlength{\parskip}{1.3pt}
 \raggedbottom
 \hypersetup{
-  pdftitle={Kismat Kunwar - Security Operations and DFIR Resume},
+  pdftitle={Kismat Kunwar - Security Analyst Resume},
   pdfauthor={Kismat Kunwar},
-  pdfsubject={Cybersecurity, Security Operations, Endpoint Security, and Digital Forensics}
+  pdfsubject={Cybersecurity, Security Operations, Detection Engineering, and Digital Forensics}
 }
+
+\makeatletter
+\renewcommand{\makeheader}{%
+  \begin{center}
+    {\Large\bfseries \@name}\\[-2pt]
+    {\small \@contact}
+  \end{center}
+}
+\makeatother
 
 \name{Kismat Kunwar}
 \contact{
   West Haven, CT \quad\textbullet\quad
   \href{mailto:kismatkunwar888@gmail.com}{kismatkunwar888@gmail.com} \quad\textbullet\quad
   \href{https://linkedin.com/in/kunwarkismat}{LinkedIn} \quad\textbullet\quad
-  \href{https://kismatkunwar89.github.io/portfolio/}{Portfolio} \quad\textbullet\quad
-  \href{https://scholar.google.com/citations?user=AFvK6NsAAAAJ}{Scholar}
+  \href{https://kismatkunwar89.github.io}{kismatkunwar89.github.io}
 }
 
 \begin{document}
 \raggedright
+\fontsize{10.5pt}{13.2pt}\selectfont
 \makeheader
 
 \section{Professional Summary}
-Cybersecurity analyst with MSSP experience supporting CrowdStrike Falcon EPP/EDR across 9+ client environments and 1,000+ endpoints. Experience includes endpoint deployment, SIEM and MFA integration, detection triage, IOC correlation, phishing and ransomware-precursor investigations, and stakeholder reporting. M.S. Cybersecurity graduate with peer-reviewed DFIR research and hands-on threat-hunting labs.
+Security analyst with MSSP experience triaging CrowdStrike Falcon EPP/EDR detections across 1,000+ managed endpoints, investigating phishing, malware, and ransomware incidents, and reducing recurring alert noise. M.S. Cybersecurity graduate with peer-reviewed DFIR research and hands-on experience developing and tuning security detections across endpoint, identity, and cloud telemetry.
 
-\section{Technical Skills}
-\textbf{Security Operations:} EDR - CrowdStrike Falcon EPP/EDR; SIEM - Splunk, Elastic Stack; alert triage; log analysis; incident response support; threat hunting\\
-\textbf{Detection \& Threat Intelligence:} Splunk SPL, Sigma, YARA, MITRE ATT\&CK, Cyber Kill Chain, IOC analysis and enrichment, STIX/TAXII, campaign analysis, VirusTotal, AlienVault OTX, AbuseIPDB, GreyNoise\\
-\textbf{Digital Forensics:} Autopsy, Volatility 3, KAPE, Velociraptor, Eric Zimmerman Tools, Plaso, Windows artifacts (MFT/USN, EVTX, LNK, Prefetch), timeline analysis, disk and memory forensics\\
-\textbf{Systems \& Automation:} Python, PowerShell, Bash, Active Directory, Group Policy, PDQ Deploy, MFA, Linux, Wireshark, tcpdump, Claude Code, OpenAI Codex
+\section{Skills}
+\textbf{Security Operations \& Detection:} CrowdStrike Falcon EPP/EDR, SIEM, Splunk, Elastic Stack, Splunk SPL, alert triage, incident response, threat hunting, detection development, detection tuning\\
+\textbf{DFIR \& Threat Analysis:} MITRE ATT\&CK, Sigma, YARA, IOC analysis, Sysmon, Windows Event Logs, Volatility 3, KAPE, Eric Zimmerman Tools, Plaso\\
+\textbf{Systems \& Scripting:} Python, PowerShell, Bash, Active Directory, Group Policy, Windows, Linux, Wireshark\\
+\textbf{Cloud \& Infrastructure:} AWS, AWS CloudTrail, Azure/Entra ID, Kubernetes
 
 \section{Professional Experience}
-\textbf{Provost Research Assistant - Digital Forensics (Part-Time)} \hfill Sep 2024 -- May 2026\\
+\textbf{Provost Research Assistant, Digital Forensics (Part-Time)} \hfill Sep 2024 -- May 2026\\
 \textit{Tagliatela College of Engineering, University of New Haven, West Haven, CT}
 \begin{itemize}
-  \item First-authored and presented a peer-reviewed \href{https://doi.org/10.1007/978-3-032-22542-9_23}{Springer/ICDF2C paper} evaluating an LLM- and SHACL-based workflow for generating JSON-LD representations compliant with the Cyber-investigation Analysis Standard Expression (CASE) and Unified Cyber Ontology (UCO) for Windows Prefetch, LNK, and Event Log artifacts.
-  \item Co-authored an \href{https://doi.org/10.1016/j.fsidi.2026.302148}{Elsevier \textit{Forensic Science International: Digital Investigation} journal article} introducing the Indicator of Inconsistency Framework; developed Python validation workflows and reusable SPARQL rules evaluated across five anti-forensic scenarios and independent forensic images to characterize false-positive behavior.
+  \item First author of a peer-reviewed \href{https://doi.org/10.1007/978-3-032-22542-9_23}{Springer/ICDF2C paper} on an LLM- and SHACL-based workflow for generating CASE/UCO-compliant JSON-LD representations of Windows Prefetch, LNK, and Event Log artifacts.
+  \item Co-authored an accepted \href{https://doi.org/10.1016/j.fsidi.2026.302148}{Elsevier \textit{Forensic Science International: Digital Investigation} paper} on the Indicator of Inconsistency Framework; developed Python workflows and SPARQL rules across five anti-forensic scenarios.
 \end{itemize}
 
-\textbf{Security Support Analyst} \hfill May 2023 -- Mar 2024\\
+\textbf{Security Support Analyst, Managed Security Services} \hfill May 2023 -- Mar 2024\\
 \textit{Raechal Enterprises Pvt Ltd, Nepal-based MSSP and CrowdStrike Partner, Kathmandu, Nepal}
 \begin{itemize}
-  \item Delivered CrowdStrike Falcon EPP/EDR across 9+ client environments totaling 1,000+ endpoints, automating sensor deployment through PDQ Deploy and Group Policy.
-  \item Translated client security requirements and change windows into host groups, prevention-policy settings, and sensor-update schedules; supported banking environments aligned with Nepal Rastra Bank Cyber Resilience Guidelines and ISO/IEC 27001-aligned controls.
-  \item Integrated Falcon with SIEM environments, deployed ManageEngine MFA, and coordinated with client IT teams on troubleshooting, onboarding, operational handoff, and post-deployment technical reviews.
-  \item Investigated phishing and ransomware-precursor activity using Falcon telemetry; correlated IOCs, documented evidence, prioritized findings, and escalated containment recommendations within SLA.
+  \item Triaged CrowdStrike Falcon EPP/EDR detections across 1,000+ managed endpoints, reviewing endpoint telemetry and tuning client-specific policies and exclusions to reduce recurring alert noise.
+  \item Investigated phishing, malware, and ransomware incidents using endpoint telemetry and IOCs to identify affected hosts, determine scope, and support containment and remediation.
+  \item Supported security controls across EDR, MFA, and SIEM environments; identified configuration gaps and communicated investigation findings and remediation recommendations to client IT and management teams.
 \end{itemize}
 
 \section{Projects}
 \textbf{Threat Detection \& Purple-Team Home Lab} \hfill Self-Directed, 2026
 \begin{itemize}
-  \item Simulated 39 Windows/AD, Azure/AWS, Kubernetes, and Linux attack scenarios; validated SIEM/EDR telemetry and detections using Splunk SPL, Sigma, YARA, Hayabusa, and MITRE ATT\&CK.
+  \item Built a hybrid detection lab spanning Windows AD, Linux, Kubernetes, AWS, and Azure, centralizing endpoint, identity, cloud, and audit telemetry into Splunk and Sumo Logic.
+  \item Executed and investigated 39 attack and discovery scenarios, including Kerberoasting, DCSync, ADCS abuse, credential dumping, and cloud IAM activity; developed and tuned SPL hunting and detection queries across collected telemetry.
 \end{itemize}
 
-\textbf{SavvyDFIR-MCP: AI-Assisted DFIR Workflows} \hfill \href{https://github.com/kismatkunwar89/SAVVYDFIR-MCP}{Project}
+\textbf{SavvyDFIR-MCP: AI-Assisted DFIR Workflows} \hfill \href{https://github.com/kismatkunwar89/SAVVYDFIR-MCP}{GitHub}
 \begin{itemize}
-  \item Developing an experimental MCP-based workflow on SANS SIFT that integrates Volatility 3, Eric Zimmerman Tools, Plaso, Chainsaw, and YARA with source-traceable evidence checks and structured reporting.
+  \item Built an MCP-based DFIR workflow integrating Volatility 3, Eric Zimmerman Tools, Plaso, Chainsaw, and YARA, with provenance checks linking investigation findings back to source evidence.
 \end{itemize}
 
 \textbf{Enterprise DFIR Case Investigation} \hfill \href{https://kismatkunwar89.github.io/portfolio/dfir-final.html}{Case Report}
 \begin{itemize}
-  \item Correlated MFT/USN, EVTX, memory, pagefile, and PCAP evidence to reconstruct a web-server compromise and database-exfiltration timeline; documented SHA-256 integrity checks, findings, and remediation priorities.
+  \item Reconstructed a web-server compromise and data-exfiltration timeline by correlating MFT/USN, EVTX, memory, pagefile, and PCAP evidence across compromised Windows systems; validated key findings through SHA-256 correlation.
 \end{itemize}
 
 \section{Education}
-\textbf{Master of Science in Cybersecurity}, GPA: 3.98 \hfill Aug 2024 -- May 2026\\
-University of New Haven, West Haven, CT
+\textbf{University of New Haven} \hfill West Haven, CT\\
+M.S. Cybersecurity, GPA: 3.98 \hfill May 2026
 
-\textbf{Bachelor of Science in Cybersecurity}, First Class Honors, GPA: 3.96 \hfill May 2020 -- Jun 2023\\
-Coventry University, UK
+\textbf{Coventry University} \hfill UK\\
+B.S. Cybersecurity, First Class Honors, GPA: 3.96 \hfill Jun 2023
 
 \section{Certifications}
-Cisco Certified Network Associate (CCNA) \textbullet{} Microsoft Certified: Azure Fundamentals (AZ-900) \textbullet{} ISC2 Certified in Cybersecurity (CC)
+CCNA \textbullet{} Microsoft Azure Fundamentals (AZ-900) \textbullet{} ISC2 Certified in Cybersecurity (CC)
 
 \end{document}
